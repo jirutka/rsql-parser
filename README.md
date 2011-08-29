@@ -35,12 +35,12 @@ A constraint is composed of a selector, which identifies an entry’s element, a
 
 Comparison operators are:
 
-* Equal to : `==` _or_ `=`
+* Equal to : `==` or `=`
 * Not equal to : `!=`
-* Less than : `=lt=` _or_ `<`
-* Less than or equal to : `=le=` _or_ `<=`
-* Greater than operator : `=gt=` _or_ `>`
-* Greater than or equal to: `=ge=` _or_ `>=`
+* Less than : `=lt=` or `<`
+* Less than or equal to : `=le=` or `<=`
+* Greater than operator : `=gt=` or `>`
+* Greater than or equal to: `=ge=` or `>=`
 
 <!-- -->
     comparison-operator = "==" | "=" | "!=" | "=lt=" | "<" | "=le=" | "<=" | "=gt=" | ">" | "=ge=" | ">=";
@@ -63,10 +63,10 @@ An argument can be of two types. Any character sequence between single or double
 
 Let’s look at few examples of RSQL expressions in both FIQL-like and alternative syntax (you can also combine them):
 
-* `code==MI-MDW;credits=gt=4` _or_ `code=MI-MDW and credits>4`
-* `name=="Programming in Java";(completion==CLFD_CREDIT,completion==CREDIT)` _or_ `name="Programming in Java" and (completion=CLFD_CREDIT or completion=CREDIT)`
-* `teachers/instructor==jirutjak;department.code==KSI` _or_ `teachers/instructor=jirutjak and department.code=KSI`
-* `kos:capacity=lt=100,kos:capacity=ge=50` _or_ `kos:capacity<100 or kos:capacity>=50`
+* code==MI-MDW;credits=gt=4 _or_ code=MI-MDW and credits>4
+* name=="Programming in Java";(completion==CLFD_CREDIT,completion==CREDIT) _or_ name="Programming in Java" and (completion=CLFD_CREDIT or completion=CREDIT)
+* teachers/instructor==jirutjak;department.code==KSI _or_ teachers/instructor=jirutjak and department.code=KSI
+* kos:capacity=lt=100,kos:capacity=ge=50 _or_ kos:capacity<100 or kos:capacity>=50
 	
 For more examples see [RSQL-hibernate](https://github.com/jirutka/rsql-hibernate).
 
@@ -93,7 +93,7 @@ If you’re using Maven2, simply add these lines to your _pom.xml_:
         </dependency>
     </dependencies>
 
-Otherwise, download jar file from [here](http://repos.jirutka.cz/maven/cz/jirutka/rsql/rsql-parser/1.0/rsql-parser-1.0.jar). The only dependencies are [slf4j](http://www.slf4j.org/) and [JUnit](http://www.junit.org/).
+Otherwise, download jar file from [here](https://github.com/downloads/jirutka/rsql-parser/rsql-parser-1.0.jar). The only dependencies are [slf4j-api](http://www.slf4j.org/download.html) and [junit](https://github.com/KentBeck/junit/downloads).
 
 The main class is `RSQLParser` and method `parse(String rsql)`.
 

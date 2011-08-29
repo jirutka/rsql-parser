@@ -18,8 +18,9 @@ Expression is composed of one or more constraints, related to each other with Bo
 
 * Logical AND : ";" or " and "
 * Logical OR : "," or " or "
-					
-        logical-operator = ";" | " and " | "," | " or ";
+
+<!-- -->
+    logical-operator = ";" | " and " | "," | " or ";
 
 By default, the AND operator takes precedence (i.e., it is evaluated before any OR operators are). However, a parenthesized expression can be used to change precedence, yielding whatever the contained expression yields.
 
@@ -39,7 +40,8 @@ Comparison operators are:
 * Greater than operator : "=gt=" or ">"
 * Greater than or equal to: "=ge=" or ">="
 
-        comparison-operator = "==" | "=" | "!=" | "=lt=" | "<" | "=le=" | "<=" | "=gt=" | ">" | "=ge=" | ">=";
+<!-- -->
+    comparison-operator = "==" | "=" | "!=" | "=lt=" | "<" | "=le=" | "<=" | "=gt=" | ">" | "=ge=" | ">=";
 
 A selector can be a single Local Name (e.g. course), QName (e.g. my:course) or path (e.g. course/name, my:course/my:name). It may contain a link "dereference" via dot-notation (eg. course/department.code).
 

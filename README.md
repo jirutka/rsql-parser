@@ -63,10 +63,14 @@ An argument can be of two types. Any character sequence between single or double
 
 Let’s look at few examples of RSQL expressions in both FIQL-like and alternative syntax (you can also combine them):
 
-* code==MI-MDW;credits=gt=4 _or_ code=MI-MDW and credits>4
-* name=="Programming in Java";(completion==CLFD_CREDIT,completion==CREDIT) _or_ name="Programming in Java" and (completion=CLFD_CREDIT or completion=CREDIT)
-* teachers/instructor==jirutjak;department.code==KSI _or_ teachers/instructor=jirutjak and department.code=KSI
-* kos:capacity=lt=100,kos:capacity=ge=50 _or_ kos:capacity<100 or kos:capacity>=50
+    - code==MI-MDW;credits=gt=4
+    - code=MI-MDW and credits>4
+    - name=="Programming in Java";(completion==CLFD_CREDIT,completion==CREDIT)
+    - name="Programming in Java" and (completion=CLFD_CREDIT or completion=CREDIT)
+    - teachers/instructor==jirutjak;department.code==KSI
+    - teachers/instructor=jirutjak and department.code=KSI
+    - kos:capacity=lt=100,kos:capacity=ge=50
+    - kos:capacity<100 or kos:capacity>=50
 	
 For more examples see [RSQL-hibernate](https://github.com/jirutka/rsql-hibernate).
 

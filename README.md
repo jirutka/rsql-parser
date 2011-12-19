@@ -81,21 +81,23 @@ RSQL-parser uses Maven2 as its build tool. Java sources for parser itself are ge
 
 If you’re using Maven2, simply add these lines to your _pom.xml_:
 
-    <repositories>
-        <repository>
-            <id>jirutka.cz</id>
-            <name>Repository with RSQL</name>
-            <url>http://repos.jirutka.cz/maven/</url>
-        </repository>
-    </repositories>
+```xml
+<repositories>
+    <repository>
+        <id>jirutka.cz</id>
+        <name>Repository with RSQL</name>
+        <url>http://repos.jirutka.cz/maven/</url>
+    </repository>
+</repositories>
 
-    <dependencies>
-        <dependency>
-            <groupId>cz.jirutka.rsql</groupId>
-            <artifactId>rsql-parser</artifactId>
-            <version>1.0</version>
-        </dependency>
-    </dependencies>
+<dependencies>
+    <dependency>
+        <groupId>cz.jirutka.rsql</groupId>
+        <artifactId>rsql-parser</artifactId>
+        <version>1.0</version>
+    </dependency>
+</dependencies>
+```
 
 Otherwise, download jar file from [here](https://github.com/downloads/jirutka/rsql-parser/rsql-parser-1.0.jar). The only dependencies are [slf4j-api](http://www.slf4j.org/download.html) and [junit](https://github.com/KentBeck/junit/downloads).
 

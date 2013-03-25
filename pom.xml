@@ -6,7 +6,7 @@
 
     <groupId>cz.jirutka.rsql</groupId>
     <artifactId>rsql-parser</artifactId>
-    <version>1.0</version>
+    <version>1.0.1</version>
     <packaging>jar</packaging>
 
 
@@ -24,6 +24,13 @@
             <organizationUrl>http://www.cvut.cz</organizationUrl>
         </developer>
     </developers>
+
+    <licenses>
+        <license>
+            <name>MIT</name>
+            <url>http://opensource.org/licenses/MIT</url>
+        </license>
+    </licenses>
 
     <scm>
         <url>http://github.com/jirutka/rsql-parser</url>

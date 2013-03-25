@@ -83,7 +83,7 @@ RSQL-parser uses Maven2 as its build tool. Java sources for parser itself are ge
 <dependency>
     <groupId>cz.jirutka.rsql</groupId>
     <artifactId>rsql-parser</artifactId>
-    <version>1.0</version>
+    <version>1.0.1</version>
 </dependency>
 
 <repository>
@@ -98,4 +98,4 @@ The main class is `RSQLParser` and method `parse(String rsql)`.
 
 ## License
 
-This project is licensed under [LGPL version 3](http://www.gnu.org/licenses/lgpl.txt).
+This project is licensed under [MIT license](http://opensource.org/licenses/MIT).

@@ -46,9 +46,15 @@ public enum Comparison {
     LESS_THAN ("<"),
     
     /** Less than or equal to : "=le=" or "<=" */
-    LESS_EQUAL ("<=");
+    LESS_EQUAL ("<="),
 
+    /** In : "=in=" */
+    IN ("IN"),
     
+    /** Not in : "=out=" */
+    OUT ("NOT IN");
+    
+   
     private final String symbol;
     
     private Comparison(String symbol) {

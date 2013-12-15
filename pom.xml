@@ -6,9 +6,8 @@
 
     <groupId>cz.jirutka.rsql</groupId>
     <artifactId>rsql-parser</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
     <packaging>jar</packaging>
-
 
     <!--//////////////////// ABOUT ////////////////////-->
 
@@ -57,6 +56,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<java.version>1.6</java.version>			
     </properties>
     
     
@@ -95,6 +95,14 @@
                     </execution>
                 </executions>
             </plugin>
+       	    <plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+				</configuration>
+			</plugin>
         </plugins>
     </build>
 

@@ -77,6 +77,12 @@ public class ComparisonExpression extends Expression {
     
     @Override
     public String toString() {
+    	String lparen="";
+    	String rparen="";
+    	if (operator==Comparison.IN || operator==Comparison.OUT){
+    		lparen="(";
+    		rparen=")";
+    	}
         return selector + " " + operator + " " + argument;
     }
 

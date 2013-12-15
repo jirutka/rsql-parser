@@ -38,6 +38,7 @@ public class RSQLParserTest {
     private ComparisonExpression comp0 = new ComparisonExpression("sel0", Comparison.EQUAL, "foo");
     private ComparisonExpression comp1 = new ComparisonExpression("sel1", Comparison.NOT_EQUAL, "bar");
     private ComparisonExpression comp2 = new ComparisonExpression("sel2", Comparison.LESS_THAN, "baz");
+    private ComparisonExpression comp3 = new ComparisonExpression("sel3", Comparison.IN, "1,2,3,4");
     
     
     @Test
@@ -70,6 +71,7 @@ public class RSQLParserTest {
         testArgument("ěščřžýáíé", false);
         testArgument("'wh1(te, :sp4) \"c;e - s'", true);
         testArgument("\"wh1(te, :sp4) 'c;e - s\"", true);
+        testArgument("(1,2,3,a,g,fhg,hfgh)", true);
     }
 
     private void testArgument(String argument, boolean quoted) throws ParseException {
@@ -82,26 +84,39 @@ public class RSQLParserTest {
     
     @Test
     public void testComparison() throws ParseException {
-        testComparison("==", Comparison.EQUAL);
-        testComparison("=", Comparison.EQUAL);
-        testComparison("!=", Comparison.NOT_EQUAL);
-        testComparison("=lt=", Comparison.LESS_THAN);
-        testComparison("<", Comparison.LESS_THAN);
-        testComparison("=le=", Comparison.LESS_EQUAL);
-        testComparison("<=", Comparison.LESS_EQUAL);
-        testComparison("=gt=", Comparison.GREATER_THAN);
-        testComparison(">", Comparison.GREATER_THAN);
-        testComparison("=ge=", Comparison.GREATER_EQUAL);
-        testComparison(">=", Comparison.GREATER_EQUAL);
+        testComparison("==", Comparison.EQUAL,false);
+        testComparison("=eq=", Comparison.EQUAL,false);
+        testComparison("=", Comparison.EQUAL,false);
+        testComparison("!=", Comparison.NOT_EQUAL,false);
+        testComparison("=ne=", Comparison.NOT_EQUAL,false);
+        testComparison("=lt=", Comparison.LESS_THAN,false);
+        testComparison("<", Comparison.LESS_THAN,false);
+        testComparison("=le=", Comparison.LESS_EQUAL,false);
+        testComparison("<=", Comparison.LESS_EQUAL,false);
+        testComparison("=gt=", Comparison.GREATER_THAN,false);
+        testComparison(">", Comparison.GREATER_THAN,false);
+        testComparison("=ge=", Comparison.GREATER_EQUAL,false);
+        testComparison(">=", Comparison.GREATER_EQUAL,false);
+        testComparison("=in=", Comparison.IN, true);
+        testComparison("=out=", Comparison.OUT, true);
+        testComparison("=in=", Comparison.IN, false);
+        testComparison("=out=", Comparison.OUT, false);
     }
     
-    private void testComparison(String operatorStr, Comparison operatorEnum) 
+
+    private void testComparison(String operatorStr, 
+    		                     Comparison operatorEnum, boolean paren) 
             throws ParseException {
-        Expression exp = RSQLParser.parse("sel" + operatorStr + "foo");
+    	Expression exp=null;
+    	if(paren){
+            exp = RSQLParser.parse("sel" + operatorStr + "(1,4,fdsfs,awee)");    		    	  
+    	} else {
+            exp = RSQLParser.parse("sel" + operatorStr + "foo");    		
+    	}
         ComparisonExpression comp = (ComparisonExpression) exp;
-        assertEquals(operatorEnum, comp.getOperator());
+        assertEquals(operatorEnum, comp.getOperator());    	
     }
-    
+
     
     @Test
     public void testConjunction() throws ParseException {
@@ -116,6 +131,10 @@ public class RSQLParserTest {
         actual = RSQLParser.parse("sel0==foo and sel1!=bar");
         assertEquals("Operator:  and ", expected, actual);
         
+        expected = new LogicalExpression(comp0, Logical.AND, comp1);
+        actual = RSQLParser.parse("sel0==foo&sel1!=bar");
+        assertEquals("Operator: &", expected, actual);
+        
         expected = new LogicalExpression(comp0, Logical.AND, 
                         new LogicalExpression(comp1, Logical.AND, comp2));
         actual = RSQLParser.parse("sel0==foo;sel1!=bar;sel2<baz");
@@ -126,7 +145,7 @@ public class RSQLParserTest {
     public void testDisjunction() throws ParseException {
         Expression expected;
         Expression actual;
-        
+
         expected = new LogicalExpression(comp0, Logical.OR, comp1);
         actual = RSQLParser.parse("sel0==foo,sel1!=bar");
         assertEquals("Operator: ,", expected, actual);
@@ -135,10 +154,15 @@ public class RSQLParserTest {
         actual = RSQLParser.parse("sel0==foo or sel1!=bar");
         assertEquals("Operator: or ", expected, actual);
         
+        expected = new LogicalExpression(comp0, Logical.OR, comp1);
+        actual = RSQLParser.parse("sel0==foo|sel1!=bar");
+        assertEquals("Operator: |", expected, actual);
+
         expected = new LogicalExpression(comp0, Logical.OR, 
-                        new LogicalExpression(comp1, Logical.OR, comp2));
-        actual = RSQLParser.parse("sel0==foo,sel1!=bar,sel2<baz");
+                        new LogicalExpression(comp3, Logical.OR, comp2));
+        actual = RSQLParser.parse("sel0==foo,sel3=in=(1,2,3,4),sel2<baz");
         assertEquals("Operator: ,", expected, actual);
+
     }
     
     @Test
@@ -167,8 +191,8 @@ public class RSQLParserTest {
         expected = new LogicalExpression(
                         new LogicalExpression(comp0, Logical.AND, comp1), 
                         Logical.OR,
-                        new LogicalExpression(comp2, Logical.AND, comp0));
-        actual = RSQLParser.parse("sel0==foo;sel1!=bar,sel2<baz;sel0==foo");
+                        new LogicalExpression(comp3, Logical.AND, comp0));
+        actual = RSQLParser.parse("sel0==foo;sel1!=bar,sel3=in=(1,2,3,4);sel0==foo");
         assertEquals(expected, actual);
     }
     
@@ -177,14 +201,14 @@ public class RSQLParserTest {
         Expression expected;
         Expression actual;
         
-        expected = new LogicalExpression(comp0, Logical.OR, 
+        expected = new LogicalExpression(comp3, Logical.OR, 
                         new LogicalExpression(comp1, Logical.AND, comp2));
-        actual = RSQLParser.parse("sel0==foo,(sel1!=bar;sel2<baz)");
+        actual = RSQLParser.parse("sel3=in=(1,2,3,4),(sel1!=bar;sel2<baz)");
         assertEquals(expected, actual);
         
         expected = new LogicalExpression(comp0, Logical.AND, 
-                        new LogicalExpression(comp1, Logical.OR, comp2));
-        actual = RSQLParser.parse("sel0==foo;(sel1!=bar,sel2<baz)");
+                        new LogicalExpression(comp1, Logical.OR, comp3));
+        actual = RSQLParser.parse("sel0==foo;(sel1!=bar,sel3=in=(1,2,3,4))");
         assertEquals(expected, actual);
         
         expected = new LogicalExpression(
@@ -195,16 +219,16 @@ public class RSQLParserTest {
         
         expected = new LogicalExpression(comp0, Logical.AND,
                         new LogicalExpression(comp1, Logical.AND, 
-                            new LogicalExpression(comp2, Logical.OR, comp0)));
-        actual = RSQLParser.parse("sel0==foo;(sel1!=bar;(sel2<baz,sel0==foo))");
+                            new LogicalExpression(comp2, Logical.OR, comp3)));
+        actual = RSQLParser.parse("sel0==foo;(sel1!=bar;(sel2<baz,sel3=in=(1,2,3,4)))");
         assertEquals(expected, actual);
         
-        expected = new LogicalExpression(comp0, Logical.AND,
+        expected = new LogicalExpression(comp3, Logical.AND,
                         new LogicalExpression(
                             new LogicalExpression(comp1, Logical.AND, 
                                 new LogicalExpression(comp2, Logical.OR, comp0)),
                             Logical.OR, comp1));
-        actual = RSQLParser.parse("(sel0==foo);(sel1!=bar;(sel2<baz,sel0==foo),sel1!=bar)");
+        actual = RSQLParser.parse("(sel3=in=(1,2,3,4));(sel1!=bar;(sel2<baz,sel0==foo),sel1!=bar)");
         assertEquals(expected, actual);
         
     }

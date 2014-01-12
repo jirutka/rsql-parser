@@ -1,4 +1,4 @@
-# RSQL / FIQL parser
+# RSQL / FIQL parser [![Build Status](https://travis-ci.org/jirutka/rsql-parser.png)](https://travis-ci.org/jirutka/rsql-parser)
 
 RESTful Service Query Language (RSQL) is my language and library that is designed for searching entries in RESTful services. RSQL is based on URI-friendly syntax [FIQL](http://tools.ietf.org/html/draft-nottingham-atompub-fiql-00) (Feed Item Query Language) - IETF Internet-Draft of syntax for expressing filters across the entries in an Atom Feed. FIQL is great for use in URL because it doesn’t contain unsafe characters, so URL encoding isn’t necessary. On the other side, it’s not very intuitive and URL encoding isn’t always that big deal, so RSQL provides also more common alternative syntax.
 

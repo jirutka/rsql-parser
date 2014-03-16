@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2013 Jakub Jirutka <jakub@jirutka.cz>.
+ * Copyright 2013-2014 Czech Technical University in Prague.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,18 +21,27 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package cz.jirutka.rsql.parser.model;
+package cz.jirutka.rsql.parser.ast;
 
 /**
- * Logical operator which is used in {@link LogicalExpression}.
- * 
- * @author Jakub Jirutka <jakub@jirutka.cz>
+ * Common interface of the AST nodes.
  */
-public enum Logical {
-    
-    /** Logical AND : ";" or " and " */
-    AND,
-    
-    /** Logical OR : "," or " or " */
-    OR;
+public interface Node {
+
+    /**
+     * Accepts the visitor, calls its visit() method and returns the result.
+     *
+     * <p>Each implementation must implement this methods exactly as listed:
+     * <pre>
+     * public <T> T accept(Visitor<T> visitor) {
+     *     return visitor.visit(this);
+     * }
+     * </pre>
+     * </p>
+     *
+     * @param visitor The visitor whose appropriate method will be called.
+     * @param <T> Return type of the visitor's method.
+     * @return An object returned by the visitor (may be null).
+     */
+    <T> T accept(Visitor<T> visitor);
 }

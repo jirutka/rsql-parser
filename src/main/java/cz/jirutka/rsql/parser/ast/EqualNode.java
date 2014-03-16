@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2013 Jakub Jirutka <jakub@jirutka.cz>.
+ * Copyright 2013-2014 Czech Technical University in Prague.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,28 +21,17 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package cz.jirutka.rsql.parser.model;
+package cz.jirutka.rsql.parser.ast;
 
-/**
- * Superclass of {@link ComparisonExpression} and {@link LogicalExpression}.
- * 
- * @author Jakub Jirutka <jakub@jirutka.cz>
- */
-public abstract class Expression {
+import java.util.List;
 
-    
-    /**
-     * @return <tt>true</tt> if <i>this</i> is a {@link ComparisonExpression}
-     */
-    public boolean isComparison() {
-        return (this instanceof ComparisonExpression);
+public class EqualNode extends ComparisonNode {
+
+    public EqualNode(String selector, List<String> arguments) {
+        super(ComparisonOp.EQ, selector, arguments);
     }
-    
-    /**
-     * @return <tt>true</tt> if <i>this</i> is a {@link LogicalExpression}
-     */
-    public boolean isLogical() {
-        return (this instanceof LogicalExpression);
+
+    public <T> T accept(Visitor<T> visitor) {
+        return visitor.visit(this);
     }
-    
 }

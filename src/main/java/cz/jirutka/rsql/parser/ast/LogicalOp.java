@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2013 Jakub Jirutka <jakub@jirutka.cz>.
+ * Copyright 2013-2014 Czech Technical University in Prague.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,44 +21,24 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package cz.jirutka.rsql.parser.model;
+package cz.jirutka.rsql.parser.ast;
 
 /**
- * Comparison operator which is used in {@link ComparisonExpression}.
- * 
- * @author Jakub Jirutka <jakub@jirutka.cz>
+ * Logical operators.
  */
-public enum Comparison {
+public enum LogicalOp {
 
-    /** Equal to : "==" or "=" */
-    EQUAL ("="),
-    
-    /** Not equal to : "!=" */
-    NOT_EQUAL ("!="),
-    
-    /** Greater than operator : "=gt=" or ">" */
-    GREATER_THAN (">"),
-    
-    /** Greater than or equal to: "=ge=" or ">=" */
-    GREATER_EQUAL (">="),
-    
-    /** Less than : "=lt=" or "<" */
-    LESS_THAN ("<"),
-    
-    /** Less than or equal to : "=le=" or "<=" */
-    LESS_EQUAL ("<=");
+    AND (";"),
+    OR  (",");
 
-    
     private final String symbol;
-    
-    private Comparison(String symbol) {
+
+    private LogicalOp(String symbol) {
         this.symbol = symbol;
     }
 
-    
     @Override
     public String toString() {
         return symbol;
     }
-    
 }

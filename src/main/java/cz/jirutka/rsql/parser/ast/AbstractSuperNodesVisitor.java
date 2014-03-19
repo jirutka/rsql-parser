@@ -24,27 +24,26 @@
 package cz.jirutka.rsql.parser.ast;
 
 /**
- * A convenient implementation of the {@link RSQLVisitor} interface that
- * delegates handlers of all the concrete nodes to their superclass methods,
- * i.e. {@link #visit(LogicalNode)} and {@link #visit(ComparisonNode)}. You
- * should either override these two methods, or override all the others.
+ * An abstract implementation of the {@link RSQLVisitor} interface that
+ * delegates handling of all the concrete nodes to {@link #visit(LogicalNode)}
+ * and {@link #visit(ComparisonNode)}.
  *
- * <p>This class is useful in two opposite scenarios. When you don't want to
- * handle all of the nodes (i.e. implement <tt>visit()</tt> methods), but just
- * few of them and take care of the rest in the superclass' handler.
- * Or when you want to handle all of the concrete nodes, and thus
- * don't need to care about superclass.</p>
+ * <p>This class is useful when you don't want to handle all of the nodes (i.e.
+ * implement <tt>visit()</tt> methods), but just few of them and take care of
+ * the rest in the superclass nodes' handler.
  *
  * @param <T> Return type of the visitor's method.
  */
-public abstract class AbstractVisitor<T> implements RSQLVisitor<T> {
+public abstract class AbstractSuperNodesVisitor<T> implements RSQLVisitor<T> {
+
+    //////// Superclass nodes ////////
+
+    public abstract T visit(LogicalNode node);
+
+    public abstract T visit(ComparisonNode node);
 
 
     //////// Logical nodes ////////
-
-    @Override public T visit(LogicalNode node) {
-        throw new UnsupportedOperationException("Not implemented");
-    }
 
     @Override public T visit(AndNode node) {
         return visit((LogicalNode) node);
@@ -56,10 +55,6 @@ public abstract class AbstractVisitor<T> implements RSQLVisitor<T> {
 
 
     //////// Comparison nodes ////////
-
-    @Override public T visit(ComparisonNode node) {
-        throw new UnsupportedOperationException("Not implemented");
-    }
 
     @Override public T visit(EqualNode node) {
         return visit((ComparisonNode) node);

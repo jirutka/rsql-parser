@@ -27,15 +27,17 @@ import spock.lang.Specification
 import spock.lang.Unroll
 
 @Unroll
-class AbstractVisitorTest extends Specification {
+class AbstractSuperNodesVisitorTest extends Specification {
+
+    def visitor = new AbstractSuperNodesVisitor() {
+        def visit(LogicalNode node) { LogicalNode.simpleName }
+        def visit(ComparisonNode node) { ComparisonNode.simpleName }
+    }
 
 
     def 'delegate visit(#className) to visit(LogicalNode)'() {
         setup:
-        def expected = 'I was there, Fantomas'
-            def visitor = new AbstractVisitor() {
-                def visit(LogicalNode node) { expected }
-            }
+            def expected = LogicalNode.simpleName
             def node = nodeClass.newInstance([])
         expect:
             node.accept(visitor) == expected
@@ -46,10 +48,7 @@ class AbstractVisitorTest extends Specification {
 
     def 'delegate visit(#className) to visit(ComparisonNode)'() {
         setup:
-            def expected = 'I was there, Fantomas'
-            def visitor = new AbstractVisitor() {
-                def visit(ComparisonNode node) { expected }
-            }
+            def expected = ComparisonNode.simpleName
             def node = nodeClass.newInstance('sel', ['arg1'])
         expect:
             node.accept(visitor) == expected

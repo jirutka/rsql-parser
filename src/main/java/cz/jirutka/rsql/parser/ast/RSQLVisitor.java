@@ -32,16 +32,12 @@ public interface RSQLVisitor<T> {
 
     //////// Logical nodes ////////
 
-    T visit(LogicalNode node);
-
     T visit(AndNode node);
 
     T visit(OrNode node);
 
 
     //////// Comparison nodes ////////
-
-    T visit(ComparisonNode node);
 
     T visit(EqualNode node);
 

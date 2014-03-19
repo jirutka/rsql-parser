@@ -19,7 +19,7 @@
     <packaging>jar</packaging>
 
     <name>RSQL-parser</name>
-    <description>Parser for RESTful Service Query Language (RSQL) and FIQL written in JavaCC.</description>
+    <description>Parser of RSQL / FIQL (query language for RESTful APIs) written in JavaCC.</description>
     <url>http://github.com/jirutka/rsql-parser</url>
     <inceptionYear>2011</inceptionYear>
 

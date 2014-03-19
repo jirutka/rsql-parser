@@ -2,20 +2,31 @@ RSQL / FIQL parser
 ==================
 [![Build Status](https://travis-ci.org/jirutka/rsql-parser.png)](https://travis-ci.org/jirutka/rsql-parser) [![Coverage Status](https://coveralls.io/repos/jirutka/rsql-parser/badge.png)](https://coveralls.io/r/jirutka/rsql-parser)
 
-RSQL is query language for a parametrized filtering of entries in RESTful APIs. It’s based on URI-friendly syntax [FIQL](http://tools.ietf.org/html/draft-nottingham-atompub-fiql-00) (Feed Item Query Language) - IETF Internet-Draft of syntax for expressing filters across the entries in an Atom Feed. FIQL is great for use in URI because it doesn’t contain unsafe characters, so URL encoding isn’t necessary. On the other side, it’s not very intuitive and URL encoding isn’t always that big deal, so RSQL provides also more common alternative syntax.
+RSQL is a query language for parametrized filtering of entries in RESTful APIs. It’s based on URI-friendly syntax
+[FIQL](http://tools.ietf.org/html/draft-nottingham-atompub-fiql-00) (Feed Item Query Language) - IETF Internet-Draft of
+syntax for expressing filters across the entries in an Atom Feed. FIQL is great for use in URI because it doesn’t
+contain unsafe characters, so URL encoding isn’t necessary. On the other side, it’s not very intuitive and URL encoding
+isn’t always that big deal, so RSQL provides also an alternative syntax for logical operators and some of the comparison
+operators.
 
-This is a complete parser for RSQL written in [JavaCC](http://javacc.java.net/) and Java. Since RSQL is a superset of the FIQL, it can be used for parsing FIQL as well. RSQL-parser is related with [RSQL-hibernate](https://github.com/jirutka/rsql-hibernate) - library for translating RSQL expression to Hibernate’s Criteria query.
+This is a complete and well tested parser for RSQL written in [JavaCC](http://javacc.java.net/) and Java. Since RSQL is
+a superset of the FIQL, it can be used for parsing FIQL as well.
+
+RSQL-parser is related with [RSQL-hibernate](https://github.com/jirutka/rsql-hibernate) - library for translating RSQL
+expression to Hibernate’s Criteria query (it’s written for 1.x version of the parser though).
 
 
 Grammar and semantic
 --------------------
+_The following grammar specification is written in EBNF notation ([ISO 14977](http://www.cl.cam.ac.uk/~mgk25/iso-14977.pdf))._
 
 RSQL expression is composed of one or more comparisons, related to each other with logical operators:
 
 * Logical AND : `;` or ` and `
 * Logical OR : `,` or ` or `
 
-By default, the AND operator takes precedence (i.e. it’s evaluated before any OR operators are). However, a parenthesized expression can be used to change the precedence, yielding whatever the contained expression yields.
+By default, the AND operator takes precedence (i.e. it’s evaluated before any OR operators are). However, a
+parenthesized expression can be used to change the precedence, yielding whatever the contained expression yields.
 
     input          = or, EOF;
     or             = and, { "," , and };
@@ -27,11 +38,13 @@ Comparison is composed of a selector, an operator and an argument.
 
     comparison     = selector, comparison-op, arguments;
 
-Selector identifies a field (or attribute, element, …) of the resource representation to filter by. It can be any not empty Unicode string that doesn’t contain reserved characters (see below) or a white space. The specific syntax of the selector is not enforced by this parser.
+Selector identifies a field (or attribute, element, …) of the resource representation to filter by. It can be any non
+empty Unicode string that doesn’t contain reserved characters (see below) or a white space. The specific syntax of the
+selector is not enforced by this parser.
 
     selector       = unreserved-str;
 
-Comparison operators are in FIQL syntax and some of them has an alternative syntax as well:
+Comparison operators are in FIQL notation and some of them has an alternative syntax as well:
 
 * Equal to : `==`
 * Not equal to : `!=`
@@ -42,12 +55,14 @@ Comparison operators are in FIQL syntax and some of them has an alternative synt
 * In : `=in=`
 * Not in : `=out=`
 
-<!-- -->
+You can also simply extend this parser with your own operators (see [next section](#how-to-add-custom-operators)).
+
     comparison-op  = comp-fiql | comp-alt;
     comp-fiql      = ( ( "=", { ALPHA } ) | "!" ), "=";
     comp-alt       = ( ">" | "<" ), [ "=" ];
 
-Argument can be a single value, or multiple values in parenthesis separated by comma. Value that doesn’t contain any reserved character or a white space can be unquoted, other arguments must be enclosed in single or double quotations.
+Argument can be a single value, or multiple values in parenthesis separated by comma. Value that doesn’t contain any
+reserved character or a white space can be unquoted, other arguments must be enclosed in single or double quotes.
 
     arguments      = ( "(", value, { "," , value }, ")" ) | value;
     value          = unreserved-str | double-quoted | single-quoted;
@@ -64,7 +79,7 @@ Argument can be a single value, or multiple values in parenthesis separated by c
 Examples
 --------
 
-Let’s look at few examples of RSQL expressions in both FIQL-like and alternative syntax:
+Let’s look at few examples of RSQL expressions in both FIQL-like and alternative notation:
 
     - name=="Kill Bill";year=gt=2003
     - name=="Kill Bill" and year>2003
@@ -79,7 +94,9 @@ Let’s look at few examples of RSQL expressions in both FIQL-like and alternati
 How to use
 ----------
 
-Nodes are [visitable](http://en.wikipedia.org/wiki/Visitor_pattern) so to traverse the parsed AST (and convert it to SQL query maybe), implement the provided [RSQLVisitor] interface or one of its adapters ([NoArgRSQLVisitorAdapter], [SuperNodesRSQLVisitorAdapter]).
+Nodes are [visitable](http://en.wikipedia.org/wiki/Visitor_pattern), so to traverse the parsed AST (and convert it to
+SQL query maybe), you can implement the provided [RSQLVisitor] interface or one of its adapters
+([NoArgRSQLVisitorAdapter], [SuperNodesRSQLVisitorAdapter]).
 
 ```java
 Node rootNode = new RSQLParser().parse("name==RSQL;version=ge=2.0");
@@ -91,7 +108,9 @@ rootNode.accept(yourShinyVisitor);
 How to add custom operators
 ---------------------------
 
-Aren't the built-in operators enough for you? This parser can be simply enhanced by custom FIQL-like comparison operators, so you can add your own! Just write an AST nodes for your operators (extend [ComparisonNode]), extend [RSQLNodesFactory] and extend [RSQLVisitor] interface.
+Aren't the built-in operators enough for you? This parser can be simply enhanced by custom FIQL-like comparison
+operators, so you can add your own! Just write an AST nodes for your operators (extend [ComparisonNode]), then extend
+[RSQLNodesFactory] class and [RSQLVisitor] interface.
 
 Look at [CustomOperatorsTest] for an example.
 
@@ -134,5 +153,4 @@ This project is licensed under [MIT license](http://opensource.org/licenses/MIT)
 [RSQLVisitor]: src/main/java/cz/jirutka/rsql/parser/ast/RSQLVisitor.java
 [NoArgRSQLVisitorAdapter]: src/main/java/cz/jirutka/rsql/parser/ast/NoArgRSQLVisitorAdapter.java
 [SuperNodesRSQLVisitorAdapter]: src/main/java/cz/jirutka/rsql/parser/ast/SuperNodesRSQLVisitorAdapter.java
-
 [CustomOperatorsTest]: src/test/groovy/cz/jirutka/rsql/parser/CustomOperatorsTest.groovy

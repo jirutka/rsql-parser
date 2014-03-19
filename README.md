@@ -51,7 +51,7 @@ Argument can be a single value, or multiple values in parenthesis separated by c
 
     arguments      = ( "(", value, { "," , value }, ")" ) | value;
     value          = unreserved-str | double-quoted | single-quoted;
-    
+
     unreserved-str = unreserved, { unreserved }
     single-quoted  = "'", { all-chars - "'" }, "'";
     double-quoted  = '"', { all-chars - '"' }, '"';
@@ -79,11 +79,22 @@ Let’s look at few examples of RSQL expressions in both FIQL-like and alternati
 How to use
 ----------
 
+Nodes are [visitable](http://en.wikipedia.org/wiki/Visitor_pattern) so to traverse the parsed AST (and convert it to SQL query maybe), implement the provided [RSQLVisitor] interface or one of its adapters ([NoArgRSQLVisitorAdapter], [SuperNodesRSQLVisitorAdapter]).
+
 ```java
-Node ast = RSQLParser.parse("name==RSQL;version=ge=2.0");
+Node rootNode = new RSQLParser().parse("name==RSQL;version=ge=2.0");
+
+rootNode.accept(yourShinyVisitor);
 ```
 
-TODO
+
+How to add custom operators
+---------------------------
+
+Aren't the built-in operators enough for you? This parser can be simply enhanced by custom FIQL-like comparison operators, so you can add your own! Just write an AST nodes for your operators (extend [ComparisonNode]), extend [RSQLNodesFactory] and extend [RSQLVisitor] interface.
+
+Look at [CustomOperatorsTest] for an example.
+
 
 Maven
 -----
@@ -116,3 +127,12 @@ License
 -------
 
 This project is licensed under [MIT license](http://opensource.org/licenses/MIT).
+
+
+[ComparisonNode]: src/main/java/cz/jirutka/rsql/parser/ast/ComparisonNode.java
+[RSQLNodesFactory]: src/main/java/cz/jirutka/rsql/parser/ast/RSQLNodesFactory.java
+[RSQLVisitor]: src/main/java/cz/jirutka/rsql/parser/ast/RSQLVisitor.java
+[NoArgRSQLVisitorAdapter]: src/main/java/cz/jirutka/rsql/parser/ast/NoArgRSQLVisitorAdapter.java
+[SuperNodesRSQLVisitorAdapter]: src/main/java/cz/jirutka/rsql/parser/ast/SuperNodesRSQLVisitorAdapter.java
+
+[CustomOperatorsTest]: src/test/groovy/cz/jirutka/rsql/parser/CustomOperatorsTest.groovy

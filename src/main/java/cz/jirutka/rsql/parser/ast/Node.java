@@ -43,5 +43,5 @@ public interface Node {
      * @param <T> Return type of the visitor's method.
      * @return An object returned by the visitor (may be null).
      */
-    <T> T accept(Visitor<T> visitor);
+    <T> T accept(RSQLVisitor<T> visitor);
 }

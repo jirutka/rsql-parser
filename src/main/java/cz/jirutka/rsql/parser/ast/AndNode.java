@@ -31,7 +31,7 @@ public class AndNode extends LogicalNode {
         super(LogicalOp.AND, children);
     }
 
-    public <T> T accept(Visitor<T> visitor) {
+    public <T> T accept(RSQLVisitor<T> visitor) {
         return visitor.visit(this);
     }
 }

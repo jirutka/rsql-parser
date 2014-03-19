@@ -24,10 +24,10 @@
 package cz.jirutka.rsql.parser.ast;
 
 /**
- * A convenient implementation of the {@link Visitor} interface that delegates
- * handlers of all the concrete nodes to their superclass methods, i.e.
- * {@link #visit(LogicalNode)} and {@link #visit(ComparisonNode)}. You should
- * either override these two methods, or override all the others.
+ * A convenient implementation of the {@link RSQLVisitor} interface that
+ * delegates handlers of all the concrete nodes to their superclass methods,
+ * i.e. {@link #visit(LogicalNode)} and {@link #visit(ComparisonNode)}. You
+ * should either override these two methods, or override all the others.
  *
  * <p>This class is useful in two opposite scenarios. When you don't want to
  * handle all of the nodes (i.e. implement <tt>visit()</tt> methods), but just
@@ -37,7 +37,7 @@ package cz.jirutka.rsql.parser.ast;
  *
  * @param <T> Return type of the visitor's method.
  */
-public abstract class AbstractVisitor<T> implements Visitor<T> {
+public abstract class AbstractVisitor<T> implements RSQLVisitor<T> {
 
 
     //////// Logical nodes ////////

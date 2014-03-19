@@ -31,7 +31,7 @@ public class OrNode extends LogicalNode {
         super(LogicalOp.OR, children);
     }
 
-    public <T> T accept(Visitor<T> visitor) {
+    public <T> T accept(RSQLVisitor<T> visitor) {
         return visitor.visit(this);
     }
 }

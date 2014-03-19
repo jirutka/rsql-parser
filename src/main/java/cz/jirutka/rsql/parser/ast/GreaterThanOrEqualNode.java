@@ -31,7 +31,7 @@ public class GreaterThanOrEqualNode extends ComparisonNode {
         super(ComparisonOp.GE, selector, arguments);
     }
 
-    public <T> T accept(Visitor<T> visitor) {
+    public <T> T accept(RSQLVisitor<T> visitor) {
         return visitor.visit(this);
     }
 }

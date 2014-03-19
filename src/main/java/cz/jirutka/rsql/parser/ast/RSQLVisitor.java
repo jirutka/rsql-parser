@@ -23,7 +23,12 @@
  */
 package cz.jirutka.rsql.parser.ast;
 
-public interface Visitor<T> {
+/**
+ * An interface for visiting AST nodes of the RSQL.
+ *
+ * @param <T> Return type of the visitor's method.
+ */
+public interface RSQLVisitor<T> {
 
     //////// Logical nodes ////////
 

@@ -31,7 +31,7 @@ public class InNode extends ComparisonNode {
         super(ComparisonOp.IN, selector, arguments);
     }
 
-    public <T> T accept(Visitor<T> visitor) {
+    public <T> T accept(RSQLVisitor<T> visitor) {
         return visitor.visit(this);
     }
 }

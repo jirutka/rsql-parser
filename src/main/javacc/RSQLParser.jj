@@ -45,6 +45,13 @@ import java.util.Arrays;
 import java.util.List;
 
 final class Parser {
+
+    private RSQLNodesFactory factory = new RSQLNodesFactory();
+
+    public Parser(InputStream stream, String encoding, RSQLNodesFactory factory) {
+        this(stream, encoding);
+        this.factory = factory;
+    }
 }
 
 PARSER_END(Parser)
@@ -100,7 +107,7 @@ Node Or():
         <OR> node = And() { nodes.add(node); }
     )*
     {
-        return nodes.size() != 1 ? LogicalNode.create(LogicalOp.OR, nodes) : nodes.get(0);
+        return nodes.size() != 1 ? factory.createLogicalNode(LogicalOp.OR, nodes) : nodes.get(0);
     }
 }
 
@@ -115,7 +122,7 @@ Node And():
         <AND> node = Constraint() { nodes.add(node); }
     )*
     {
-        return nodes.size() != 1 ? LogicalNode.create(LogicalOp.AND, nodes) : nodes.get(0);
+        return nodes.size() != 1 ? factory.createLogicalNode(LogicalOp.AND, nodes) : nodes.get(0);
     }
 }
 
@@ -144,13 +151,13 @@ Node Group():
 ComparisonNode Comparison():
 {
     final String sel;
-    final ComparisonOp op;
+    final String op;
     final List<String> args;
 }
 {
     ( sel = Selector() op = Operator() args = Arguments() )
     {
-        return ComparisonNode.create(sel, op, args);
+        return factory.createComparisonNode(op, sel, args);
     }
 }
 
@@ -162,11 +169,11 @@ String Selector(): {}
     }
 }
 
-ComparisonOp Operator(): {}
+String Operator(): {}
 {
     ( token = <COMP_FIQL> | token = <COMP_ALT> )
     {
-        return ComparisonOp.parse(token.image);
+        return token.image;
     }
 }
 

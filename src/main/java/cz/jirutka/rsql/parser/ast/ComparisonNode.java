@@ -52,24 +52,6 @@ public abstract class ComparisonNode implements Node {
         this.arguments = arguments;
     }
 
-    public static ComparisonNode create(String selector, String operator, List<String> args) {
-        return create(selector, ComparisonOp.parse(operator), args);
-    }
-
-    public static ComparisonNode create(String selector, ComparisonOp operator, List<String> args) {
-        switch (operator) {
-            case EQ  : return new EqualNode(selector, args);
-            case IN  : return new InNode(selector, args);
-            case GE  : return new GreaterThanOrEqualNode(selector, args);
-            case GT  : return new GreaterThanNode(selector, args);
-            case LE  : return new LessThanOrEqualNode(selector, args);
-            case LT  : return new LessThanNode(selector, args);
-            case NE  : return new NotEqualNode(selector, args);
-            case OUT : return new NotInNode(selector, args);
-            default  : throw new IllegalStateException("Unknown operator: " + operator);
-        }
-    }
-
 
     public String getSelector() {
         return selector;

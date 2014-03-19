@@ -23,6 +23,7 @@
  */
 package cz.jirutka.rsql.parser;
 
+import cz.jirutka.rsql.parser.ast.RSQLNodesFactory;
 import cz.jirutka.rsql.parser.ast.Node;
 
 import java.io.ByteArrayInputStream;
@@ -86,7 +87,7 @@ public final class RSQLParser {
             throw new IllegalArgumentException("query must not be null");
         }
         InputStream is = new ByteArrayInputStream(query.getBytes(ENCODING));
-        Parser parser = new Parser(is, ENCODING.name());
+        Parser parser = new Parser(is, ENCODING.name(), new RSQLNodesFactory());
 
         try {
             return parser.Input();

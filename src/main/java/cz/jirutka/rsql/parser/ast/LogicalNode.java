@@ -48,14 +48,6 @@ public abstract class LogicalNode implements Node, Iterable<Node> {
         this.children.addAll(children);
     }
 
-    public static LogicalNode create(LogicalOp operator, List<? extends Node> children) {
-        switch (operator) {
-            case AND : return new AndNode(children);
-            case OR  : return new OrNode(children);
-            default  : throw new IllegalStateException("Unknown operator: " + operator);
-        }
-    }
-
 
     public Iterator<Node> iterator() {
         return children.iterator();

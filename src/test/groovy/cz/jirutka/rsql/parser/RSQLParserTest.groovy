@@ -34,6 +34,8 @@ class RSQLParserTest extends Specification {
 
     static final RESERVED = ['"', "'", '(', ')', ';', ',', '=', '<', '>', '!', '~', ' ']
 
+    def factory = new RSQLNodesFactory()
+
 
     def 'throw IllegalArgumentException when input is null'() {
         when:
@@ -45,7 +47,7 @@ class RSQLParserTest extends Specification {
 
     def 'parse FIQL-like operator: #op'() {
         given:
-            def expected = ComparisonNode.create('sel', op, ['val'])
+            def expected = factory.createComparisonNode(op.toString(), 'sel', ['val'])
         expect:
             parse("sel${op.toString()}val") == expected
         where:
@@ -54,7 +56,7 @@ class RSQLParserTest extends Specification {
 
     def 'parse alternative operator: #op'() {
         given:
-            def expected = ComparisonNode.create('sel', op, ['val'])
+            def expected = factory.createComparisonNode(op, 'sel', ['val'])
         expect:
             parse("sel${op}val") == expected
         where:
@@ -139,7 +141,7 @@ class RSQLParserTest extends Specification {
 
     def 'parse logical operator: #op'() {
         given:
-            def expected = LogicalNode.create(op, [eq('sel1', 'arg1'), eq('sel2', 'arg2')])
+            def expected = factory.createLogicalNode(op, [eq('sel1', 'arg1'), eq('sel2', 'arg2')])
         expect:
             parse("sel1==arg1${op.toString()}sel2==arg2") == expected
         where:

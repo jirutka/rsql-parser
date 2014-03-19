@@ -37,28 +37,22 @@ public abstract class ComparisonNode implements Node {
 
     private final String selector;
 
-    private final ComparisonOp operator;
-
     private final List<String> arguments;
 
 
-    protected ComparisonNode(ComparisonOp operator, String selector, List<String> arguments) {
-        assert operator != null : "operator must not be null";
+    protected ComparisonNode(String selector, List<String> arguments) {
         assert isNotBlank(selector) : "selector must not be blank";
         assert arguments.size() > 0 : "arguments list must not be empty";
 
-        this.operator = operator;
         this.selector = selector;
         this.arguments = arguments;
     }
 
 
+    public abstract String getOperator();
+
     public String getSelector() {
         return selector;
-    }
-
-    public ComparisonOp getOperator() {
-        return operator;
     }
 
     public List<String> getArguments() {
@@ -71,7 +65,7 @@ public abstract class ComparisonNode implements Node {
         String args = arguments.size() > 1
                 ? "('" + join(arguments, "','") + "')"
                 : "'" + arguments.get(0) + "'";
-        return selector + operator + args;
+        return selector + getOperator() + args;
     }
 
     @Override
@@ -82,7 +76,7 @@ public abstract class ComparisonNode implements Node {
         ComparisonNode that = (ComparisonNode) o;
 
         if (!arguments.equals(that.arguments)) return false;
-        if (operator != that.operator) return false;
+        if (!getOperator().equals(getOperator())) return false;
         if (!selector.equals(that.selector)) return false;
 
         return true;
@@ -91,8 +85,8 @@ public abstract class ComparisonNode implements Node {
     @Override
     public int hashCode() {
         int result = selector.hashCode();
-        result = 31 * result + operator.hashCode();
         result = 31 * result + arguments.hashCode();
+        result = 31 * result + getOperator().hashCode();
         return result;
     }
 }

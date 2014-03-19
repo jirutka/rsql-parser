@@ -28,7 +28,11 @@ import java.util.List;
 public class LessThanOrEqualNode extends ComparisonNode {
 
     public LessThanOrEqualNode(String selector, List<String> arguments) {
-        super(ComparisonOp.LE, selector, arguments);
+        super(selector, arguments);
+    }
+
+    public String getOperator() {
+        return ComparisonOp.LE.toString();
     }
 
     public <T> T accept(RSQLVisitor<T> visitor) {

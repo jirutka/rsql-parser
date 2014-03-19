@@ -26,7 +26,7 @@ package cz.jirutka.rsql.parser.ast;
 import java.util.EnumSet;
 
 /**
- * Comparison operators.
+ * Built-in comparison operators.
  */
 public enum ComparisonOp {
 
@@ -72,7 +72,7 @@ public enum ComparisonOp {
                 }
             }
         }
-        throw new IllegalArgumentException("No constant for: " + value);
+        throw new IllegalArgumentException("Unknown operator: " + value);
     }
 
     @Override

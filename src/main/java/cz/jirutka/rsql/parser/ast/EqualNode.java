@@ -28,7 +28,11 @@ import java.util.List;
 public class EqualNode extends ComparisonNode {
 
     public EqualNode(String selector, List<String> arguments) {
-        super(ComparisonOp.EQ, selector, arguments);
+        super(selector, arguments);
+    }
+
+    public String getOperator() {
+        return ComparisonOp.EQ.toString();
     }
 
     public <T> T accept(RSQLVisitor<T> visitor) {

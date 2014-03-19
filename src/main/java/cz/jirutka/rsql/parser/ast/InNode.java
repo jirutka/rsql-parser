@@ -28,7 +28,11 @@ import java.util.List;
 public class InNode extends ComparisonNode {
 
     public InNode(String selector, List<String> arguments) {
-        super(ComparisonOp.IN, selector, arguments);
+        super(selector, arguments);
+    }
+
+    public String getOperator() {
+        return ComparisonOp.IN.toString();
     }
 
     public <T> T accept(RSQLVisitor<T> visitor) {

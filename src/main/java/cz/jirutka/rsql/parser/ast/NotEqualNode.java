@@ -28,7 +28,11 @@ import java.util.List;
 public class NotEqualNode extends ComparisonNode {
 
     public NotEqualNode(String selector, List<String> arguments) {
-        super(ComparisonOp.NE, selector, arguments);
+        super(selector, arguments);
+    }
+
+    public String getOperator() {
+        return ComparisonOp.NE.toString();
     }
 
     public <T> T accept(RSQLVisitor<T> visitor) {

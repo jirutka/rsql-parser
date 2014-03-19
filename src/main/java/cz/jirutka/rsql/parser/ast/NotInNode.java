@@ -28,7 +28,11 @@ import java.util.List;
 public class NotInNode extends ComparisonNode {
 
     public NotInNode(String selector, List<String> arguments) {
-        super(ComparisonOp.OUT, selector, arguments);
+        super(selector, arguments);
+    }
+
+    public String getOperator() {
+        return ComparisonOp.OUT.toString();
     }
 
     public <T> T accept(RSQLVisitor<T> visitor) {

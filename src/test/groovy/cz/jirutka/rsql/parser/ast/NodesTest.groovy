@@ -30,7 +30,7 @@ class NodesTest extends Specification {
 
     def 'nodes should define toString method'() {
         setup:
-            def rootNode = RSQLParser.parse(input)
+            def rootNode = new RSQLParser().parse(input)
         expect:
             rootNode.toString() == output
         where:

@@ -62,9 +62,8 @@ public enum ComparisonOp {
     }
 
     public static ComparisonOp parse(String value) {
-        if (value == null) {
-            throw new IllegalArgumentException("value must not be null");
-        }
+        assert value != null : "value must not be null";
+
         for (ComparisonOp e : EnumSet.allOf(ComparisonOp.class)) {
             for (String symbol : e.symbols) {
                 if (symbol.equals(value.toLowerCase())) {

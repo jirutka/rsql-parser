@@ -182,6 +182,8 @@ class RSQLParserTest extends Specification {
 
     //////// Helpers ////////
 
+    def parse(String rsql) { new RSQLParser().parse(rsql) }
+
     def and(Node... nodes) { new AndNode(nodes as List) }
     def or(Node... nodes) { new OrNode(nodes as List) }
     def eq(sel, arg) { new EqualNode(sel, [arg as String]) }

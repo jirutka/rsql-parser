@@ -49,12 +49,19 @@ public abstract class ComparisonNode implements Node {
     }
 
 
+    /**
+     * Returns a operator that is represented by this node (ex.: =gt=, ==, ...).
+     * Must not return null or empty string!
+     */
     public abstract String getOperator();
 
     public String getSelector() {
         return selector;
     }
 
+    /**
+     * Return a copy of the arguments list.
+     */
     public List<String> getArguments() {
         return new ArrayList<>(arguments);
     }

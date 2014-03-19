@@ -23,8 +23,8 @@
  */
 package cz.jirutka.rsql.parser;
 
-import cz.jirutka.rsql.parser.ast.RSQLNodesFactory;
 import cz.jirutka.rsql.parser.ast.Node;
+import cz.jirutka.rsql.parser.ast.RSQLNodesFactory;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -72,22 +72,45 @@ public final class RSQLParser {
 
     private static final Charset ENCODING = Charset.forName("UTF-8");
 
-    private RSQLParser() {}
+    private final RSQLNodesFactory nodesFactory;
+
 
     /**
-     * Parses the RSQL2 expression and returns AST.
+     * Creates a new instance of {@code RSQLParser} with the default
+     * {@link RSQLNodesFactory} that handles built-in operators.
+     */
+    public RSQLParser() {
+        this.nodesFactory = new RSQLNodesFactory();
+    }
+
+    /**
+     * Creates a new instance of {@code RSQLParser} with the given
+     * {@link RSQLNodesFactory} (can be used to add custom operators).
+     *
+     * @param nodesFactory The nodes factory to use (not null).
+     */
+    public RSQLParser(RSQLNodesFactory nodesFactory) {
+        if (nodesFactory == null) {
+            throw new IllegalArgumentException("nodesFactory must not be null");
+        }
+        this.nodesFactory = nodesFactory;
+    }
+
+    /**
+     * Parses the RSQL expression and returns AST.
      *
      * @param query The query expression to parse.
-     * @return A root of the AST.
+     * @return A root of the parsed AST.
      * @throws RSQLParserException This exception wraps {@link ParseException}
      *         and {@link TokenMgrError}.
+     * @throws IllegalArgumentException If the given query is null.
      */
-    public static Node parse(String query) throws RSQLParserException {
+    public Node parse(String query) throws RSQLParserException {
         if (query == null) {
             throw new IllegalArgumentException("query must not be null");
         }
         InputStream is = new ByteArrayInputStream(query.getBytes(ENCODING));
-        Parser parser = new Parser(is, ENCODING.name(), new RSQLNodesFactory());
+        Parser parser = new Parser(is, ENCODING.name(), nodesFactory);
 
         try {
             return parser.Input();

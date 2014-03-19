@@ -35,6 +35,14 @@ class RSQLParserTest extends Specification {
     static final RESERVED = ['"', "'", '(', ')', ';', ',', '=', '<', '>', '!', '~', ' ']
 
 
+    def 'throw IllegalArgumentException when input is null'() {
+        when:
+            parse(null)
+        then:
+            thrown IllegalArgumentException
+    }
+
+
     def 'parse FIQL-like operator: #op'() {
         given:
             def expected = ComparisonNode.create('sel', op, ['val'])
@@ -53,7 +61,7 @@ class RSQLParserTest extends Specification {
             op << ['<', '>', '<=', '>=']
     }
 
-    def 'fail to parse deprecated short equal operator: ='() {
+    def 'throw RSQLParserException for deprecated short equal operator: ='() {
         when:
             parse('sel=val')
         then:
@@ -69,7 +77,7 @@ class RSQLParserTest extends Specification {
                 'allons-y', 'l00k.dot.path', 'look/XML/path', 'n:look/n:xml', 'path.to::Ref', '$doll_r.way' ]
     }
 
-    def 'fail to parse selector with reserved char: #c'() {
+    def 'throw RSQLParserException for selector with reserved char: #c'() {
         when:
             ["${c}==val", "ill${c}==val", "ill${c}ness==val"].each {
                 parse(it)
@@ -80,7 +88,7 @@ class RSQLParserTest extends Specification {
             c << RESERVED
     }
 
-    def 'fail to parse empty selector'() {
+    def 'throw RSQLParserException for empty selector'() {
         when:
             parse("==val")
         then:
@@ -97,7 +105,7 @@ class RSQLParserTest extends Specification {
             input << [ '«Allons-y»', 'h@llo', '*star*', 'čes*ký', '42', '0.15', '3:15' ]
     }
 
-    def 'fail to parse unquoted argument with reserved char: #c'() {
+    def 'throw RSQLParserException for unquoted argument with reserved char: #c'() {
         when:
             ["sel==${c}", "sel==ill${c}", "sel==ill${c}ness"].each {
                 parse(it)
@@ -160,7 +168,7 @@ class RSQLParserTest extends Specification {
             '((s0==a0));s1==a1'                      | and(eq('s0', 'a0'), eq('s1','a1'))
     }
 
-    def 'fail to parse unclosed parenthesis: #input'() {
+    def 'throw RSQLParserException for unclosed parenthesis: #input'() {
         when:
             parse(input)
         then:

@@ -3,7 +3,7 @@
  *
  * Copyright 2013-2014 Czech Technical University in Prague.
  *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * Permission is hereby granted, free of chparame, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -26,32 +26,33 @@ package cz.jirutka.rsql.parser.ast;
 /**
  * An interface for visiting AST nodes of the RSQL.
  *
- * @param <T> Return type of the visitor's method.
+ * @param <R> Return type of the visitor's method.
+ * @param <A> Type of an optional parameter passed to the visitor's method.
  */
-public interface RSQLVisitor<T> {
+public interface RSQLVisitor<R, A> {
 
     //////// Logical nodes ////////
 
-    T visit(AndNode node);
+    R visit(AndNode node, A param);
 
-    T visit(OrNode node);
+    R visit(OrNode node, A param);
 
 
     //////// Comparison nodes ////////
 
-    T visit(EqualNode node);
+    R visit(EqualNode node, A param);
 
-    T visit(InNode node);
+    R visit(InNode node, A param);
 
-    T visit(GreaterThanOrEqualNode node);
+    R visit(GreaterThanOrEqualNode node, A param);
 
-    T visit(GreaterThanNode node);
+    R visit(GreaterThanNode node, A param);
 
-    T visit(LessThanOrEqualNode node);
+    R visit(LessThanOrEqualNode node, A param);
 
-    T visit(LessThanNode node);
+    R visit(LessThanNode node, A param);
 
-    T visit(NotEqualNode node);
+    R visit(NotEqualNode node, A param);
 
-    T visit(NotInNode node);
+    R visit(NotInNode node, A param);
 }

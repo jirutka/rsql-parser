@@ -47,11 +47,11 @@ class CustomOperatorsTest extends Specification {
             rootNode.accept(visitor)
 
         then: 'visitor is called for AND and =='
-            1 * visitor.visit(_ as AndNode)
-            1 * visitor.visit(_ as EqualNode) >> null
+            1 * visitor.visit(_ as AndNode, _)
+            1 * visitor.visit(_ as EqualNode, _) >> null
 
         and: 'most importantly for our =foo= comparison!'
-            1 * visitor.visit(_ as FooNode) >> null
+            1 * visitor.visit(_ as FooNode, _) >> null
 
     }
 
@@ -64,14 +64,14 @@ class CustomOperatorsTest extends Specification {
         public String getOperator() {
             return '=foo='
         }
-        public <T> T accept(RSQLVisitor<T> visitor) {
-            return ((CustomRSQLVisitor<T>) visitor).visit(this)
+        public <R, A> R accept(RSQLVisitor<R, A> visitor, A param) {
+            return ((CustomRSQLVisitor<R, A>) visitor).visit(this, param)
         }
     }
 
-    static interface CustomRSQLVisitor<T> extends RSQLVisitor<T> {
+    static interface CustomRSQLVisitor<R, A> extends RSQLVisitor<R, A> {
 
-        T visit(FooNode node)
+        R visit(FooNode node, A param)
     }
 
     static class CustomRSQLNodesFactory extends RSQLNodesFactory {
@@ -85,14 +85,14 @@ class CustomOperatorsTest extends Specification {
     }
 
 
-    static abstract class AbstractCustomRSQLVisitor implements CustomRSQLVisitor<Void> {
+    static abstract class AbstractCustomRSQLVisitor implements CustomRSQLVisitor<Void, Void> {
 
-        Void visit(AndNode node) {
-            node.each { child -> child.accept(this) }
+        Void visit(AndNode node, Void param) {
+            node.each { child -> child.accept(this, param) }
             return null
         }
-        Void visit(OrNode node) {
-            node.each { child -> child.accept(this) }
+        Void visit(OrNode node, Void param) {
+            node.each { child -> child.accept(this, param) }
             return null
         }
     }

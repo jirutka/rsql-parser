@@ -23,19 +23,14 @@
  */
 package cz.jirutka.rsql.parser.ast;
 
-import java.util.List;
+public abstract class AbstractNode implements Node {
 
-public class GreaterThanOrEqualNode extends ComparisonNode {
-
-    public GreaterThanOrEqualNode(String selector, List<String> arguments) {
-        super(selector, arguments);
-    }
-
-    public String getOperator() {
-        return ComparisonOp.GE.toString();
-    }
-
-    public <R, A> R accept(RSQLVisitor<R, A> visitor, A param) {
-        return visitor.visit(this, param);
+    /**
+     * Accepts the visitor, calls its visit() method and returns the result.
+     * This method just calls {@link #accept(RSQLVisitor, Object)} with
+     * <tt>null</tt> as the second argument.
+     */
+    public <R, A> R accept(RSQLVisitor<R, A> visitor) {
+        return accept(visitor, null);
     }
 }

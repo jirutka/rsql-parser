@@ -33,7 +33,7 @@ import static cz.jirutka.rsql.parser.ast.StringUtils.join;
  * Superclass of all the logical nodes that represents a logical operation
  * that connects a children nodes.
  */
-public abstract class LogicalNode implements Node, Iterable<Node> {
+public abstract class LogicalNode extends AbstractNode implements Iterable<Node> {
 
     private final List<Node> children = new ArrayList<>();
 

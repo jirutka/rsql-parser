@@ -33,15 +33,25 @@ public interface Node {
      *
      * <p>Each implementation must implement this methods exactly as listed:
      * <pre>
-     * public <T> T accept(Visitor<T> visitor) {
-     *     return visitor.visit(this);
+     * public <R, A> R accept(RSQLVisitor<R, A> visitor, A param) {
+     *     return visitor.visit(this, param);
      * }
      * </pre>
      * </p>
      *
      * @param visitor The visitor whose appropriate method will be called.
-     * @param <T> Return type of the visitor's method.
+     * @param param An optional parameter to pass to the visitor.
+     * @param <R> Return type of the visitor's method.
+     * @param <A> Type of an optional parameter passed to the visitor's method.
      * @return An object returned by the visitor (may be null).
      */
-    <T> T accept(RSQLVisitor<T> visitor);
+    <R, A> R accept(RSQLVisitor<R, A> visitor, A param);
+
+    /**
+     * Accepts the visitor, calls its visit() method and returns the result.
+     *
+     * This method should just call {@link #accept(RSQLVisitor, Object)} with
+     * <tt>null</tt> as the second argument.
+     */
+    <R, A> R accept(RSQLVisitor<R, A> visitor);
 }

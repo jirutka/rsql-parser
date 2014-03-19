@@ -24,67 +24,68 @@
 package cz.jirutka.rsql.parser.ast;
 
 /**
- * An abstract implementation of the {@link RSQLVisitor} interface that
- * delegates handling of all the concrete nodes to {@link #visit(LogicalNode)}
- * and {@link #visit(ComparisonNode)}.
+ * An adapter for the {@link RSQLVisitor} interface that delegates handling of
+ * all the concrete nodes to {@link #visit(LogicalNode, A)} and
+ * {@link #visit(ComparisonNode, A)}.
  *
  * <p>This class is useful when you don't want to handle all of the nodes (i.e.
  * implement <tt>visit()</tt> methods), but just few of them and take care of
  * the rest in the superclass nodes' handler.
  *
- * @param <T> Return type of the visitor's method.
+ * @param <R> Return type of the visitor's method.
+ * @param <A> Type of an optional parameter passed to the visitor's method.
  */
-public abstract class AbstractSuperNodesVisitor<T> implements RSQLVisitor<T> {
+public abstract class SuperNodesRSQLVisitorAdapter<R, A> implements RSQLVisitor<R, A> {
 
     //////// Superclass nodes ////////
 
-    public abstract T visit(LogicalNode node);
+    public abstract R visit(LogicalNode node, A param);
 
-    public abstract T visit(ComparisonNode node);
+    public abstract R visit(ComparisonNode node, A param);
 
 
     //////// Logical nodes ////////
 
-    @Override public T visit(AndNode node) {
-        return visit((LogicalNode) node);
+    @Override public R visit(AndNode node, A param) {
+        return visit((LogicalNode) node, param);
     }
 
-    @Override public T visit(OrNode node) {
-        return visit((LogicalNode) node);
+    @Override public R visit(OrNode node, A param) {
+        return visit((LogicalNode) node, param);
     }
 
 
     //////// Comparison nodes ////////
 
-    @Override public T visit(EqualNode node) {
-        return visit((ComparisonNode) node);
+    @Override public R visit(EqualNode node, A param) {
+        return visit((ComparisonNode) node, param);
     }
 
-    @Override public T visit(InNode node) {
-        return visit((ComparisonNode) node);
+    @Override public R visit(InNode node, A param) {
+        return visit((ComparisonNode) node, param);
     }
 
-    @Override public T visit(GreaterThanOrEqualNode node) {
-        return visit((ComparisonNode) node);
+    @Override public R visit(GreaterThanOrEqualNode node, A param) {
+        return visit((ComparisonNode) node, param);
     }
 
-    @Override public T visit(GreaterThanNode node) {
-        return visit((ComparisonNode) node);
+    @Override public R visit(GreaterThanNode node, A param) {
+        return visit((ComparisonNode) node, param);
     }
 
-    @Override public T visit(LessThanOrEqualNode node) {
-        return visit((ComparisonNode) node);
+    @Override public R visit(LessThanOrEqualNode node, A param) {
+        return visit((ComparisonNode) node, param);
     }
 
-    @Override public T visit(LessThanNode node) {
-        return visit((ComparisonNode) node);
+    @Override public R visit(LessThanNode node, A param) {
+        return visit((ComparisonNode) node, param);
     }
 
-    @Override public T visit(NotEqualNode node) {
-        return visit((ComparisonNode) node);
+    @Override public R visit(NotEqualNode node, A param) {
+        return visit((ComparisonNode) node, param);
     }
 
-    @Override public T visit(NotInNode node) {
-        return visit((ComparisonNode) node);
+    @Override public R visit(NotInNode node, A param) {
+        return visit((ComparisonNode) node, param);
     }
 }

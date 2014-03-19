@@ -33,7 +33,7 @@ import static cz.jirutka.rsql.parser.ast.StringUtils.join;
  * Superclass of all the comparison nodes that represents a specific comparison
  * operator, a selector and an arguments.
  */
-public abstract class ComparisonNode implements Node {
+public abstract class ComparisonNode extends AbstractNode {
 
     private final String selector;
 

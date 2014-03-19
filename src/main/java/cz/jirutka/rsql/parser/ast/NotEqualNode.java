@@ -35,7 +35,7 @@ public class NotEqualNode extends ComparisonNode {
         return ComparisonOp.NE.toString();
     }
 
-    public <T> T accept(RSQLVisitor<T> visitor) {
-        return visitor.visit(this);
+    public <R, A> R accept(RSQLVisitor<R, A> visitor, A param) {
+        return visitor.visit(this, param);
     }
 }

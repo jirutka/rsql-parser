@@ -27,11 +27,11 @@ import spock.lang.Specification
 import spock.lang.Unroll
 
 @Unroll
-class AbstractSuperNodesVisitorTest extends Specification {
+class SuperNodesRSQLVisitorAdapterTest extends Specification {
 
-    def visitor = new AbstractSuperNodesVisitor() {
-        def visit(LogicalNode node) { LogicalNode.simpleName }
-        def visit(ComparisonNode node) { ComparisonNode.simpleName }
+    def visitor = new SuperNodesRSQLVisitorAdapter() {
+        def visit(LogicalNode node, param) { LogicalNode.simpleName }
+        def visit(ComparisonNode node, param) { ComparisonNode.simpleName }
     }
 
 

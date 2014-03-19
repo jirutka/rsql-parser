@@ -1,6 +1,6 @@
 RSQL / FIQL parser
 ==================
-[![Build Status](https://travis-ci.org/jirutka/rsql-parser.png)](https://travis-ci.org/jirutka/rsql-parser)
+[![Build Status](https://travis-ci.org/jirutka/rsql-parser.png)](https://travis-ci.org/jirutka/rsql-parser) [![Coverage Status](https://coveralls.io/repos/jirutka/rsql-parser/badge.png)](https://coveralls.io/r/jirutka/rsql-parser)
 
 RSQL is query language for a parametrized filtering of entries in RESTful APIs. It’s based on URI-friendly syntax [FIQL](http://tools.ietf.org/html/draft-nottingham-atompub-fiql-00) (Feed Item Query Language) - IETF Internet-Draft of syntax for expressing filters across the entries in an Atom Feed. FIQL is great for use in URI because it doesn’t contain unsafe characters, so URL encoding isn’t necessary. On the other side, it’s not very intuitive and URL encoding isn’t always that big deal, so RSQL provides also more common alternative syntax.
 

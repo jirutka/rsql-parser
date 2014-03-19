@@ -2,23 +2,25 @@ RSQL / FIQL parser
 ==================
 [![Build Status](https://travis-ci.org/jirutka/rsql-parser.png)](https://travis-ci.org/jirutka/rsql-parser) [![Coverage Status](https://coveralls.io/repos/jirutka/rsql-parser/badge.png)](https://coveralls.io/r/jirutka/rsql-parser)
 
-RSQL is a query language for parametrized filtering of entries in RESTful APIs. It’s based on URI-friendly syntax
-[FIQL](http://tools.ietf.org/html/draft-nottingham-atompub-fiql-00) (Feed Item Query Language) - IETF Internet-Draft of
-syntax for expressing filters across the entries in an Atom Feed. FIQL is great for use in URI because it doesn’t
-contain unsafe characters, so URL encoding isn’t necessary. On the other side, it’s not very intuitive and URL encoding
-isn’t always that big deal, so RSQL provides also an alternative syntax for logical operators and some of the comparison
-operators.
+RSQL is a query language for parametrized filtering of entries in RESTful APIs. It’s based on
+[FIQL](http://tools.ietf.org/html/draft-nottingham-atompub-fiql-00) (Feed Item Query Language) – an URI-friendly syntax
+for expressing filters across the entries in an Atom Feed. FIQL is great for use in URI; there are no unsafe characters,
+so URL encoding is not required. On the other side, FIQL’s syntax is not very intuitive and URL encoding isn’t always
+that big deal, so RSQL also provides a friendlier syntax for logical operators and some of the comparison operators.
 
-This is a complete and well tested parser for RSQL written in [JavaCC](http://javacc.java.net/) and Java. Since RSQL is
-a superset of the FIQL, it can be used for parsing FIQL as well.
+For example, you can query your resource like this: `/movies?query=name=="Kill Bill";year=gt=2003` or
+`/movies?query=director.lastName==Nolan and year>=2000`. See [examples](#examples) below.
 
-RSQL-parser is related with [RSQL-hibernate](https://github.com/jirutka/rsql-hibernate) - library for translating RSQL
+This is a complete and thoroughly tested parser for RSQL written in [JavaCC](http://javacc.java.net/) and Java. Since
+RSQL is a superset of the FIQL, it can be used for parsing FIQL as well.
+
+RSQL-parser can be used with [RSQL-hibernate](https://github.com/jirutka/rsql-hibernate) library to translate RSQL
 expression to Hibernate’s Criteria query (it’s written for 1.x version of the parser though).
 
 
 Grammar and semantic
 --------------------
-_The following grammar specification is written in EBNF notation ([ISO 14977](http://www.cl.cam.ac.uk/~mgk25/iso-14977.pdf))._
+_The following grammar specification is written in EBNF notation ([ISO 14977])._
 
 RSQL expression is composed of one or more comparisons, related to each other with logical operators:
 
@@ -55,7 +57,7 @@ Comparison operators are in FIQL notation and some of them has an alternative sy
 * In : `=in=`
 * Not in : `=out=`
 
-You can also simply extend this parser with your own operators (see [next section](#how-to-add-custom-operators)).
+You can also simply extend this parser with your own operators (see the [next section](#how-to-add-custom-operators)).
 
     comparison-op  = comp-fiql | comp-alt;
     comp-fiql      = ( ( "=", { ALPHA } ) | "!" ), "=";
@@ -79,7 +81,7 @@ reserved character or a white space can be unquoted, other arguments must be enc
 Examples
 --------
 
-Let’s look at few examples of RSQL expressions in both FIQL-like and alternative notation:
+Examples of RSQL expressions in both FIQL-like and alternative notation:
 
     - name=="Kill Bill";year=gt=2003
     - name=="Kill Bill" and year>2003
@@ -108,11 +110,11 @@ rootNode.accept(yourShinyVisitor);
 How to add custom operators
 ---------------------------
 
-Aren't the built-in operators enough for you? This parser can be simply enhanced by custom FIQL-like comparison
-operators, so you can add your own! Just write an AST nodes for your operators (extend [ComparisonNode]), then extend
+Need more operators? The parser can be simply enhanced by custom FIQL-like comparison
+operators, so you can add your own. Just write an AST nodes for your operators (extend [ComparisonNode]), then extend
 [RSQLNodesFactory] class and [RSQLVisitor] interface.
 
-Look at [CustomOperatorsTest] for an example.
+Take a look at the [CustomOperatorsTest] for an example.
 
 
 Maven
@@ -148,6 +150,7 @@ License
 This project is licensed under [MIT license](http://opensource.org/licenses/MIT).
 
 
+[ISO 14977]: http://www.cl.cam.ac.uk/~mgk25/iso-14977.pdf
 [ComparisonNode]: src/main/java/cz/jirutka/rsql/parser/ast/ComparisonNode.java
 [RSQLNodesFactory]: src/main/java/cz/jirutka/rsql/parser/ast/RSQLNodesFactory.java
 [RSQLVisitor]: src/main/java/cz/jirutka/rsql/parser/ast/RSQLVisitor.java

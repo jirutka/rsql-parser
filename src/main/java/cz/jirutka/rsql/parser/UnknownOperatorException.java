@@ -21,64 +21,28 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package cz.jirutka.rsql.parser.ast;
-
-import cz.jirutka.rsql.parser.UnknownOperatorException;
-
-import java.util.EnumSet;
+package cz.jirutka.rsql.parser;
 
 /**
- * Built-in comparison operators.
+ * This exception is thrown when unknown FIQL operator is parsed, i.e. it's not
+ * bound with any {@link cz.jirutka.rsql.parser.ast.ComparisonNode}.
  */
-public enum ComparisonOp {
+public class UnknownOperatorException extends ParseException {
 
-    /** Equal to... */
-    EQ ("=="),
-
-    /** Not equal to... */
-    NE ("!="),
-
-    /** Greater than... */
-    GT ("=gt=", ">"),
-
-    /** Greater than or equal to... */
-    GE ("=ge=", ">="),
-
-    /** Less than... */
-    LT ("=lt=", "<"),
-
-    /** Less than or equal to... */
-    LE ("=le=", "<="),
-
-    /** In... */
-    IN ("=in="),
-
-    /** Not in... */
-    OUT ("=out=");
+    private final String operator;
 
 
-    private final String[] symbols;
+    public UnknownOperatorException(String operator) {
+        this(operator, "Unknown operator: " + operator);
+    }
 
-    private ComparisonOp(String... symbols) {
-        this.symbols = symbols;
+    public UnknownOperatorException(String operator, String message) {
+        super(message);
+        this.operator = operator;
     }
 
 
-    public static ComparisonOp parse(String value) throws UnknownOperatorException {
-        assert value != null : "value must not be null";
-
-        for (ComparisonOp e : EnumSet.allOf(ComparisonOp.class)) {
-            for (String symbol : e.symbols) {
-                if (symbol.equals(value.toLowerCase())) {
-                    return e;
-                }
-            }
-        }
-        throw new UnknownOperatorException(value);
-    }
-
-    @Override
-    public String toString() {
-        return symbols[0];
+    public String getOperator() {
+        return operator;
     }
 }

@@ -101,7 +101,8 @@ public final class RSQLParser {
      *
      * @param query The query expression to parse.
      * @return A root of the parsed AST.
-     * @throws RSQLParserException This exception wraps {@link ParseException}
+     * @throws RSQLParserException This exception wraps {@link ParseException},
+     *         {@link cz.jirutka.rsql.parser.UnknownOperatorException}
      *         and {@link TokenMgrError}.
      * @throws IllegalArgumentException If the given query is null.
      */

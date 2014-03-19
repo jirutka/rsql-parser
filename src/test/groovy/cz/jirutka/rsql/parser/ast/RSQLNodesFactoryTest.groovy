@@ -23,6 +23,7 @@
  */
 package cz.jirutka.rsql.parser.ast
 
+import cz.jirutka.rsql.parser.UnknownOperatorException
 import spock.lang.Specification
 import spock.lang.Unroll
 
@@ -67,10 +68,10 @@ class RSQLNodesFactoryTest extends Specification {
             className = expected.simpleName
     }
 
-    def 'throw IllegalArgumentException when given unknown comparison operator'() {
+    def 'throw UnknownOperatorException when given unknown comparison operator'() {
         when:
             factory.createComparisonNode('=foo=', 'sel', ['arg'])
         then:
-            thrown IllegalArgumentException
+            thrown UnknownOperatorException
     }
 }

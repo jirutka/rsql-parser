@@ -23,6 +23,8 @@
  */
 package cz.jirutka.rsql.parser.ast;
 
+import cz.jirutka.rsql.parser.UnknownOperatorException;
+
 import java.util.List;
 
 import static java.util.Arrays.asList;
@@ -58,7 +60,9 @@ public class RSQLNodesFactory {
     /**
      * @see #createComparisonNode(String, String, List)
      */
-    public ComparisonNode createComparisonNode(String operator, String selector, String argument) {
+    public ComparisonNode createComparisonNode(
+            String operator, String selector, String argument) throws UnknownOperatorException {
+
         return createComparisonNode(operator, selector, asList(argument));
     }
 
@@ -77,9 +81,11 @@ public class RSQLNodesFactory {
      *                  comparison.
      * @return A subclass of the {@link ComparisonNode} according to the
      *         specified operator.
-     * @throws IllegalArgumentException If the given operator is unknown.
+     * @throws UnknownOperatorException
      */
-    public ComparisonNode createComparisonNode(String operator, String selector, List<String> arguments) {
+    public ComparisonNode createComparisonNode(
+            String operator, String selector, List<String> arguments) throws UnknownOperatorException {
+
         switch (ComparisonOp.parse(operator)) {
             case EQ  : return new EqualNode(selector, arguments);
             case IN  : return new InNode(selector, arguments);
@@ -91,7 +97,7 @@ public class RSQLNodesFactory {
             case OUT : return new NotInNode(selector, arguments);
 
             // this normally can't happen, validation is done in ComparisonOp.parse()
-            default  : throw new IllegalStateException("Unknown operator: " + operator);
+            default  : throw new UnknownOperatorException("Unknown operator: " + operator);
         }
     }
 }

@@ -1,0 +1,28 @@
+v2.0.M1 (2014-03-20)
+-------------------
+- JavaCC grammar, all the code and tests completely rewritten.
+- Proper AST with enhanced Visitor pattern implemented.
+- Introduced support for enhancing parser with custom FIQL-like operators.
+
+- Added =in= and =out= operators, arguments group.
+- FIQL operators syntax relaxed; any =[a-z]*= is parsed as an operator and
+  validation is done in RSQLNodesFactory. This allows to add custom operators.
+- Selector syntax relaxed, it can contain any non-reserved characters now.
+- Dropped an alternative notation for equal operator; only pair equal characters (==) are allowed!
+
+
+v1.0.2 (2014-01-12)
+-------------------
+- Setup testing on Travis.
+- Released in Maven Central.
+
+
+v1.0.1 (2013-03-25)
+-------------------
+- Moved to CVUT Maven repository.
+- Relicensed under MIT License.
+
+
+v1.0 (2011-08-29)
+-----------------
+- The first public release.

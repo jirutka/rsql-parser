@@ -1,6 +1,6 @@
 RSQL / FIQL parser
 ==================
-[![Build Status](https://travis-ci.org/jirutka/rsql-parser.png)](https://travis-ci.org/jirutka/rsql-parser) [![Coverage Status](https://coveralls.io/repos/jirutka/rsql-parser/badge.png)](https://coveralls.io/r/jirutka/rsql-parser)
+[![Build Status](https://travis-ci.org/jirutka/rsql-parser.png)](https://travis-ci.org/jirutka/rsql-parser) [![Coverage Status](https://coveralls.io/repos/jirutka/rsql-parser/badge.png?branch=master)](https://coveralls.io/r/jirutka/rsql-parser?branch=master)
 
 RSQL is a query language for parametrized filtering of entries in RESTful APIs. It’s based on
 [FIQL](http://tools.ietf.org/html/draft-nottingham-atompub-fiql-00) (Feed Item Query Language) – an URI-friendly syntax
@@ -14,8 +14,8 @@ For example, you can query your resource like this: `/movies?query=name=="Kill B
 This is a complete and thoroughly tested parser for RSQL written in [JavaCC](http://javacc.java.net/) and Java. Since
 RSQL is a superset of the FIQL, it can be used for parsing FIQL as well.
 
-RSQL-parser can be used with [RSQL-hibernate](https://github.com/jirutka/rsql-hibernate) library to translate RSQL
-expression to Hibernate’s Criteria query (it’s written for 1.x version of the parser though).
+RSQL-parser can be used with [RSQL-hibernate](https://github.com/jirutka/rsql-hibernate), library to translate RSQL
+expression to Hibernate’s Criteria query (it’s written for 1.x version of the parser though), or [RSQL-MongoDB](https://github.com/jirutka/rsql-mongodb-morphia).
 
 
 Grammar and semantic

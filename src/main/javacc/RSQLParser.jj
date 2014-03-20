@@ -76,8 +76,8 @@ TOKEN : {
 }
 
 TOKEN : {
-    < AND        : ";" >
-  | < OR         : "," >
+    < AND        : ( ";" | " and ") >
+  | < OR         : ( "," | " or " ) >
   | < LPAREN     : "(" >
   | < RPAREN     : ")" >
   | < COMP_FIQL  : ( ( "=" (<ALPHA>)* ) | "!" ) "=" >

@@ -45,7 +45,7 @@ class RSQLParserTest extends Specification {
     }
 
 
-    def 'parse FIQL-like operator: #op'() {
+    def 'parse FIQL-like comparison operator: #op'() {
         given:
             def expected = factory.createComparisonNode(op.toString(), 'sel', ['val'])
         expect:
@@ -54,7 +54,7 @@ class RSQLParserTest extends Specification {
             op << ComparisonOp.values()
     }
 
-    def 'parse alternative operator: #op'() {
+    def 'parse alternative comparison operator: #op'() {
         given:
             def expected = factory.createComparisonNode(op, 'sel', ['val'])
         expect:
@@ -146,6 +146,16 @@ class RSQLParserTest extends Specification {
             parse("sel1==arg1${op.toString()}sel2==arg2") == expected
         where:
             op << LogicalOp.values()
+    }
+
+    def 'parse alternative logical operator: "#alt"'() {
+        given:
+            def expected = factory.createLogicalNode(op, [eq('sel1', 'arg1'), eq('sel2', 'arg2')])
+        expect:
+            parse("sel1==arg1${alt}sel2==arg2") == expected
+        where:
+            op << LogicalOp.values()
+            alt = op == LogicalOp.AND ? ' and ' : ' or ';
     }
 
     def 'parse queries with default operators priority: #input'() {

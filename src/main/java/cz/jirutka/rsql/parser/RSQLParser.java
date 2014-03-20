@@ -42,8 +42,8 @@ import java.nio.charset.Charset;
  * <p><b>Grammar in EBNF notation:</b>
  * <pre>
  * input          = or, EOF;
- * or             = and, { "," , and };
- * and            = constraint, { ";" , constraint };
+ * or             = and, { ( "," | " or " ) , and };
+ * and            = constraint, { ( ";" | " and " ), constraint };
  * constraint     = ( group | comparison );
  * group          = "(", or, ")";
  *

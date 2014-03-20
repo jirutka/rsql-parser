@@ -25,6 +25,7 @@ package cz.jirutka.rsql.parser;
 
 import cz.jirutka.rsql.parser.ast.Node;
 import cz.jirutka.rsql.parser.ast.RSQLNodesFactory;
+import net.jcip.annotations.Immutable;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -68,6 +69,7 @@ import java.nio.charset.Charset;
  *
  * @version 2.0
  */
+@Immutable
 public final class RSQLParser {
 
     private static final Charset ENCODING = Charset.forName("UTF-8");

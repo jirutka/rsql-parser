@@ -24,6 +24,7 @@
 package cz.jirutka.rsql.parser.ast;
 
 import cz.jirutka.rsql.parser.UnknownOperatorException;
+import net.jcip.annotations.Immutable;
 
 import java.util.List;
 
@@ -36,6 +37,7 @@ import static java.util.Arrays.asList;
  * override {@link #createComparisonNode(String, String, List) createComparisonNode()}
  * method.</p>
  */
+@Immutable
 public class RSQLNodesFactory {
 
     /**

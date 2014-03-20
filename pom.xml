@@ -56,6 +56,14 @@
     <!--//////////////////// DEPENDENCIES ////////////////////-->
 
     <dependencies>
+        <!-- Not needed in runtime -->
+        <dependency>
+            <groupId>net.jcip</groupId>
+            <artifactId>jcip-annotations</artifactId>
+            <version>1.0</version>
+            <scope>provided</scope>
+        </dependency>
+
         <dependency>
             <groupId>org.spockframework</groupId>
             <artifactId>spock-core</artifactId>

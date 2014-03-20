@@ -23,9 +23,12 @@
  */
 package cz.jirutka.rsql.parser.ast;
 
+import net.jcip.annotations.Immutable;
+
 /**
  * Common interface of the AST nodes.
  */
+@Immutable
 public interface Node {
 
     /**

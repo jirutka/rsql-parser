@@ -32,12 +32,11 @@ public interface Node {
      * Accepts the visitor, calls its visit() method and returns the result.
      *
      * <p>Each implementation must implement this methods exactly as listed:
-     * <pre>
+     * <pre>{@code
      * public <R, A> R accept(RSQLVisitor<R, A> visitor, A param) {
      *     return visitor.visit(this, param);
      * }
-     * </pre>
-     * </p>
+     * }</pre>
      *
      * @param visitor The visitor whose appropriate method will be called.
      * @param param An optional parameter to pass to the visitor.

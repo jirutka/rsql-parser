@@ -40,7 +40,7 @@ import java.nio.charset.Charset;
  * as well.</p>
  *
  * <p><b>Grammar in EBNF notation:</b>
- * <pre>
+ * <pre>{@code
  * input          = or, EOF;
  * or             = and, { ( "," | " or " ) , and };
  * and            = constraint, { ( ";" | " and " ), constraint };
@@ -64,7 +64,7 @@ import java.nio.charset.Charset;
  * reserved       = '"' | "'" | "(" | ")" | ";" | "," | "=" | "!" | "~" | "<" | ">" | " ";
  * unreserved     = all-chars - reserved;
  * all-chars      = ? all unicode characters ?;
- * </pre></p>
+ * }</pre>
  *
  * @version 2.0
  */

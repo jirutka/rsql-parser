@@ -25,8 +25,8 @@ package cz.jirutka.rsql.parser.ast;
 
 /**
  * An adapter for the {@link RSQLVisitor} interface that delegates handling of
- * all the concrete nodes to {@link #visit(LogicalNode, A)} and
- * {@link #visit(ComparisonNode, A)}.
+ * all the concrete nodes to {@link #visit(LogicalNode, Object)} and
+ * {@link #visit(ComparisonNode, Object)}.
  *
  * <p>This class is useful when you don't want to handle all of the nodes (i.e.
  * implement <tt>visit()</tt> methods), but just few of them and take care of

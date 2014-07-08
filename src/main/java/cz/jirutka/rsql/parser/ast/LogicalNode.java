@@ -49,6 +49,9 @@ public abstract class LogicalNode extends AbstractNode implements Iterable<Node>
     }
 
 
+    public abstract LogicalNode withChildren(List<? extends Node> children);
+
+
     public Iterator<Node> iterator() {
         return children.iterator();
     }

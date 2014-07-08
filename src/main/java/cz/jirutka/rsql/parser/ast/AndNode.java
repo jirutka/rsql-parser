@@ -31,6 +31,10 @@ public class AndNode extends LogicalNode {
         super(LogicalOp.AND, children);
     }
 
+    public AndNode withChildren(List<? extends Node> children) {
+        return new AndNode(children);
+    }
+
     public <R, A> R accept(RSQLVisitor<R, A> visitor, A param) {
         return visitor.visit(this, param);
     }

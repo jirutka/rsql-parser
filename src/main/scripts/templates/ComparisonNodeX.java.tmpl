@@ -13,6 +13,14 @@ public final class <%= className %> extends ComparisonNode {
         return "<%= operator %>";
     }
 
+    public <%= className %> withSelector(String selector) {
+        return new <%= className %>(selector, getArguments());
+    }
+
+    public <%= className %> withArguments(List<String> arguments) {
+        return new <%= className %>(getSelector(), arguments);
+    }
+
     public <R, A> R accept(RSQLVisitor<R, A> visitor, A param) {
         return visitor.visit(this, param);
     }

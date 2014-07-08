@@ -55,6 +55,11 @@ public abstract class ComparisonNode extends AbstractNode {
      */
     public abstract String getOperator();
 
+    public abstract ComparisonNode withSelector(String selector);
+
+    public abstract ComparisonNode withArguments(List<String> arguments);
+
+
     public String getSelector() {
         return selector;
     }

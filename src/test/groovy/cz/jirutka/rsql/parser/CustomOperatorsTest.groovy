@@ -64,6 +64,14 @@ class CustomOperatorsTest extends Specification {
         public String getOperator() {
             return '=foo='
         }
+        public ComparisonNode withSelector(String selector) {
+            return new FooNode(selector, getArguments())
+        }
+
+        public ComparisonNode withArguments(List<String> arguments) {
+            return new FooNode(getSelector(), arguments)
+        }
+
         public <R, A> R accept(RSQLVisitor<R, A> visitor, A param) {
             return ((CustomRSQLVisitor<R, A>) visitor).visit(this, param)
         }

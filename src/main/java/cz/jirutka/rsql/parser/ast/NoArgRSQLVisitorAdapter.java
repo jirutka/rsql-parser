@@ -23,62 +23,24 @@
  */
 package cz.jirutka.rsql.parser.ast;
 
-import cz.jirutka.rsql.parser.UnknownOperatorException;
+public abstract class NoArgRSQLVisitorAdapter<R> implements RSQLVisitor<R, Void> {
 
-import java.util.EnumSet;
+    public abstract R visit(AndNode node);
 
-/**
- * Built-in comparison operators.
- */
-public enum ComparisonOp {
+    public abstract R visit(OrNode node);
 
-    /** Equal to... */
-    EQ ("=="),
-
-    /** Not equal to... */
-    NE ("!="),
-
-    /** Greater than... */
-    GT ("=gt=", ">"),
-
-    /** Greater than or equal to... */
-    GE ("=ge=", ">="),
-
-    /** Less than... */
-    LT ("=lt=", "<"),
-
-    /** Less than or equal to... */
-    LE ("=le=", "<="),
-
-    /** In... */
-    IN ("=in="),
-
-    /** Not in... */
-    OUT ("=out=");
+    public abstract R visit(ComparisonNode node);
 
 
-    private final String[] symbols;
-
-    private ComparisonOp(String... symbols) {
-        this.symbols = symbols;
+    public R visit(AndNode node, Void param) {
+        return visit(node);
     }
 
-
-    public static ComparisonOp parse(String value) throws UnknownOperatorException {
-        assert value != null : "value must not be null";
-
-        for (ComparisonOp e : EnumSet.allOf(ComparisonOp.class)) {
-            for (String symbol : e.symbols) {
-                if (symbol.equals(value.toLowerCase())) {
-                    return e;
-                }
-            }
-        }
-        throw new UnknownOperatorException(value);
+    public R visit(OrNode node, Void param) {
+        return visit(node);
     }
 
-    @Override
-    public String toString() {
-        return symbols[0];
+    public R visit(ComparisonNode node, Void param) {
+        return visit(node);
     }
 }

@@ -26,9 +26,9 @@ package cz.jirutka.rsql.parser.ast;
 import cz.jirutka.rsql.parser.UnknownOperatorException;
 import net.jcip.annotations.Immutable;
 
+import java.util.HashMap;
 import java.util.List;
-
-import static java.util.Arrays.asList;
+import java.util.Map;
 
 /**
  * Factory that creates {@link Node} instances for the parser.
@@ -39,6 +39,17 @@ import static java.util.Arrays.asList;
  */
 @Immutable
 public class RSQLNodesFactory {
+
+    private final Map<String, ComparisonOperator> comparisonOperators = new HashMap<>();
+
+
+    public RSQLNodesFactory() {
+        for (ComparisonOperator op : RSQLOperators.defaultOperators()) {
+            for (String sym : op.getSymbols()) {
+                comparisonOperators.put(sym, op);
+            }
+        }
+    }
 
     /**
      * Creates a specific {@link LogicalNode} instance for the specified
@@ -60,15 +71,6 @@ public class RSQLNodesFactory {
     }
 
     /**
-     * @see #createComparisonNode(String, String, List)
-     */
-    public ComparisonNode createComparisonNode(
-            String operator, String selector, String argument) throws UnknownOperatorException {
-
-        return createComparisonNode(operator, selector, asList(argument));
-    }
-
-    /**
      * Creates a specific {@link ComparisonNode} instance for the specified
      * operator and with the given selector and arguments.
      *
@@ -77,7 +79,7 @@ public class RSQLNodesFactory {
      * handle your custom operators at top and then call {@code super} to
      * handle the built-in operators.</p>
      *
-     * @param operator The comparison operator to create a node for.
+     * @param operatorToken The comparison operator to create a node for.
      * @param selector The selector that specifies a left side of the comparison.
      * @param arguments A list of arguments that specifies a right side of the
      *                  comparison.
@@ -86,20 +88,13 @@ public class RSQLNodesFactory {
      * @throws UnknownOperatorException
      */
     public ComparisonNode createComparisonNode(
-            String operator, String selector, List<String> arguments) throws UnknownOperatorException {
+            String operatorToken, String selector, List<String> arguments) throws UnknownOperatorException {
 
-        switch (ComparisonOp.parse(operator)) {
-            case EQ  : return new EqualNode(selector, arguments);
-            case IN  : return new InNode(selector, arguments);
-            case GE  : return new GreaterThanOrEqualNode(selector, arguments);
-            case GT  : return new GreaterThanNode(selector, arguments);
-            case LE  : return new LessThanOrEqualNode(selector, arguments);
-            case LT  : return new LessThanNode(selector, arguments);
-            case NE  : return new NotEqualNode(selector, arguments);
-            case OUT : return new NotInNode(selector, arguments);
-
-            // this normally can't happen, validation is done in ComparisonOp.parse()
-            default  : throw new UnknownOperatorException("Unknown operator: " + operator);
+        ComparisonOperator op = comparisonOperators.get(operatorToken);
+        if (op != null) {
+            return new ComparisonNode(op, selector, arguments);
+        } else {
+            throw new UnknownOperatorException(operatorToken);
         }
     }
 }

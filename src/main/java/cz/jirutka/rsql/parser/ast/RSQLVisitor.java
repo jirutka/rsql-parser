@@ -23,19 +23,17 @@
  */
 package cz.jirutka.rsql.parser.ast;
 
-import java.util.List;
+/**
+ * An interface for visiting AST nodes of the RSQL.
+ *
+ * @param <R> Return type of the visitor's method.
+ * @param <A> Type of an optional parameter passed to the visitor's method.
+ */
+public interface RSQLVisitor<R, A> {
 
-public final class AndNode extends LogicalNode {
+    R visit(AndNode node, A param);
 
-    public AndNode(List<? extends Node> children) {
-        super(LogicalOp.AND, children);
-    }
+    R visit(OrNode node, A param);
 
-    public AndNode withChildren(List<? extends Node> children) {
-        return new AndNode(children);
-    }
-
-    public <R, A> R accept(RSQLVisitor<R, A> visitor, A param) {
-        return visitor.visit(this, param);
-    }
+    R visit(ComparisonNode node, A param);
 }

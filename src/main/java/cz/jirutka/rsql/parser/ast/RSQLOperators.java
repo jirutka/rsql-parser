@@ -21,14 +21,28 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package cz.jirutka.rsql.parser.ast
+package cz.jirutka.rsql.parser.ast;
 
-abstract class Constants {
+import java.util.HashSet;
+import java.util.Set;
 
-    static final LOGICAL_NODES = [AndNode, OrNode]
+import static java.util.Arrays.asList;
 
-    static final COMPARISON_NODES = [
-            EqualNode, GreaterThanNode, GreaterThanOrEqualNode, InNode,
-            LessThanNode, LessThanOrEqualNode, NotEqualNode, NotInNode
-    ]
+public abstract class RSQLOperators {
+
+    public static final ComparisonOperator
+            EQUAL = new ComparisonOperator("=="),
+            NOT_EQUAL = new ComparisonOperator("!="),
+            GREATER_THAN = new ComparisonOperator("=gt=", ">"),
+            GREATER_THAN_OR_EQUAL = new ComparisonOperator("=ge=", ">="),
+            LESS_THAN = new ComparisonOperator("=lt=", "<"),
+            LESS_THAN_OR_EQUAL = new ComparisonOperator("=le=", "<="),
+            IN = new ComparisonOperator("=in="),
+            NOT_IN = new ComparisonOperator("=out=");
+
+
+    public static Set<ComparisonOperator> defaultOperators() {
+        return new HashSet<>(asList(EQUAL, NOT_EQUAL, GREATER_THAN, GREATER_THAN_OR_EQUAL,
+                                    LESS_THAN, LESS_THAN_OR_EQUAL, IN, NOT_IN));
+    }
 }

@@ -33,42 +33,52 @@ import static cz.jirutka.rsql.parser.ast.StringUtils.join;
  * Superclass of all the comparison nodes that represents a specific comparison
  * operator, a selector and an arguments.
  */
-public abstract class ComparisonNode extends AbstractNode {
+public final class ComparisonNode extends AbstractNode {
+
+    private final ComparisonOperator operator;
 
     private final String selector;
 
     private final List<String> arguments;
 
 
-    protected ComparisonNode(String selector, List<String> arguments) {
+    public ComparisonNode(ComparisonOperator operator, String selector, List<String> arguments) {
+        assert operator != null     : "operator must not be null";
         assert isNotBlank(selector) : "selector must not be blank";
         assert arguments.size() > 0 : "arguments list must not be empty";
 
+        this.operator = operator;
         this.selector = selector;
-        this.arguments = arguments;
+        this.arguments = new ArrayList<>(arguments);
     }
 
 
-    /**
-     * Returns a operator that is represented by this node (ex.: =gt=, ==, ...).
-     * Must not return null or empty string!
-     */
-    public abstract String getOperator();
+    public <R, A> R accept(RSQLVisitor<R, A> visitor, A param) {
+        return visitor.visit(this, param);
+    }
 
-    public abstract ComparisonNode withSelector(String selector);
+    public ComparisonOperator getOperator() {
+        return operator;
+    }
 
-    public abstract ComparisonNode withArguments(List<String> arguments);
-
+    public ComparisonNode withOperator(ComparisonOperator newOperator) {
+        return new ComparisonNode(newOperator, selector, arguments);
+    }
 
     public String getSelector() {
         return selector;
     }
 
-    /**
-     * Return a copy of the arguments list.
-     */
+    public ComparisonNode withSelector(String newSelector) {
+        return new ComparisonNode(operator, newSelector, arguments);
+    }
+
     public List<String> getArguments() {
         return new ArrayList<>(arguments);
+    }
+
+    public ComparisonNode withArguments(List<String> newArguments) {
+        return new ComparisonNode(operator, selector, newArguments);
     }
 
 
@@ -77,7 +87,7 @@ public abstract class ComparisonNode extends AbstractNode {
         String args = arguments.size() > 1
                 ? "('" + join(arguments, "','") + "')"
                 : "'" + arguments.get(0) + "'";
-        return selector + getOperator() + args;
+        return selector + operator + args;
     }
 
     @Override
@@ -88,7 +98,7 @@ public abstract class ComparisonNode extends AbstractNode {
         ComparisonNode that = (ComparisonNode) o;
 
         if (!arguments.equals(that.arguments)) return false;
-        if (!getOperator().equals(getOperator())) return false;
+        if (!operator.equals(that.operator)) return false;
         if (!selector.equals(that.selector)) return false;
 
         return true;
@@ -98,7 +108,7 @@ public abstract class ComparisonNode extends AbstractNode {
     public int hashCode() {
         int result = selector.hashCode();
         result = 31 * result + arguments.hashCode();
-        result = 31 * result + getOperator().hashCode();
+        result = 31 * result + operator.hashCode();
         return result;
     }
 }

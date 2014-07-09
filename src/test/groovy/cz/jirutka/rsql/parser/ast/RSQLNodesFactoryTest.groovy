@@ -45,29 +45,6 @@ class RSQLNodesFactoryTest extends Specification {
             className = expected.simpleName
     }
 
-    def 'create #className for comparison operator: #operator'() {
-        when:
-            def actual = factory.createComparisonNode(operator, 'sel', ['arg0'])
-        then:
-            actual.class == expected
-        where:
-            operator | expected
-            '=='     | EqualNode
-            '!='     | NotEqualNode
-            '=gt='   | GreaterThanNode
-            '>'      | GreaterThanNode
-            '=ge='   | GreaterThanOrEqualNode
-            '>='     | GreaterThanOrEqualNode
-            '=lt='   | LessThanNode
-            '<'      | LessThanNode
-            '<='     | LessThanOrEqualNode
-            '=le='   | LessThanOrEqualNode
-            '=in='   | InNode
-            '=out='  | NotInNode
-
-            className = expected.simpleName
-    }
-
     def 'throw UnknownOperatorException when given unknown comparison operator'() {
         when:
             factory.createComparisonNode('=foo=', 'sel', ['arg'])

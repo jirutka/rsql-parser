@@ -28,6 +28,7 @@ import spock.lang.Specification
 import spock.lang.Unroll
 
 import static cz.jirutka.rsql.parser.RSQLParser.parse
+import static cz.jirutka.rsql.parser.ast.RSQLOperators.*
 
 @Unroll
 class RSQLParserTest extends Specification {
@@ -51,7 +52,7 @@ class RSQLParserTest extends Specification {
         expect:
             parse("sel${op.toString()}val") == expected
         where:
-            op << ComparisonOp.values()
+            op << defaultOperators()*.symbols.flatten()
     }
 
     def 'parse alternative comparison operator: #op'() {
@@ -133,7 +134,7 @@ class RSQLParserTest extends Specification {
                 val[0] in ['"', "'"] ? val[1..-2] : val
             }
         expect:
-            parse("sel=in=(${input.join(',')})") == new InNode('sel', values)
+            parse("sel=in=(${input.join(',')})") == new ComparisonNode(IN, 'sel', values)
         where:
             input << [ ['chunky', 'bacon', '"ftw!"'], ["'hi!'", '"how\'re you?"'], ['meh'], ['")o("'] ]
     }
@@ -196,6 +197,6 @@ class RSQLParserTest extends Specification {
 
     def and(Node... nodes) { new AndNode(nodes as List) }
     def or(Node... nodes) { new OrNode(nodes as List) }
-    def eq(sel, arg) { new EqualNode(sel, [arg as String]) }
-    def out(sel, ...args) { new NotInNode(sel, args as List) }
+    def eq(sel, arg) { new ComparisonNode(EQUAL, sel, [arg as String]) }
+    def out(sel, ...args) { new ComparisonNode(NOT_IN, sel, args as List) }
 }

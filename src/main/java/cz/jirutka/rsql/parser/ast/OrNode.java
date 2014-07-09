@@ -25,7 +25,7 @@ package cz.jirutka.rsql.parser.ast;
 
 import java.util.List;
 
-public class OrNode extends LogicalNode {
+public final class OrNode extends LogicalNode {
 
     public OrNode(List<? extends Node> children) {
         super(LogicalOp.OR, children);

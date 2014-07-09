@@ -26,8 +26,6 @@ package cz.jirutka.rsql.parser.ast
 import spock.lang.Specification
 import spock.lang.Unroll
 
-import static cz.jirutka.rsql.parser.ast.Constants.*
-
 @Unroll
 class NoArgRSQLVisitorAdapterTest extends Specification {
 
@@ -35,7 +33,7 @@ class NoArgRSQLVisitorAdapterTest extends Specification {
         setup:
             def node = LogicalNode.isAssignableFrom(nodeClass) ?
                     nodeClass.newInstance([]) :
-                    nodeClass.newInstance('sel', ['arg'])
+                    nodeClass.newInstance(RSQLOperators.EQUAL, 'sel', ['arg'])
         and:
             def adapter = Spy(NoArgRSQLVisitorAdapter) {
                 visit(_) >> null
@@ -45,7 +43,7 @@ class NoArgRSQLVisitorAdapterTest extends Specification {
         then:
             1 * adapter.visit({ nodeClass.isInstance(it) }) >> null
         where:
-            nodeClass << LOGICAL_NODES + COMPARISON_NODES
+            nodeClass << [AndNode, OrNode, ComparisonNode]
             className = nodeClass.simpleName
     }
 }

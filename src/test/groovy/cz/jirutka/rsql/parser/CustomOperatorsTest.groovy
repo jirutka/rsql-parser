@@ -28,6 +28,7 @@ import spock.lang.Specification
 
 class CustomOperatorsTest extends Specification {
 
+    static final FOO_OPERATOR = new ComparisonOperator('=foo=')
 
     def 'ensure that parser can be enhanced by custom comparison operator'() {
 
@@ -48,52 +49,25 @@ class CustomOperatorsTest extends Specification {
 
         then: 'visitor is called for AND and =='
             1 * visitor.visit(_ as AndNode, _)
-            1 * visitor.visit(_ as EqualNode, _) >> null
+            1 * visitor.visit({ ComparisonNode n -> n.operator == RSQLOperators.EQUAL }, _) >> null
 
         and: 'most importantly for our =foo= comparison!'
-            1 * visitor.visit(_ as FooNode, _) >> null
+            1 * visitor.visit({ ComparisonNode n -> n.operator == FOO_OPERATOR }, _) >> null
 
     }
 
-
-    static class FooNode extends ComparisonNode {
-
-        protected FooNode(String selector, List<String> arguments) {
-            super(selector, arguments)
-        }
-        public String getOperator() {
-            return '=foo='
-        }
-        public ComparisonNode withSelector(String selector) {
-            return new FooNode(selector, getArguments())
-        }
-
-        public ComparisonNode withArguments(List<String> arguments) {
-            return new FooNode(getSelector(), arguments)
-        }
-
-        public <R, A> R accept(RSQLVisitor<R, A> visitor, A param) {
-            return ((CustomRSQLVisitor<R, A>) visitor).visit(this, param)
-        }
-    }
-
-    static interface CustomRSQLVisitor<R, A> extends RSQLVisitor<R, A> {
-
-        R visit(FooNode node, A param)
-    }
 
     static class CustomRSQLNodesFactory extends RSQLNodesFactory {
 
         ComparisonNode createComparisonNode(String operator, String selector, List<String> arguments) {
             switch (operator) {
-                case '=foo=' : return new FooNode(selector, arguments)
+                case '=foo=' : return new ComparisonNode(FOO_OPERATOR, selector, arguments)
                 default      : return super.createComparisonNode(operator, selector, arguments)
             }
         }
     }
 
-
-    static abstract class AbstractCustomRSQLVisitor implements CustomRSQLVisitor<Void, Void> {
+    static class AbstractCustomRSQLVisitor implements RSQLVisitor<Void, Void> {
 
         Void visit(AndNode node, Void param) {
             node.each { child -> child.accept(this, param) }
@@ -101,6 +75,9 @@ class CustomOperatorsTest extends Specification {
         }
         Void visit(OrNode node, Void param) {
             node.each { child -> child.accept(this, param) }
+            return null
+        }
+        Void visit(ComparisonNode node, Void param) {
             return null
         }
     }

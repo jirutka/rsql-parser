@@ -23,26 +23,31 @@
  */
 package cz.jirutka.rsql.parser.ast;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Collection;
 
-import static java.util.Arrays.asList;
+abstract class Assert {
 
-public abstract class RSQLOperators {
+    public static void isTrue(boolean expression, String message, Object... args) {
+        if (!expression) {
+            throw new IllegalArgumentException(String.format(message, args));
+        }
+    }
 
-    public static final ComparisonOperator
-            EQUAL = new ComparisonOperator("=="),
-            NOT_EQUAL = new ComparisonOperator("!="),
-            GREATER_THAN = new ComparisonOperator("=gt=", ">"),
-            GREATER_THAN_OR_EQUAL = new ComparisonOperator("=ge=", ">="),
-            LESS_THAN = new ComparisonOperator("=lt=", "<"),
-            LESS_THAN_OR_EQUAL = new ComparisonOperator("=le=", "<="),
-            IN = new ComparisonOperator("=in=", true),
-            NOT_IN = new ComparisonOperator("=out=", true);
+    public static void notNull(Object obj, String message, Object... args) {
+        if (obj == null) {
+            throw new IllegalArgumentException(String.format(message, args));
+        }
+    }
 
+    public static void notBlank(String str, String message, Object... args) {
+        if (StringUtils.isBlank(str)) {
+            throw new IllegalArgumentException(String.format(message, args));
+        }
+    }
 
-    public static Set<ComparisonOperator> defaultOperators() {
-        return new HashSet<>(asList(EQUAL, NOT_EQUAL, GREATER_THAN, GREATER_THAN_OR_EQUAL,
-                                    LESS_THAN, LESS_THAN_OR_EQUAL, IN, NOT_IN));
+    public static void notEmpty(Collection col, String message, Object... args) {
+        if (col == null || col.isEmpty()) {
+            throw new IllegalArgumentException(String.format(message, args));
+        }
     }
 }

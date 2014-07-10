@@ -23,49 +23,20 @@
  */
 package cz.jirutka.rsql.parser.ast
 
-import cz.jirutka.rsql.parser.UnknownOperatorException
 import spock.lang.Specification
-import spock.lang.Unroll
 
 import static cz.jirutka.rsql.parser.ast.RSQLOperators.*
 
-class NodesFactoryTest extends Specification {
+class ComparisonNodeTest extends Specification {
 
-    def factory = new NodesFactory(defaultOperators())
-
-
-    @Unroll
-    def 'create #className for logical operator: #operator'() {
+    def 'throw exception when given multiple arguments for single-argument operator'() {
+        setup:
+            assert ! operator.multiValue
         when:
-            def actual = factory.createLogicalNode(operator, [])
+            new ComparisonNode(operator, 'sel', ['arg1', 'arg2'])
         then:
-            actual.class == expected
+            thrown IllegalArgumentException
         where:
-            operator             | expected
-            LogicalOperator.AND  | AndNode
-            LogicalOperator.OR   | OrNode
-
-            className = expected.simpleName
-    }
-
-    def 'create ComparisonNode when given supported operator token'() {
-        when:
-            def node = factory.createComparisonNode(opToken, 'doctor', ['who?'])
-        then:
-            node.operator  == operator
-            node.selector  == 'doctor'
-            node.arguments == ['who?']
-        where:
-            opToken | operator
-            '=='    | EQUAL
-            '=gt='  | GREATER_THAN
-            '>'     | GREATER_THAN
-    }
-
-    def 'throw UnknownOperatorException when given unknown operator token'() {
-        when:
-            factory.createComparisonNode('=foo=', 'sel', ['arg'])
-        then:
-            thrown UnknownOperatorException
+            operator << defaultOperators() - [IN, NOT_IN]
     }
 }

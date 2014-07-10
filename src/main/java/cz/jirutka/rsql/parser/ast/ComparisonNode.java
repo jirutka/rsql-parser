@@ -26,7 +26,6 @@ package cz.jirutka.rsql.parser.ast;
 import java.util.ArrayList;
 import java.util.List;
 
-import static cz.jirutka.rsql.parser.ast.StringUtils.isNotBlank;
 import static cz.jirutka.rsql.parser.ast.StringUtils.join;
 
 /**
@@ -43,9 +42,11 @@ public final class ComparisonNode extends AbstractNode {
 
 
     public ComparisonNode(ComparisonOperator operator, String selector, List<String> arguments) {
-        assert operator != null     : "operator must not be null";
-        assert isNotBlank(selector) : "selector must not be blank";
-        assert arguments.size() > 0 : "arguments list must not be empty";
+        Assert.notNull(operator, "operator must not be null");
+        Assert.notBlank(selector, "selector must not be blank");
+        Assert.notEmpty(arguments, "arguments list must not be empty");
+        Assert.isTrue(operator.isMultiValue() || arguments.size() == 1,
+                "operator %s expects single argument, but multiple values given", operator);
 
         this.operator = operator;
         this.selector = selector;

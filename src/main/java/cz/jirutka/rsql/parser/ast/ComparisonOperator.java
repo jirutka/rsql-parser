@@ -32,23 +32,50 @@ public final class ComparisonOperator {
 
     private final String[] symbols;
 
+    private final boolean multiValue;
+
 
     /**
      * @param symbols Textual representation of this operator (e.g. <tt>=gt=
      *                 </tt>); the first item is primary representation, any
      *                 others are alternatives.
+     * @param multiValue Whether this operator may be used with multiple
+     *                   arguments.
      *
      * @throws IllegalArgumentException If the {@code keywords} is either
      *         <tt>null</tt>, empty, contain <tt>null</tt>s or contain empty
      *         strings.
      */
-    public ComparisonOperator(String... symbols) {
+    public ComparisonOperator(String[] symbols, boolean multiValue) {
         assert symbols.length > 0              : "symbols must not be empty";
         assert !asList(symbols).contains(null) : "symbols must not contain nulls";
         assert !asList(symbols).contains("")   : "symbols must not contain empty strings";
 
+        this.multiValue = multiValue;
         this.symbols = symbols.clone();
     }
+
+    /**
+     * @see #ComparisonOperator(String[], boolean)
+     */
+    public ComparisonOperator(String symbol, boolean multiValue) {
+        this(new String[]{symbol}, multiValue);
+    }
+
+    /**
+     * @see #ComparisonOperator(String[], boolean)
+     */
+    public ComparisonOperator(String symbol, String altSymbol, boolean multiValue) {
+        this(new String[]{symbol, altSymbol}, multiValue);
+    }
+
+    /**
+     * @see #ComparisonOperator(String[], boolean)
+     */
+    public ComparisonOperator(String... symbols) {
+        this(symbols, false);
+    }
+
 
     /**
      * Returns the primary representation of this operator.
@@ -63,6 +90,13 @@ public final class ComparisonOperator {
      */
     public String[] getSymbols() {
         return symbols.clone();
+    }
+
+    /**
+     * Whether this operator may be used with multiple arguments.
+     */
+    public boolean isMultiValue() {
+        return multiValue;
     }
 
 

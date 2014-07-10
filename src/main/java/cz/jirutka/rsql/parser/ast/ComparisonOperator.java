@@ -25,10 +25,14 @@ package cz.jirutka.rsql.parser.ast;
 
 import net.jcip.annotations.Immutable;
 
-import static java.util.Arrays.asList;
+import java.util.regex.Pattern;
+
+import static cz.jirutka.rsql.parser.ast.StringUtils.isBlank;
 
 @Immutable
 public final class ComparisonOperator {
+
+    private static final Pattern SYMBOL_PATTERN = Pattern.compile("=[a-zA-Z]*=|[><]=?|!=");
 
     private final String[] symbols;
 
@@ -37,20 +41,20 @@ public final class ComparisonOperator {
 
     /**
      * @param symbols Textual representation of this operator (e.g. <tt>=gt=
-     *                 </tt>); the first item is primary representation, any
-     *                 others are alternatives.
+     *          </tt>); the first item is primary representation, any others
+     *          are alternatives. Must match <tt>=[a-zA-Z]*=|[><]=?|!=</tt>.
      * @param multiValue Whether this operator may be used with multiple
-     *                   arguments.
+     *          arguments. This is then validated in {@link NodesFactory}.
      *
      * @throws IllegalArgumentException If the {@code keywords} is either
      *         <tt>null</tt>, empty, contain <tt>null</tt>s or contain empty
      *         strings.
      */
     public ComparisonOperator(String[] symbols, boolean multiValue) {
-        assert symbols.length > 0              : "symbols must not be empty";
-        assert !asList(symbols).contains(null) : "symbols must not contain nulls";
-        assert !asList(symbols).contains("")   : "symbols must not contain empty strings";
-
+        Assert.notEmpty(symbols, "symbols must not be null or empty");
+        for (String sym : symbols) {
+            Assert.isTrue(isValidOperatorSymbol(sym), "symbol must match: %s", SYMBOL_PATTERN);
+        }
         this.multiValue = multiValue;
         this.symbols = symbols.clone();
     }
@@ -97,6 +101,11 @@ public final class ComparisonOperator {
      */
     public boolean isMultiValue() {
         return multiValue;
+    }
+
+
+    private boolean isValidOperatorSymbol(String symbol) {
+        return !isBlank(symbol) && SYMBOL_PATTERN.matcher(symbol).matches();
     }
 
 

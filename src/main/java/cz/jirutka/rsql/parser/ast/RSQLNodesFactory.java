@@ -29,22 +29,21 @@ import net.jcip.annotations.Immutable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Factory that creates {@link Node} instances for the parser.
- *
- * <p>If you want to define custom operators, then extend this class and
- * override {@link #createComparisonNode(String, String, List) createComparisonNode()}
- * method.</p>
  */
 @Immutable
 public class RSQLNodesFactory {
 
-    private final Map<String, ComparisonOperator> comparisonOperators = new HashMap<>();
+    private final Map<String, ComparisonOperator> comparisonOperators;
 
 
-    public RSQLNodesFactory() {
-        for (ComparisonOperator op : RSQLOperators.defaultOperators()) {
+    public RSQLNodesFactory(Set<ComparisonOperator> operators) {
+
+        comparisonOperators = new HashMap<>(operators.size());
+        for (ComparisonOperator op : operators) {
             for (String sym : op.getSymbols()) {
                 comparisonOperators.put(sym, op);
             }
@@ -71,21 +70,18 @@ public class RSQLNodesFactory {
     }
 
     /**
-     * Creates a specific {@link ComparisonNode} instance for the specified
-     * operator and with the given selector and arguments.
+     * Creates a {@link ComparisonNode} instance with the given parameters.
      *
-     * <p>If you want to define a custom FIQL-like operators (i.e.
-     * <tt>=[a-z]*=</tt>, ex.: <tt>=foo=</tt>), then override this method,
-     * handle your custom operators at top and then call {@code super} to
-     * handle the built-in operators.</p>
+     * @param operatorToken A textual representation of the comparison operator
+     *          to be found in the set of supported {@linkplain
+     *          ComparisonOperator operators}.
+     * @param selector The selector that specifies the left side of the
+     *          comparison.
+     * @param arguments A list of arguments that specifies the right side of the
+     *          comparison.
      *
-     * @param operatorToken The comparison operator to create a node for.
-     * @param selector The selector that specifies a left side of the comparison.
-     * @param arguments A list of arguments that specifies a right side of the
-     *                  comparison.
-     * @return A subclass of the {@link ComparisonNode} according to the
-     *         specified operator.
-     * @throws UnknownOperatorException
+     * @throws UnknownOperatorException If no operator for the specified
+     *          operator token exists.
      */
     public ComparisonNode createComparisonNode(
             String operatorToken, String selector, List<String> arguments) throws UnknownOperatorException {

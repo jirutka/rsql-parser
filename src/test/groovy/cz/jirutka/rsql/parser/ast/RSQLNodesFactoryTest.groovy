@@ -27,11 +27,12 @@ import cz.jirutka.rsql.parser.UnknownOperatorException
 import spock.lang.Specification
 import spock.lang.Unroll
 
-@Unroll
 class RSQLNodesFactoryTest extends Specification {
 
-    def factory = new RSQLNodesFactory()
+    def factory = new RSQLNodesFactory(RSQLOperators.defaultOperators())
 
+
+    @Unroll
     def 'create #className for logical operator: #operator'() {
         when:
             def actual = factory.createLogicalNode(operator, [])
@@ -45,7 +46,21 @@ class RSQLNodesFactoryTest extends Specification {
             className = expected.simpleName
     }
 
-    def 'throw UnknownOperatorException when given unknown comparison operator'() {
+    def 'create ComparisonNode when given supported operator token'() {
+        when:
+            def node = factory.createComparisonNode(opToken, 'doctor', ['who?'])
+        then:
+            node.operator  == operator
+            node.selector  == 'doctor'
+            node.arguments == ['who?']
+        where:
+            opToken | operator
+            '=='    | RSQLOperators.EQUAL
+            '=gt='  | RSQLOperators.GREATER_THAN
+            '>'     | RSQLOperators.GREATER_THAN
+    }
+
+    def 'throw UnknownOperatorException when given unknown operator token'() {
         when:
             factory.createComparisonNode('=foo=', 'sel', ['arg'])
         then:

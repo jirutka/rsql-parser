@@ -35,7 +35,7 @@ class RSQLParserTest extends Specification {
 
     static final RESERVED = ['"', "'", '(', ')', ';', ',', '=', '<', '>', '!', '~', ' ']
 
-    def factory = new RSQLNodesFactory()
+    def factory = new RSQLNodesFactory(RSQLOperators.defaultOperators())
 
 
     def 'throw IllegalArgumentException when input is null'() {

@@ -23,13 +23,16 @@
  */
 package cz.jirutka.rsql.parser;
 
+import cz.jirutka.rsql.parser.ast.ComparisonOperator;
 import cz.jirutka.rsql.parser.ast.Node;
 import cz.jirutka.rsql.parser.ast.RSQLNodesFactory;
+import cz.jirutka.rsql.parser.ast.RSQLOperators;
 import net.jcip.annotations.Immutable;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.nio.charset.Charset;
+import java.util.Set;
 
 /**
  * Parser of the RSQL (RESTful Service Query Language).
@@ -79,23 +82,24 @@ public final class RSQLParser {
 
     /**
      * Creates a new instance of {@code RSQLParser} with the default
-     * {@link RSQLNodesFactory} that handles built-in operators.
+     * set of comparison operators.
      */
     public RSQLParser() {
-        this.nodesFactory = new RSQLNodesFactory();
+        this.nodesFactory = new RSQLNodesFactory(RSQLOperators.defaultOperators());
     }
 
     /**
-     * Creates a new instance of {@code RSQLParser} with the given
-     * {@link RSQLNodesFactory} (can be used to add custom operators).
+     * Creates a new instance of {@code RSQLParser} that supports the specified
+     * comparison operators.
      *
-     * @param nodesFactory The nodes factory to use (not null).
+     * @param operators A set of supported comparison operators. Must not be
+     *                  <tt>null</tt> or empty.
      */
-    public RSQLParser(RSQLNodesFactory nodesFactory) {
-        if (nodesFactory == null) {
-            throw new IllegalArgumentException("nodesFactory must not be null");
+    public RSQLParser(Set<ComparisonOperator> operators) {
+        if (operators == null || operators.isEmpty()) {
+            throw new IllegalArgumentException("operators must not be null or empty");
         }
-        this.nodesFactory = nodesFactory;
+        this.nodesFactory = new RSQLNodesFactory(operators);
     }
 
     /**

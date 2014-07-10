@@ -1,6 +1,8 @@
 RSQL / FIQL parser
 ==================
-[![Build Status](https://travis-ci.org/jirutka/rsql-parser.png)](https://travis-ci.org/jirutka/rsql-parser) [![Coverage Status](https://coveralls.io/repos/jirutka/rsql-parser/badge.png?branch=master)](https://coveralls.io/r/jirutka/rsql-parser?branch=master) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/cz.jirutka.rsql/rsql-parser/badge.svg)](https://maven-badges.herokuapp.com/maven-central/cz.jirutka.rsql/rsql-parser)
+[![Build Status](https://travis-ci.org/jirutka/rsql-parser.svg)](https://travis-ci.org/jirutka/rsql-parser)
+[![Coverage Status](https://coveralls.io/repos/jirutka/rsql-parser/badge.png?branch=master)](https://coveralls.io/r/jirutka/rsql-parser?branch=master)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/cz.jirutka.rsql/rsql-parser/badge.svg)](https://maven-badges.herokuapp.com/maven-central/cz.jirutka.rsql/rsql-parser)
 
 RSQL is a query language for parametrized filtering of entries in RESTful APIs. It’s based on
 [FIQL](http://tools.ietf.org/html/draft-nottingham-atompub-fiql-00) (Feed Item Query Language) – an URI-friendly syntax
@@ -97,8 +99,7 @@ How to use
 ----------
 
 Nodes are [visitable](http://en.wikipedia.org/wiki/Visitor_pattern), so to traverse the parsed AST (and convert it to
-SQL query maybe), you can implement the provided [RSQLVisitor] interface or one of its adapters
-([NoArgRSQLVisitorAdapter], [SuperNodesRSQLVisitorAdapter]).
+SQL query maybe), you can implement the provided [RSQLVisitor] interface or simplified [NoArgRSQLVisitorAdapter].
 
 ```java
 Node rootNode = new RSQLParser().parse("name==RSQL;version=ge=2.0");
@@ -110,12 +111,15 @@ rootNode.accept(yourShinyVisitor);
 How to add custom operators
 ---------------------------
 
-Need more operators? The parser can be simply enhanced by custom FIQL-like comparison
-operators, so you can add your own. Just write an AST nodes for your operators (extend [ComparisonNode]), then extend
-[RSQLNodesFactory] class and [RSQLVisitor] interface.
+Need more operators? The parser can be simply enhanced by custom FIQL-like comparison operators,
+so you can add your own.
 
-Take a look at the [CustomOperatorsTest] for an example.
+```java
+Set<ComparisonOperator> operators = RSQLOperators.defaultOperators();
+operators.add(new ComparisonOperator("=all=", true));
 
+Node rootNode = new RSQLParser(operators).parse("genres=all=('thriller','sci-fi')");
+```
 
 Maven
 -----
@@ -152,8 +156,5 @@ This project is licensed under [MIT license](http://opensource.org/licenses/MIT)
 
 [ISO 14977]: http://www.cl.cam.ac.uk/~mgk25/iso-14977.pdf
 [ComparisonNode]: src/main/java/cz/jirutka/rsql/parser/ast/ComparisonNode.java
-[RSQLNodesFactory]: src/main/java/cz/jirutka/rsql/parser/ast/RSQLNodesFactory.java
 [RSQLVisitor]: src/main/java/cz/jirutka/rsql/parser/ast/RSQLVisitor.java
 [NoArgRSQLVisitorAdapter]: src/main/java/cz/jirutka/rsql/parser/ast/NoArgRSQLVisitorAdapter.java
-[SuperNodesRSQLVisitorAdapter]: src/main/java/cz/jirutka/rsql/parser/ast/SuperNodesRSQLVisitorAdapter.java
-[CustomOperatorsTest]: src/test/groovy/cz/jirutka/rsql/parser/CustomOperatorsTest.groovy

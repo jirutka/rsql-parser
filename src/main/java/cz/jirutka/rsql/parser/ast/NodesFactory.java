@@ -35,12 +35,12 @@ import java.util.Set;
  * Factory that creates {@link Node} instances for the parser.
  */
 @Immutable
-public class RSQLNodesFactory {
+public class NodesFactory {
 
     private final Map<String, ComparisonOperator> comparisonOperators;
 
 
-    public RSQLNodesFactory(Set<ComparisonOperator> operators) {
+    public NodesFactory(Set<ComparisonOperator> operators) {
 
         comparisonOperators = new HashMap<>(operators.size());
         for (ComparisonOperator op : operators) {

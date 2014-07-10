@@ -27,9 +27,9 @@ import cz.jirutka.rsql.parser.UnknownOperatorException
 import spock.lang.Specification
 import spock.lang.Unroll
 
-class RSQLNodesFactoryTest extends Specification {
+class NodesFactoryTest extends Specification {
 
-    def factory = new RSQLNodesFactory(RSQLOperators.defaultOperators())
+    def factory = new NodesFactory(RSQLOperators.defaultOperators())
 
 
     @Unroll

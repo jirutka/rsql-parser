@@ -46,9 +46,9 @@ import java.util.List;
 
 final class Parser {
 
-    private RSQLNodesFactory factory;
+    private NodesFactory factory;
 
-    public Parser(InputStream stream, String encoding, RSQLNodesFactory factory) {
+    public Parser(InputStream stream, String encoding, NodesFactory factory) {
         this(stream, encoding);
         this.factory = factory;
     }

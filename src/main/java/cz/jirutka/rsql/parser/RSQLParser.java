@@ -25,7 +25,7 @@ package cz.jirutka.rsql.parser;
 
 import cz.jirutka.rsql.parser.ast.ComparisonOperator;
 import cz.jirutka.rsql.parser.ast.Node;
-import cz.jirutka.rsql.parser.ast.RSQLNodesFactory;
+import cz.jirutka.rsql.parser.ast.NodesFactory;
 import cz.jirutka.rsql.parser.ast.RSQLOperators;
 import net.jcip.annotations.Immutable;
 
@@ -77,7 +77,7 @@ public final class RSQLParser {
 
     private static final Charset ENCODING = Charset.forName("UTF-8");
 
-    private final RSQLNodesFactory nodesFactory;
+    private final NodesFactory nodesFactory;
 
 
     /**
@@ -85,7 +85,7 @@ public final class RSQLParser {
      * set of comparison operators.
      */
     public RSQLParser() {
-        this.nodesFactory = new RSQLNodesFactory(RSQLOperators.defaultOperators());
+        this.nodesFactory = new NodesFactory(RSQLOperators.defaultOperators());
     }
 
     /**
@@ -99,7 +99,7 @@ public final class RSQLParser {
         if (operators == null || operators.isEmpty()) {
             throw new IllegalArgumentException("operators must not be null or empty");
         }
-        this.nodesFactory = new RSQLNodesFactory(operators);
+        this.nodesFactory = new NodesFactory(operators);
     }
 
     /**

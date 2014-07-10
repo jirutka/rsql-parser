@@ -30,8 +30,8 @@ import java.util.List;
 import static cz.jirutka.rsql.parser.ast.StringUtils.join;
 
 /**
- * Superclass of all the logical nodes that represents a logical operation
- * that connects a children nodes.
+ * Superclass of all the logical nodes that represents a logical operation that connects
+ * a children nodes.
  */
 public abstract class LogicalNode extends AbstractNode implements Iterable<Node> {
 
@@ -49,9 +49,15 @@ public abstract class LogicalNode extends AbstractNode implements Iterable<Node>
     }
 
 
+    /**
+     * Returns a copy of this node with the specified children.
+     */
     public abstract LogicalNode withChildren(List<? extends Node> children);
 
 
+    /**
+     * Iterate over children nodes.
+     */
     public Iterator<Node> iterator() {
         return children.iterator();
     }

@@ -24,8 +24,7 @@
 package cz.jirutka.rsql.parser;
 
 /**
- * This exception is thrown when unknown FIQL operator is parsed, i.e. it's not
- * bound with any {@link cz.jirutka.rsql.parser.ast.ComparisonNode}.
+ * This exception is thrown when unknown/unsupported comparison operator is parsed.
  */
 public class UnknownOperatorException extends ParseException {
 

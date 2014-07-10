@@ -37,11 +37,9 @@ import java.util.Set;
 /**
  * Parser of the RSQL (RESTful Service Query Language).
  *
- * <p>RSQL is query language for a parametrized filtering of entries in
- * RESTful APIs. It's a superset of
- * <a href="http://tools.ietf.org/html/draft-nottingham-atompub-fiql-00">
- * FIQL</a> (Feed Item Query Language), so it can be used for parsing FIQL
- * as well.</p>
+ * <p>RSQL is a query language for parametrized filtering of entries in RESTful APIs. It's a
+ * superset of <a href="http://tools.ietf.org/html/draft-nottingham-atompub-fiql-00">FIQL</a> (Feed
+ * Item Query Language), so it can be used for parsing FIQL as well.</p>
  *
  * <p><b>Grammar in EBNF notation:</b>
  * <pre>{@code
@@ -81,19 +79,17 @@ public final class RSQLParser {
 
 
     /**
-     * Creates a new instance of {@code RSQLParser} with the default
-     * set of comparison operators.
+     * Creates a new instance of {@code RSQLParser} with the default set of comparison operators.
      */
     public RSQLParser() {
         this.nodesFactory = new NodesFactory(RSQLOperators.defaultOperators());
     }
 
     /**
-     * Creates a new instance of {@code RSQLParser} that supports the specified
-     * comparison operators.
+     * Creates a new instance of {@code RSQLParser} that supports only the specified comparison
+     * operators.
      *
-     * @param operators A set of supported comparison operators. Must not be
-     *                  <tt>null</tt> or empty.
+     * @param operators A set of supported comparison operators. Must not be <tt>null</tt> or empty.
      */
     public RSQLParser(Set<ComparisonOperator> operators) {
         if (operators == null || operators.isEmpty()) {
@@ -107,10 +103,10 @@ public final class RSQLParser {
      *
      * @param query The query expression to parse.
      * @return A root of the parsed AST.
-     * @throws RSQLParserException This exception wraps {@link ParseException},
-     *         {@link cz.jirutka.rsql.parser.UnknownOperatorException}
-     *         and {@link TokenMgrError}.
-     * @throws IllegalArgumentException If the given query is null.
+     *
+     * @throws RSQLParserException If some exception occurred during parsing, i.e. the
+     *          {@code query} is syntactically invalid.
+     * @throws IllegalArgumentException If the {@code query} is null.
      */
     public Node parse(String query) throws RSQLParserException {
         if (query == null) {

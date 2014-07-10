@@ -23,6 +23,9 @@
  */
 package cz.jirutka.rsql.parser;
 
+/**
+ * A top level exception of RSQL parser that wraps all exceptions occurred in parsing.
+ */
 public class RSQLParserException extends Exception {
 
     public RSQLParserException(Throwable cause) {

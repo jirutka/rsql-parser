@@ -23,6 +23,12 @@
  */
 package cz.jirutka.rsql.parser.ast;
 
+/**
+ * An adapter for the {@link RSQLVisitor} interface with a simpler contract that omits an optional
+ * second argument.
+ *
+ * @param <R> Return type of the visitor's method.
+ */
 public abstract class NoArgRSQLVisitorAdapter<R> implements RSQLVisitor<R, Void> {
 
     public abstract R visit(AndNode node);

@@ -40,15 +40,14 @@ public final class ComparisonOperator {
 
 
     /**
-     * @param symbols Textual representation of this operator (e.g. <tt>=gt=
-     *          </tt>); the first item is primary representation, any others
-     *          are alternatives. Must match <tt>=[a-zA-Z]*=|[><]=?|!=</tt>.
-     * @param multiValue Whether this operator may be used with multiple
-     *          arguments. This is then validated in {@link NodesFactory}.
+     * @param symbols Textual representation of this operator (e.g. <tt>=gt=</tt>); the first item
+     *          is primary representation, any others are alternatives. Must match
+     *          <tt>=[a-zA-Z]*=|[><]=?|!=</tt>.
+     * @param multiValue Whether this operator may be used with multiple arguments. This is then
+     *          validated in {@link NodesFactory}.
      *
-     * @throws IllegalArgumentException If the {@code keywords} is either
-     *         <tt>null</tt>, empty, contain <tt>null</tt>s or contain empty
-     *         strings.
+     * @throws IllegalArgumentException If the {@code symbols} is either <tt>null</tt>, empty,
+     *          or contain illegal symbols.
      */
     public ComparisonOperator(String[] symbols, boolean multiValue) {
         Assert.notEmpty(symbols, "symbols must not be null or empty");
@@ -89,8 +88,8 @@ public final class ComparisonOperator {
     }
 
     /**
-     * Returns all representations of this operator. The first item is always
-     * the primary representation.
+     * Returns all representations of this operator. The first item is always the primary
+     * representation.
      */
     public String[] getSymbols() {
         return symbols.clone();
@@ -104,8 +103,12 @@ public final class ComparisonOperator {
     }
 
 
-    private boolean isValidOperatorSymbol(String symbol) {
-        return !isBlank(symbol) && SYMBOL_PATTERN.matcher(symbol).matches();
+    /**
+     * Whether the given string can represent an operator.
+     * Note: Allowed symbols are limited by the RSQL syntax (i.e. parser).
+     */
+    private boolean isValidOperatorSymbol(String str) {
+        return !isBlank(str) && SYMBOL_PATTERN.matcher(str).matches();
     }
 
 

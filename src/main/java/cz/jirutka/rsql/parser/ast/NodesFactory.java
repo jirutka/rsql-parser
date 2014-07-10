@@ -51,13 +51,12 @@ public class NodesFactory {
     }
 
     /**
-     * Creates a specific {@link LogicalNode} instance for the specified
-     * operator and with the given children nodes.
+     * Creates a specific {@link LogicalNode} instance for the specified operator and with the
+     * given children nodes.
      *
      * @param operator The logical operator to create a node for.
      * @param children An arguments of the operation.
-     * @return A subclass of the {@link LogicalNode} according to the
-     *         specified operator.
+     * @return A subclass of the {@link LogicalNode} according to the specified operator.
      */
     public LogicalNode createLogicalNode(LogicalOperator operator, List<Node> children) {
         switch (operator) {
@@ -72,16 +71,12 @@ public class NodesFactory {
     /**
      * Creates a {@link ComparisonNode} instance with the given parameters.
      *
-     * @param operatorToken A textual representation of the comparison operator
-     *          to be found in the set of supported {@linkplain
-     *          ComparisonOperator operators}.
-     * @param selector The selector that specifies the left side of the
-     *          comparison.
-     * @param arguments A list of arguments that specifies the right side of the
-     *          comparison.
+     * @param operatorToken A textual representation of the comparison operator to be found in the
+     *                      set of supported {@linkplain ComparisonOperator operators}.
+     * @param selector The selector that specifies the left side of the comparison.
+     * @param arguments A list of arguments that specifies the right side of the comparison.
      *
-     * @throws UnknownOperatorException If no operator for the specified
-     *          operator token exists.
+     * @throws UnknownOperatorException If no operator for the specified operator token exists.
      */
     public ComparisonNode createComparisonNode(
             String operatorToken, String selector, List<String> arguments) throws UnknownOperatorException {

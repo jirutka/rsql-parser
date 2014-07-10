@@ -29,8 +29,8 @@ import java.util.List;
 import static cz.jirutka.rsql.parser.ast.StringUtils.join;
 
 /**
- * Superclass of all the comparison nodes that represents a specific comparison
- * operator, a selector and an arguments.
+ * This node represents a comparison with operator, selector and arguments,
+ * e.g. <tt>name=in=(Jimmy,James)</tt>.
  */
 public final class ComparisonNode extends AbstractNode {
 
@@ -41,6 +41,15 @@ public final class ComparisonNode extends AbstractNode {
     private final List<String> arguments;
 
 
+    /**
+     * @param operator Must not be <tt>null</tt>.
+     * @param selector Must not be <tt>null</tt> or blank.
+     * @param arguments Must not be <tt>null</tt> or empty. If the operator is not
+     *          {@link ComparisonOperator#isMultiValue() multiValue}, then it must contain exactly
+     *          one argument.
+     *
+     * @throws IllegalArgumentException If one of the conditions specified above it not met.
+     */
     public ComparisonNode(ComparisonOperator operator, String selector, List<String> arguments) {
         Assert.notNull(operator, "operator must not be null");
         Assert.notBlank(selector, "selector must not be blank");
@@ -62,6 +71,11 @@ public final class ComparisonNode extends AbstractNode {
         return operator;
     }
 
+    /**
+     * Returns a copy of this node with the specified operator.
+     *
+     * @param newOperator Must not be <tt>null</tt>.
+     */
     public ComparisonNode withOperator(ComparisonOperator newOperator) {
         return new ComparisonNode(newOperator, selector, arguments);
     }
@@ -70,14 +84,31 @@ public final class ComparisonNode extends AbstractNode {
         return selector;
     }
 
+    /**
+     * Returns a copy of this node with the specified selector.
+     *
+     * @param newSelector Must not be <tt>null</tt> or blank.
+     */
     public ComparisonNode withSelector(String newSelector) {
         return new ComparisonNode(operator, newSelector, arguments);
     }
 
+    /**
+     * Returns a list of arguments. It's guaranteed that it contains at least one item. When the
+     * operator is not {@link ComparisonOperator#isMultiValue() multiValue}, then it contains
+     * exactly one argument.
+     */
     public List<String> getArguments() {
         return new ArrayList<>(arguments);
     }
 
+    /**
+     * Returns a copy of this node with the specified arguments.
+     *
+     * @param newArguments Must not be <tt>null</tt> or empty. If the operator is not
+     *          {@link ComparisonOperator#isMultiValue() multiValue}, then it must contain exactly
+     *          one argument.
+     */
     public ComparisonNode withArguments(List<String> newArguments) {
         return new ComparisonNode(operator, selector, newArguments);
     }

@@ -28,7 +28,7 @@ import java.util.List;
 public final class AndNode extends LogicalNode {
 
     public AndNode(List<? extends Node> children) {
-        super(LogicalOp.AND, children);
+        super(LogicalOperator.AND, children);
     }
 
     public AndNode withChildren(List<? extends Node> children) {

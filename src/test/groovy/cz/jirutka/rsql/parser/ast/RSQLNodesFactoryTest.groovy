@@ -39,9 +39,9 @@ class RSQLNodesFactoryTest extends Specification {
         then:
             actual.class == expected
         where:
-            operator       | expected
-            LogicalOp.AND  | AndNode
-            LogicalOp.OR   | OrNode
+            operator             | expected
+            LogicalOperator.AND  | AndNode
+            LogicalOperator.OR   | OrNode
 
             className = expected.simpleName
     }

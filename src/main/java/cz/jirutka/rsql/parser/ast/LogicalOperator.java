@@ -23,17 +23,14 @@
  */
 package cz.jirutka.rsql.parser.ast;
 
-/**
- * Logical operators.
- */
-public enum LogicalOp {
+public enum LogicalOperator {
 
     AND (";"),
     OR  (",");
 
     private final String symbol;
 
-    private LogicalOp(String symbol) {
+    private LogicalOperator(String symbol) {
         this.symbol = symbol;
     }
 

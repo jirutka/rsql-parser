@@ -37,10 +37,10 @@ public abstract class LogicalNode extends AbstractNode implements Iterable<Node>
 
     private final List<Node> children = new ArrayList<>();
 
-    private final LogicalOp operator;
+    private final LogicalOperator operator;
 
 
-    protected LogicalNode(LogicalOp operator, List<? extends Node> children) {
+    protected LogicalNode(LogicalOperator operator, List<? extends Node> children) {
         assert operator != null : "operator must not be null";
         assert children != null : "children must not be null";
 
@@ -56,7 +56,7 @@ public abstract class LogicalNode extends AbstractNode implements Iterable<Node>
         return children.iterator();
     }
 
-    public LogicalOp getOperator() {
+    public LogicalOperator getOperator() {
         return operator;
     }
 

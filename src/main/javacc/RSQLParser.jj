@@ -107,7 +107,7 @@ Node Or():
         <OR> node = And() { nodes.add(node); }
     )*
     {
-        return nodes.size() != 1 ? factory.createLogicalNode(LogicalOp.OR, nodes) : nodes.get(0);
+        return nodes.size() != 1 ? factory.createLogicalNode(LogicalOperator.OR, nodes) : nodes.get(0);
     }
 }
 
@@ -122,7 +122,7 @@ Node And():
         <AND> node = Constraint() { nodes.add(node); }
     )*
     {
-        return nodes.size() != 1 ? factory.createLogicalNode(LogicalOp.AND, nodes) : nodes.get(0);
+        return nodes.size() != 1 ? factory.createLogicalNode(LogicalOperator.AND, nodes) : nodes.get(0);
     }
 }
 

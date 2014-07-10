@@ -28,7 +28,7 @@ import java.util.List;
 public final class OrNode extends LogicalNode {
 
     public OrNode(List<? extends Node> children) {
-        super(LogicalOp.OR, children);
+        super(LogicalOperator.OR, children);
     }
 
     public OrNode withChildren(List<? extends Node> children) {

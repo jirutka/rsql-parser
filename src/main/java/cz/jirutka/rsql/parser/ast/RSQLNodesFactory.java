@@ -59,7 +59,7 @@ public class RSQLNodesFactory {
      * @return A subclass of the {@link LogicalNode} according to the
      *         specified operator.
      */
-    public LogicalNode createLogicalNode(LogicalOp operator, List<Node> children) {
+    public LogicalNode createLogicalNode(LogicalOperator operator, List<Node> children) {
         switch (operator) {
             case AND : return new AndNode(children);
             case OR  : return new OrNode(children);

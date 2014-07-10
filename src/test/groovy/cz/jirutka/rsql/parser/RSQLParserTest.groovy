@@ -146,7 +146,7 @@ class RSQLParserTest extends Specification {
         expect:
             parse("sel1==arg1${op.toString()}sel2==arg2") == expected
         where:
-            op << LogicalOp.values()
+            op << LogicalOperator.values()
     }
 
     def 'parse alternative logical operator: "#alt"'() {
@@ -155,8 +155,8 @@ class RSQLParserTest extends Specification {
         expect:
             parse("sel1==arg1${alt}sel2==arg2") == expected
         where:
-            op << LogicalOp.values()
-            alt = op == LogicalOp.AND ? ' and ' : ' or ';
+            op << LogicalOperator.values()
+            alt = op == LogicalOperator.AND ? ' and ' : ' or ';
     }
 
     def 'parse queries with default operators priority: #input'() {

@@ -26,6 +26,8 @@ package cz.jirutka.rsql.parser.ast
 import cz.jirutka.rsql.parser.RSQLParser
 import spock.lang.Specification
 
+import static cz.jirutka.rsql.parser.ast.RSQLOperators.EQUAL
+
 class NodesTest extends Specification {
 
     def 'nodes should define toString method'() {
@@ -39,5 +41,30 @@ class NodesTest extends Specification {
             'name=="Kill Bill";year=gt=2003' | "(name=='Kill Bill';year=gt='2003')"
             'a<=1;b!=2;c>3'                  | "(a=le='1';b!='2';c=gt='3')"
             'a=gt=1,b==2;c!=3,d=lt=4'        | "(a=gt='1',(b=='2';c!='3'),d=lt='4')"
+    }
+
+    def 'nodes should accept visitor'() {
+        setup:
+            def visitor = Mock(RSQLVisitor)
+            def param = Stub(Object)
+            def expected = Stub(Object)
+
+        when: 'accept method with parameter'
+            def result = node.accept(visitor, param)
+        then:
+            1 * visitor.visit({ it.class == node.class }, param) >> expected
+            0 * visitor._
+        and:
+            result == expected
+
+        when: 'accept method without parameter'
+            result = node.accept(visitor)
+        then:
+            1 * visitor.visit({ it.class == node.class }, null) >> expected
+            0 * visitor._
+        and:
+            result == expected
+        where:
+            node << [new AndNode([]), new OrNode([]), new ComparisonNode(EQUAL, 'x', ['y'])]
     }
 }

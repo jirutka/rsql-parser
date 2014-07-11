@@ -21,39 +21,41 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package cz.jirutka.rsql.parser.ast;
+package cz.jirutka.rsql.parser.ast
 
-import java.util.Collection;
+import spock.lang.Specification
 
-abstract class Assert {
+class AssertTest extends Specification {
 
-    public static void isTrue(boolean expression, String message, Object... args) {
-        if (!expression) {
-            throw new IllegalArgumentException(String.format(message, args));
-        }
+    def 'isTrue'() {
+        when:
+            Assert.isTrue(false, 'msg')
+        then:
+            thrown IllegalArgumentException
     }
 
-    public static void notNull(Object obj, String message, Object... args) {
-        if (obj == null) {
-            throw new IllegalArgumentException(String.format(message, args));
-        }
+    def 'notNull'() {
+        when:
+            Assert.notNull(null, 'msg')
+        then:
+            thrown IllegalArgumentException
     }
 
-    public static void notEmpty(Collection col, String message, Object... args) {
-        if (col == null || col.isEmpty()) {
-            throw new IllegalArgumentException(String.format(message, args));
-        }
+    def 'notEmpty'() {
+        when:
+            Assert.notEmpty(value, 'msg')
+        then:
+            thrown IllegalArgumentException
+        where:
+            value << [null, [] as List, [] as Object[]]
     }
 
-    public static void notEmpty(Object[] ary, String message, Object... args) {
-        if (ary == null || ary.length == 0) {
-            throw new IllegalArgumentException(String.format(message, args));
-        }
-    }
-
-    public static void notBlank(String str, String message, Object... args) {
-        if (StringUtils.isBlank(str)) {
-            throw new IllegalArgumentException(String.format(message, args));
-        }
+    def 'notBlank'() {
+        when:
+            Assert.notBlank(value, 'msg')
+        then:
+            thrown IllegalArgumentException
+        where:
+            value << [null, '', '  ']
     }
 }

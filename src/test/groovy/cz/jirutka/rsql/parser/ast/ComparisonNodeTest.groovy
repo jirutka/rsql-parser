@@ -39,4 +39,26 @@ class ComparisonNodeTest extends Specification {
         where:
             operator << defaultOperators() - [IN, NOT_IN]
     }
+
+    def 'should be immutable'() {
+        given:
+            def args = ['thriller', 'sci-fi']
+            def node = new ComparisonNode(IN, 'genres', args)
+
+        when: "modify list of node's arguments"
+            node.getArguments() << 'horror'
+        then: "node's arguments remain unchanged"
+            node.getArguments() == args
+
+        expect: "withX returns copy and doesn't change original node"
+            node.withOperator(NOT_IN)   == new ComparisonNode(NOT_IN, 'genres', args)
+            node.withSelector('foo')    == new ComparisonNode(IN, 'foo', args)
+            node.withArguments(['foo']) == new ComparisonNode(IN, 'genres', ['foo'])
+            node == new ComparisonNode(IN, 'genres', args)
+
+        when: 'modify original list of arguments given to node'
+            args << 'horror'
+        then: "node's arguments remains unchanged"
+            node.getArguments() == ['thriller', 'sci-fi']
+    }
 }

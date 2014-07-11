@@ -23,8 +23,11 @@
  */
 package cz.jirutka.rsql.parser.ast;
 
+import net.jcip.annotations.Immutable;
+
 import java.util.List;
 
+@Immutable
 public final class OrNode extends LogicalNode {
 
     public OrNode(List<? extends Node> children) {

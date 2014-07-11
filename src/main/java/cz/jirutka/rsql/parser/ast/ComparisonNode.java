@@ -23,6 +23,8 @@
  */
 package cz.jirutka.rsql.parser.ast;
 
+import net.jcip.annotations.Immutable;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +34,7 @@ import static cz.jirutka.rsql.parser.ast.StringUtils.join;
  * This node represents a comparison with operator, selector and arguments,
  * e.g. <tt>name=in=(Jimmy,James)</tt>.
  */
+@Immutable
 public final class ComparisonNode extends AbstractNode {
 
     private final ComparisonOperator operator;
@@ -94,9 +97,9 @@ public final class ComparisonNode extends AbstractNode {
     }
 
     /**
-     * Returns a list of arguments. It's guaranteed that it contains at least one item. When the
-     * operator is not {@link ComparisonOperator#isMultiValue() multiValue}, then it contains
-     * exactly one argument.
+     * Returns a copy of the arguments list. It's guaranteed that it contains at least one item.
+     * When the operator is not {@link ComparisonOperator#isMultiValue() multiValue}, then it
+     * contains exactly one argument.
      */
     public List<String> getArguments() {
         return new ArrayList<>(arguments);

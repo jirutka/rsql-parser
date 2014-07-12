@@ -57,17 +57,16 @@ abstract class LogicalNodeTest extends Specification {
         then: "node's children remains unchanged"
             node.children == [child1, child2]
     }
+}
 
-
-    static class AndNodeTest extends LogicalNodeTest {
-        LogicalNode newNode(List children) {
-            new AndNode(children)
-        }
+class AndNodeTest extends LogicalNodeTest {
+    LogicalNode newNode(List children) {
+        new AndNode(children)
     }
+}
 
-    static class OrNodeTest extends LogicalNodeTest {
-        LogicalNode newNode(List children) {
-            new OrNode(children)
-        }
+class OrNodeTest extends LogicalNodeTest {
+    LogicalNode newNode(List children) {
+        new OrNode(children)
     }
 }

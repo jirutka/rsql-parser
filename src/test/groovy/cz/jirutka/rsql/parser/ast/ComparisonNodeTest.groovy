@@ -30,14 +30,12 @@ import static cz.jirutka.rsql.parser.ast.RSQLOperators.*
 class ComparisonNodeTest extends Specification {
 
     def 'throw exception when given multiple arguments for single-argument operator'() {
-        setup:
-            assert ! operator.multiValue
         when:
             new ComparisonNode(operator, 'sel', ['arg1', 'arg2'])
         then:
             thrown IllegalArgumentException
         where:
-            operator << defaultOperators() - [IN, NOT_IN]
+            operator << defaultOperators().findAll{ !it.multiValue }
     }
 
     def 'should be immutable'() {

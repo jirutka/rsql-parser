@@ -27,7 +27,6 @@ import cz.jirutka.rsql.parser.ast.*
 import spock.lang.Specification
 import spock.lang.Unroll
 
-import static cz.jirutka.rsql.parser.RSQLParser.parse
 import static cz.jirutka.rsql.parser.ast.RSQLOperators.*
 
 @Unroll
@@ -35,10 +34,10 @@ class RSQLParserTest extends Specification {
 
     static final RESERVED = ['"', "'", '(', ')', ';', ',', '=', '<', '>', '!', '~', ' ']
 
-    def factory = new NodesFactory(RSQLOperators.defaultOperators())
+    def factory = new NodesFactory(defaultOperators())
 
 
-    def 'throw IllegalArgumentException when input is null'() {
+    def 'throw exception when input is null'() {
         when:
             parse(null)
         then:
@@ -46,25 +45,16 @@ class RSQLParserTest extends Specification {
     }
 
 
-    def 'parse FIQL-like comparison operator: #op'() {
-        given:
-            def expected = factory.createComparisonNode(op.toString(), 'sel', ['val'])
-        expect:
-            parse("sel${op.toString()}val") == expected
-        where:
-            op << defaultOperators()*.symbols.flatten()
-    }
-
-    def 'parse alternative comparison operator: #op'() {
+    def 'parse comparison operator: #op'() {
         given:
             def expected = factory.createComparisonNode(op, 'sel', ['val'])
         expect:
             parse("sel${op}val") == expected
         where:
-            op << ['<', '>', '<=', '>=']
+            op << defaultOperators()*.symbols.flatten()
     }
 
-    def 'throw RSQLParserException for deprecated short equal operator: ='() {
+    def 'throw exception for deprecated short equal operator: ='() {
         when:
             parse('sel=val')
         then:
@@ -80,18 +70,16 @@ class RSQLParserTest extends Specification {
                 'allons-y', 'l00k.dot.path', 'look/XML/path', 'n:look/n:xml', 'path.to::Ref', '$doll_r.way' ]
     }
 
-    def 'throw RSQLParserException for selector with reserved char: #c'() {
+    def 'throw exception for selector with reserved char: #input'() {
         when:
-            ["${c}==val", "ill${c}==val", "ill${c}ness==val"].each {
-                parse(it)
-            }
+            parse("${input}==val")
         then:
             thrown RSQLParserException
         where:
-            c << RESERVED
+            input << RESERVED.collect{ ["ill${it}", "ill${it}ness"] }.flatten() - ['ill ']
     }
 
-    def 'throw RSQLParserException for empty selector'() {
+    def 'throw exception for empty selector'() {
         when:
             parse("==val")
         then:
@@ -108,15 +96,13 @@ class RSQLParserTest extends Specification {
             input << [ '«Allons-y»', 'h@llo', '*star*', 'čes*ký', '42', '0.15', '3:15' ]
     }
 
-    def 'throw RSQLParserException for unquoted argument with reserved char: #c'() {
+    def 'throw exception for unquoted argument with reserved char: #input'() {
         when:
-            ["sel==${c}", "sel==ill${c}", "sel==ill${c}ness"].each {
-                parse(it)
-            }
+            parse("sel==${input}")
         then:
             thrown RSQLParserException
         where:
-            c << RESERVED
+            input << RESERVED.collect{ ["ill${it}", "ill${it}ness"] }.flatten() - ['ill ']
     }
 
     def 'parse quoted argument with any chars: #input'() {
@@ -181,7 +167,7 @@ class RSQLParserTest extends Specification {
             '((s0==a0));s1==a1'                      | and(eq('s0', 'a0'), eq('s1','a1'))
     }
 
-    def 'throw RSQLParserException for unclosed parenthesis: #input'() {
+    def 'throw exception for unclosed parenthesis: #input'() {
         when:
             parse(input)
         then:

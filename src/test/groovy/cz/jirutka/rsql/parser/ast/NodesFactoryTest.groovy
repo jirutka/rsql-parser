@@ -27,11 +27,14 @@ import cz.jirutka.rsql.parser.UnknownOperatorException
 import spock.lang.Specification
 import spock.lang.Unroll
 
-import static cz.jirutka.rsql.parser.ast.RSQLOperators.*
+import static cz.jirutka.rsql.parser.ast.LogicalOperator.AND
+import static cz.jirutka.rsql.parser.ast.LogicalOperator.OR
+import static cz.jirutka.rsql.parser.ast.RSQLOperators.EQUAL
+import static cz.jirutka.rsql.parser.ast.RSQLOperators.GREATER_THAN
 
 class NodesFactoryTest extends Specification {
 
-    def factory = new NodesFactory(defaultOperators())
+    def factory = new NodesFactory([EQUAL, GREATER_THAN] as Set)
 
 
     @Unroll
@@ -41,9 +44,9 @@ class NodesFactoryTest extends Specification {
         then:
             actual.class == expected
         where:
-            operator             | expected
-            LogicalOperator.AND  | AndNode
-            LogicalOperator.OR   | OrNode
+            operator | expected
+            AND      | AndNode
+            OR       | OrNode
 
             className = expected.simpleName
     }
@@ -52,19 +55,19 @@ class NodesFactoryTest extends Specification {
         when:
             def node = factory.createComparisonNode(opToken, 'doctor', ['who?'])
         then:
-            node.operator  == operator
+            node.operator  == expected
             node.selector  == 'doctor'
             node.arguments == ['who?']
         where:
-            opToken | operator
+            opToken | expected
             '=='    | EQUAL
             '=gt='  | GREATER_THAN
             '>'     | GREATER_THAN
     }
 
-    def 'throw UnknownOperatorException when given unknown operator token'() {
+    def 'throw UnknownOperatorException when given unsupported operator token'() {
         when:
-            factory.createComparisonNode('=foo=', 'sel', ['arg'])
+            factory.createComparisonNode('=lt=', 'sel', ['arg'])
         then:
             thrown UnknownOperatorException
     }

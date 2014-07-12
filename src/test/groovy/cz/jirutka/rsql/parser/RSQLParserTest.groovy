@@ -37,6 +37,16 @@ class RSQLParserTest extends Specification {
     def factory = new NodesFactory(defaultOperators())
 
 
+    def 'throw exception when created with null or empty set of operators'() {
+        when:
+           new RSQLParser(operators as Set)
+        then:
+            thrown IllegalArgumentException
+        where:
+            operators << [null, []]
+    }
+
+
     def 'throw exception when input is null'() {
         when:
             parse(null)
@@ -174,6 +184,23 @@ class RSQLParserTest extends Specification {
             thrown RSQLParserException
         where:
             input << [ '(s0==a0;s1!=a1', 's0==a0)', 's0==a;(s1=in=(b,c),s2!=d' ]
+    }
+
+
+    def 'use parser with custom set of operators'() {
+        setup:
+            def allOperator = new ComparisonOperator('=all=', true)
+            def parser = new RSQLParser([EQUAL, allOperator] as Set)
+            def expected = and(eq('name', 'TRON'), new ComparisonNode(allOperator, 'genres', ['sci-fi', 'thriller']))
+
+        expect:
+            parser.parse('name==TRON;genres=all=(sci-fi,thriller)') == expected
+
+        when: 'unsupported operator used'
+            parser.parse('name==TRON;year=ge=2010')
+        then:
+            def ex = thrown(RSQLParserException)
+            ex.cause instanceof UnknownOperatorException
     }
 
 

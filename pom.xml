@@ -7,7 +7,7 @@
     <parent>
         <groupId>cz.jirutka.maven</groupId>
         <artifactId>groovy-parent</artifactId>
-        <version>1.1.6</version>
+        <version>1.1.7</version>
     </parent>
 
 
@@ -67,13 +67,6 @@
         <dependency>
             <groupId>org.spockframework</groupId>
             <artifactId>spock-core</artifactId>
-            <version>0.7-groovy-2.0</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.codehaus.groovy</groupId>
-                    <artifactId>groovy-all</artifactId>
-                </exclusion>
-            </exclusions>
             <scope>test</scope>
         </dependency>
 
@@ -84,18 +77,12 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- Not used, just to exclude dependency from the parent POM. -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
             <version>${slf4j.version}</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
-            <version>1.1.1</version>
-            <scope>test</scope>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 
@@ -119,40 +106,24 @@
                 </executions>
             </plugin>
         </plugins>
+
+        <pluginManagement>
+            <plugins>
+                <!-- Generated sources must be excluded from analysis,
+                     otherwise Coveralls fails. -->
+                <plugin>
+                    <groupId>org.jacoco</groupId>
+                    <artifactId>jacoco-maven-plugin</artifactId>
+                    <configuration>
+                        <excludes>
+                            <exclude>**/Parse*.*</exclude>
+                            <exclude>**/SimpleCharStream.*</exclude>
+                            <exclude>**/Token.*</exclude>
+                            <exclude>**/TokenMgrError.*</exclude>
+                        </excludes>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
     </build>
-
-
-    <!--//////////////////// PROFILES ////////////////////-->
-
-    <profiles>
-        <profile>
-            <id>ci</id>
-
-            <activation>
-                <property>
-                    <name>env.CI</name>
-                </property>
-            </activation>
-
-            <build>
-                <plugins>
-                    <!-- Generated sources must be excluded from analysis,
-                         otherwise Coveralls fails. -->
-                    <plugin>
-                        <groupId>org.jacoco</groupId>
-                        <artifactId>jacoco-maven-plugin</artifactId>
-                        <version>0.7.0.201403182114</version>
-                        <configuration>
-                            <excludes>
-                                <exclude>**/Parse*.*</exclude>
-                                <exclude>**/SimpleCharStream.*</exclude>
-                                <exclude>**/Token.*</exclude>
-                                <exclude>**/TokenMgrError.*</exclude>
-                            </excludes>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
 </project>

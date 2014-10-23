@@ -1,7 +1,7 @@
 RSQL / FIQL parser
 ==================
 [![Build Status](https://travis-ci.org/jirutka/rsql-parser.svg)](https://travis-ci.org/jirutka/rsql-parser)
-[![Coverage Status](https://coveralls.io/repos/jirutka/rsql-parser/badge.png?branch=master)](https://coveralls.io/r/jirutka/rsql-parser?branch=master)
+[![Coverage Status](https://img.shields.io/coveralls/jirutka/rsql-parser/master.svg)](https://coveralls.io/r/jirutka/rsql-parser?branch=master)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/cz.jirutka.rsql/rsql-parser/badge.svg)](https://maven-badges.herokuapp.com/maven-central/cz.jirutka.rsql/rsql-parser)
 
 RSQL is a query language for parametrized filtering of entries in RESTful APIs. It’s based on

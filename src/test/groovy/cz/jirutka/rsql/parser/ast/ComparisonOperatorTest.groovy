@@ -42,4 +42,9 @@ class ComparisonOperatorTest extends Specification {
         where:
             sym << [null, '', 'foo', '=123=', '=', '=<', '=>', '=!', 'a=b=c']
     }
+
+    def 'equals when contains same symbols'() {
+        expect:
+            new ComparisonOperator('=out=', '=notin=') == new ComparisonOperator('=out=', '=notin=', true)
+    }
 }

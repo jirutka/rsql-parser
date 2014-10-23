@@ -130,7 +130,7 @@ Released versions are available in The Central Repository. Just add this artifac
 <dependency>
     <groupId>cz.jirutka.rsql</groupId>
     <artifactId>rsql-parser</artifactId>
-    <version>2.0.M1</version>
+    <version>2.0.0</version>
 </dependency>
 ```
 

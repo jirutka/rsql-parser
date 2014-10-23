@@ -1,3 +1,11 @@
+v2.0.0 (2014-10-23)
+-------------------
+- Simplified AST; node per operator replaced with just ComparisonNode.
+- Simplified support for custom operators; the RSQLNodesFactory is no longer needed.
+- The RSQLParserException changed to inherit from the RuntimeException.
+- Added withSelector/withArguments/withChildren methods to the AST nodes.
+- Tests improved.
+
 v2.0.M1 (2014-03-20)
 -------------------
 - JavaCC grammar, all the code and tests completely rewritten.

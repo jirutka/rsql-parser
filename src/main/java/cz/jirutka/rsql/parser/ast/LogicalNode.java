@@ -31,8 +31,8 @@ import static cz.jirutka.rsql.parser.ast.StringUtils.join;
 import static java.util.Collections.unmodifiableList;
 
 /**
- * Superclass of all the logical nodes that represents a logical operation that connects
- * a children nodes.
+ * Superclass of all logical nodes that represents a logical operation that connects
+ * children nodes.
  */
 public abstract class LogicalNode extends AbstractNode implements Iterable<Node> {
 
@@ -41,6 +41,10 @@ public abstract class LogicalNode extends AbstractNode implements Iterable<Node>
     private final LogicalOperator operator;
 
 
+    /**
+     * @param operator Must not be <tt>null</tt>.
+     * @param children Children nodes, i.e. operands; must not be <tt>null</tt>.
+     */
     protected LogicalNode(LogicalOperator operator, List<? extends Node> children) {
         assert operator != null : "operator must not be null";
         assert children != null : "children must not be null";
@@ -51,7 +55,7 @@ public abstract class LogicalNode extends AbstractNode implements Iterable<Node>
 
 
     /**
-     * Returns a copy of this node with the specified children.
+     * Returns a copy of this node with the specified children nodes.
      */
     public abstract LogicalNode withChildren(List<? extends Node> children);
 

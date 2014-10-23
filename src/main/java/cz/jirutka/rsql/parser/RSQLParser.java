@@ -38,8 +38,8 @@ import java.util.Set;
  * Parser of the RSQL (RESTful Service Query Language).
  *
  * <p>RSQL is a query language for parametrized filtering of entries in RESTful APIs. It's a
- * superset of <a href="http://tools.ietf.org/html/draft-nottingham-atompub-fiql-00">FIQL</a> (Feed
- * Item Query Language), so it can be used for parsing FIQL as well.</p>
+ * superset of the <a href="http://tools.ietf.org/html/draft-nottingham-atompub-fiql-00">FIQL</a>
+ * (Feed Item Query Language), so it can be used for parsing FIQL as well.</p>
  *
  * <p><b>Grammar in EBNF notation:</b>
  * <pre>{@code
@@ -106,7 +106,7 @@ public final class RSQLParser {
      *
      * @throws RSQLParserException If some exception occurred during parsing, i.e. the
      *          {@code query} is syntactically invalid.
-     * @throws IllegalArgumentException If the {@code query} is null.
+     * @throws IllegalArgumentException If the {@code query} is <tt>null</tt>.
      */
     public Node parse(String query) throws RSQLParserException {
         if (query == null) {

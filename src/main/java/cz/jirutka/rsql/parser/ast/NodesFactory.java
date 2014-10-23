@@ -55,7 +55,7 @@ public class NodesFactory {
      * given children nodes.
      *
      * @param operator The logical operator to create a node for.
-     * @param children An arguments of the operation.
+     * @param children Children nodes, i.e. operands.
      * @return A subclass of the {@link LogicalNode} according to the specified operator.
      */
     public LogicalNode createLogicalNode(LogicalOperator operator, List<Node> children) {

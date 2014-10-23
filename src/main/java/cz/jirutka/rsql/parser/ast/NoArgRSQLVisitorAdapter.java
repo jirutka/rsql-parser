@@ -24,7 +24,7 @@
 package cz.jirutka.rsql.parser.ast;
 
 /**
- * An adapter for the {@link RSQLVisitor} interface with a simpler contract that omits an optional
+ * An adapter for the {@link RSQLVisitor} interface with a simpler contract that omits the optional
  * second argument.
  *
  * @param <R> Return type of the visitor's method.

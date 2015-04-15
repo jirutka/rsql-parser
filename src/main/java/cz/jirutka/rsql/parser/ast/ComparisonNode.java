@@ -62,7 +62,7 @@ public final class ComparisonNode extends AbstractNode {
 
         this.operator = operator;
         this.selector = selector;
-        this.arguments = new ArrayList<>(arguments);
+        this.arguments = new ArrayList<String>(arguments);
     }
 
 
@@ -102,7 +102,7 @@ public final class ComparisonNode extends AbstractNode {
      * contains exactly one argument.
      */
     public List<String> getArguments() {
-        return new ArrayList<>(arguments);
+        return new ArrayList<String>(arguments);
     }
 
     /**

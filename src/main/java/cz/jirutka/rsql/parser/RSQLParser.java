@@ -118,7 +118,9 @@ public final class RSQLParser {
         try {
             return parser.Input();
 
-        } catch (Exception | TokenMgrError ex) {
+        } catch (Exception ex) {
+            throw new RSQLParserException(ex);
+        } catch (TokenMgrError ex) {
             throw new RSQLParserException(ex);
         }
     }

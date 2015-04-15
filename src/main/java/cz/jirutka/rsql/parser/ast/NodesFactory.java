@@ -42,7 +42,7 @@ public class NodesFactory {
 
     public NodesFactory(Set<ComparisonOperator> operators) {
 
-        comparisonOperators = new HashMap<>(operators.size());
+        comparisonOperators = new HashMap<String, ComparisonOperator>(operators.size());
         for (ComparisonOperator op : operators) {
             for (String sym : op.getSymbols()) {
                 comparisonOperators.put(sym, op);

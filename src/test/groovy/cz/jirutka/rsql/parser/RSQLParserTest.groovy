@@ -124,6 +124,21 @@ class RSQLParserTest extends Specification {
             input << [ '"hi there!"', "'Pěkný den!'", '"Flynn\'s *"', '"o)\'O\'(o"', '"6*7=42"', '"\\(^_^)/"' ]
     }
 
+    def 'parse escaped quoted argument: #input'() {
+        given:
+        def expected = eq('sel', input[1..-2])
+        expect:
+        parse("sel==${input}") == expected
+        where:
+        input << [
+                '"hi \\\"there!"',
+                '"hey \\\\\\\"there!"',
+                '\'hi \\\'there!\'',
+                '\'she "said" it\\\'s mine\'',
+                '"i \\\"agreed\\\" that it\'s hers"'
+        ]
+    }
+
     def 'parse arguments group: #input'() {
         setup: 'strip quotes'
             def values = input.collect { val ->

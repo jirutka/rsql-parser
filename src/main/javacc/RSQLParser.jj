@@ -67,10 +67,10 @@ TOKEN : {
 
 TOKEN : {
     < UNRESERVED_STR    : ( ~["\"", "'", "(", ")", ";", ",", "=", "<", ">", "!", "~", " "] )+ >
-  | < SINGLE_QUOTED_STR : ( "'" ( ~["'"] )* "'" ) > {
+  | < SINGLE_QUOTED_STR : ( "'" ( "\\" ~[] | ~["'", "\\"] )* "'" ) > {
         matchedToken.image = image.substring(1, image.length() -1);
     }
-  | < DOUBLE_QUOTED_STR : ( "\"" ( ~["\""] )* "\"" ) > {
+  | < DOUBLE_QUOTED_STR : ( "\"" ( "\\" ~[] | ~["\"", "\\"] )* "\"" ) > {
         matchedToken.image = image.substring(1, image.length() -1);
     }
 }

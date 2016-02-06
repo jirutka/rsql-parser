@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2013-2014 Jakub Jirutka <jakub@jirutka.cz>.
+ * Copyright 2013-2016 Jakub Jirutka <jakub@jirutka.cz>.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -67,12 +67,8 @@ TOKEN : {
 
 TOKEN : {
     < UNRESERVED_STR    : ( ~["\"", "'", "(", ")", ";", ",", "=", "<", ">", "!", "~", " "] )+ >
-  | < SINGLE_QUOTED_STR : ( "'" ( ~["'"] )* "'" ) > {
-        matchedToken.image = image.substring(1, image.length() -1);
-    }
-  | < DOUBLE_QUOTED_STR : ( "\"" ( ~["\""] )* "\"" ) > {
-        matchedToken.image = image.substring(1, image.length() -1);
-    }
+  | < SINGLE_QUOTED_STR : ( "'" ( ~["'"] )* "'" ) >
+  | < DOUBLE_QUOTED_STR : ( "\"" ( ~["\""] )* "\"" ) >
 }
 
 TOKEN : {
@@ -205,8 +201,10 @@ List<String> CommaSepArguments():
 
 String Argument(): {}
 {
-    ( token = <UNRESERVED_STR> | token = <DOUBLE_QUOTED_STR> | token = <SINGLE_QUOTED_STR> )
+    token = <UNRESERVED_STR> { return token.image; }
+    |
+    ( token = <DOUBLE_QUOTED_STR> | token = <SINGLE_QUOTED_STR> )
     {
-        return token.image;
+        return token.image.substring(1, token.image.length() -1);
     }
 }

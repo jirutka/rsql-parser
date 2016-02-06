@@ -7,7 +7,7 @@
     <parent>
         <groupId>cz.jirutka.maven</groupId>
         <artifactId>groovy-parent</artifactId>
-        <version>1.1.7</version>
+        <version>1.2.0</version>
     </parent>
 
 
@@ -79,6 +79,12 @@
             <groupId>cglib</groupId>
             <artifactId>cglib-nodep</artifactId>
             <version>3.1</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy</artifactId>
             <scope>test</scope>
         </dependency>
 

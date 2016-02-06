@@ -16,8 +16,21 @@ For example, you can query your resource like this: `/movies?query=name=="Kill B
 This is a complete and thoroughly tested parser for RSQL written in [JavaCC](http://javacc.java.net/) and Java. Since
 RSQL is a superset of the FIQL, it can be used for parsing FIQL as well.
 
-RSQL-parser can be used with [RSQL-hibernate](https://github.com/jirutka/rsql-hibernate), library to translate RSQL
-expression to Hibernate’s Criteria query (it’s written for 1.x version of the parser though), or [RSQL-MongoDB](https://github.com/jirutka/rsql-mongodb-morphia).
+
+Related libraries
+-----------------
+
+RSQL-parser can be used with:
+
+* [rsql-jpa](https://github.com/tennaito/rsql-jpa) to convert RSQL into JPA2 CriteriaQuery,
+* [rsql-mongodb](https://github.com/RutledgePaulV/rsql-mongodb) to convert RSQL into MongoDB query using Spring Data MongoDB,
+* [q-builders](https://github.com/RutledgePaulV/q-builders) to build (not only) RSQL query in type-safe manner,
+* _your own library…_
+
+It’s very easy to write a converter for RSQL using its AST. Take a look at very simple and naive converter to JPA2 in
+less than 100 lines of code [here](https://gist.github.com/jirutka/42a0f9bfea280b3c5dca). You may also read a [blog
+article about RSQL](http://www.baeldung.com/rest-api-search-language-rsql-fiql) by
+[Eugen Paraschiv](https://github.com/eugenp).
 
 
 Grammar and semantic

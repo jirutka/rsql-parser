@@ -1,7 +1,7 @@
 = RSQL / FIQL parser
 Jakub Jirutka <https://github.com/jirutka[@jirutka]>
 :name: rsql-parser
-:version: 2.0.0
+:version: 2.1.0
 :mvn-group: cz.jirutka.rsql
 :gh-name: jirutka/{name}
 :gh-branch: master

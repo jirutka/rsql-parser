@@ -69,7 +69,7 @@ import java.util.Set;
  * all-chars      = ? all unicode characters ?;
  * }</pre>
  *
- * @version 2.0
+ * @version 2.1
  */
 @Immutable
 public final class RSQLParser {

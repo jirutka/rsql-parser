@@ -2,7 +2,7 @@
 :repo-uri: https://github.com/jirutka/rsql-parser
 :issue-uri: {repo-uri}/issues
 
-== 2.1.0 (unreleased)
+== 2.1.0 (2014-02-07)
 
 * Added `\` (backslash) as an escape character inside a quoted argument (requested in {issue-uri}/#7[#7]).
 

@@ -138,9 +138,9 @@ However if you want to use the last snapshot version, you have to add the Sonaty
 
 ```xml
 <repository>
-    <id>sonatype-snapshots</id>
-    <name>Sonatype repository for deploying snapshots</name>
-    <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+    <id>jfrog-oss-snapshot-local</id>
+    <name>JFrog OSS repository for snapshots</name>
+    <url>https://oss.jfrog.org/oss-snapshot-local</url>
     <snapshots>
         <enabled>true</enabled>
     </snapshots>

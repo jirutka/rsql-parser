@@ -3,5 +3,11 @@ language: java
 jdk:
   - openjdk7
   - oraclejdk8
+
+# Cache local Maven repository.
+cache:
+  directories:
+    - $HOME/.m2
+
 after_success:
   - mvn jacoco:report coveralls:report

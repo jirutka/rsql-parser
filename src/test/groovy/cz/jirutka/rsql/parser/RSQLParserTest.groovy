@@ -121,7 +121,30 @@ class RSQLParserTest extends Specification {
         expect:
             parse("sel==${input}") == expected
         where:
-            input << [ '"hi there!"', "'Pěkný den!'", '"Flynn\'s *"', '"o)\'O\'(o"', '"6*7=42"', '"\\(^_^)/"' ]
+            input << [ '"hi there!"', "'Pěkný den!'", '"Flynn\'s *"', '"o)\'O\'(o"', '"6*7=42"' ]
+    }
+
+
+    def 'parse escaped single quoted argument: #input'() {
+        expect:
+            parse("sel==${input}") == eq('sel', parsed)
+        where:
+            input                   | parsed
+            "'10\\' 15\"'"          | "10' 15\""
+            "'10\\' 15\\\"'"        | "10' 15\""
+            "'w\\\\ \\'Flyn\\n\\''" | "w\\ 'Flynn'"
+            "'\\\\(^_^)/'"          | "\\(^_^)/"
+    }
+
+    def 'parse escaped double quoted argument: #input'() {
+        expect:
+            parse("sel==${input}") == eq('sel', parsed)
+        where:
+            input                   | parsed
+            '"10\' 15\\""'          | '10\' 15"'
+            '"10\\\' 15\\""'        | '10\' 15"'
+            '"w\\\\ \\"Flyn\\n\\""' | 'w\\ "Flynn"'
+            '"\\\\(^_^)/"'          | '\\(^_^)/'
     }
 
     def 'parse arguments group: #input'() {

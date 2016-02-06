@@ -52,6 +52,23 @@ final class Parser {
         this(stream, encoding);
         this.factory = factory;
     }
+
+    private String unescape(String s) {
+        if (s.indexOf('\\') < 0) {
+            return s;
+        }
+        final StringBuilder sb = new StringBuilder(s.length());
+
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) == '\\') {
+                i++;
+            }
+            if (i < s.length()) {
+                sb.append(s.charAt(i));
+            }
+        }
+        return sb.toString();
+    }
 }
 
 PARSER_END(Parser)
@@ -62,13 +79,14 @@ SKIP : {
 }
 
 TOKEN : {
-    < #ALPHA : ["a"-"z", "A"-"Z"] >
+    < #ALPHA        : ["a"-"z", "A"-"Z"] >
+  | < #ESCAPED_CHAR : "\\" ~[] >
 }
 
 TOKEN : {
     < UNRESERVED_STR    : ( ~["\"", "'", "(", ")", ";", ",", "=", "<", ">", "!", "~", " "] )+ >
-  | < SINGLE_QUOTED_STR : ( "'" ( ~["'"] )* "'" ) >
-  | < DOUBLE_QUOTED_STR : ( "\"" ( ~["\""] )* "\"" ) >
+  | < SINGLE_QUOTED_STR : ( "'" ( <ESCAPED_CHAR> | ~["'", "\\"] )* "'" ) >
+  | < DOUBLE_QUOTED_STR : ( "\"" ( <ESCAPED_CHAR> | ~["\"", "\\"] )* "\"" ) >
 }
 
 TOKEN : {
@@ -205,6 +223,6 @@ String Argument(): {}
     |
     ( token = <DOUBLE_QUOTED_STR> | token = <SINGLE_QUOTED_STR> )
     {
-        return token.image.substring(1, token.image.length() -1);
+        return unescape(token.image.substring(1, token.image.length() -1));
     }
 }

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2013-2014 Jakub Jirutka <jakub@jirutka.cz>.
+ * Copyright 2013-2016 Jakub Jirutka <jakub@jirutka.cz>.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -60,11 +60,12 @@ import java.util.Set;
  * value          = unreserved-str | double-quoted | single-quoted;
  *
  * unreserved-str = unreserved, { unreserved }
- * single-quoted  = "'", { all-chars - "'" }, "'";
- * double-quoted  = '"', { all-chars - '"' }, '"';
+ * single-quoted  = "'", { ( escaped | all-chars - ( "'" | "\" ) ) }, "'";
+ * double-quoted  = '"', { ( escaped | all-chars - ( '"' | "\" ) ) }, '"';
  *
  * reserved       = '"' | "'" | "(" | ")" | ";" | "," | "=" | "!" | "~" | "<" | ">" | " ";
  * unreserved     = all-chars - reserved;
+ * escaped        = "\", all-chars;
  * all-chars      = ? all unicode characters ?;
  * }</pre>
  *

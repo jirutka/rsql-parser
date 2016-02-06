@@ -85,12 +85,17 @@ reserved character or a white space can be unquoted, other arguments must be enc
     value          = unreserved-str | double-quoted | single-quoted;
 
     unreserved-str = unreserved, { unreserved }
-    single-quoted  = "'", { all-chars - "'" }, "'";
-    double-quoted  = '"', { all-chars - '"' }, '"';
+    single-quoted  = "'", { ( escaped | all-chars - ( "'" | "\" ) ) }, "'";
+    double-quoted  = '"', { ( escaped | all-chars - ( '"' | "\" ) ) }, '"';
 
     reserved       = '"' | "'" | "(" | ")" | ";" | "," | "=" | "!" | "~" | "<" | ">";
     unreserved     = all-chars - reserved - " ";
+    escaped        = "\", all-chars;
     all-chars      = ? all unicode characters ?;
+
+If you need to use both single and double quotes inside a quoted argument, then you must escape one of them using `\`
+(backslash). If you want to use `\` literally, then double it as `\\`. Backslash has a special meaning only inside
+a quoted argument, not in unquoted argument.
 
 
 Examples

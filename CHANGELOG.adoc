@@ -2,6 +2,10 @@
 :repo-uri: https://github.com/jirutka/rsql-parser
 :issue-uri: {repo-uri}/issues
 
+== 2.1.0 (unreleased)
+
+* Added `\` (backslash) as an escape character inside a quoted argument (requested in {issue-uri}/#7[#7]).
+
 == 2.0.0 (2014-10-23)
 
 * Simplified AST; node per operator replaced with just ComparisonNode.

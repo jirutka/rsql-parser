@@ -129,14 +129,11 @@ public final class ComparisonNode extends AbstractNode {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof ComparisonNode)) return false;
-
         ComparisonNode that = (ComparisonNode) o;
 
-        if (!arguments.equals(that.arguments)) return false;
-        if (!operator.equals(that.operator)) return false;
-        if (!selector.equals(that.selector)) return false;
-
-        return true;
+        return arguments.equals(that.arguments)
+            && operator.equals(that.operator)
+            && selector.equals(that.selector);
     }
 
     @Override

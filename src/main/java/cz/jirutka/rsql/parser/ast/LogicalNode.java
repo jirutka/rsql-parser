@@ -88,12 +88,10 @@ public abstract class LogicalNode extends AbstractNode implements Iterable<Node>
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof LogicalNode)) return false;
-
         LogicalNode nodes = (LogicalNode) o;
-        if (!children.equals(nodes.children)) return false;
-        if (operator != nodes.operator) return false;
 
-        return true;
+        return children.equals(nodes.children)
+            && operator == nodes.operator;
     }
 
     @Override

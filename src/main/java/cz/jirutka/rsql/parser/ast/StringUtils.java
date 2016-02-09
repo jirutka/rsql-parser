@@ -33,7 +33,7 @@ abstract class StringUtils {
         for (Object s : list) {
             line.append(s).append(glue);
         }
-        return list.size() == 0 ? "" : line.substring(0, line.length() - glue.length());
+        return list.isEmpty() ? "" : line.substring(0, line.length() - glue.length());
     }
 
     public static boolean isBlank(String str) {

@@ -11,6 +11,8 @@ env:
 cache:
   directories:
     - $HOME/.m2
+before_cache:
+  - rm -Rf $HOME/.m2/repository/cz/jirutka/rsql/rsql-parser
 
 after_success:
   - mvn jacoco:report coveralls:report

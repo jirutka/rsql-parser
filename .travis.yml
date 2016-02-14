@@ -3,6 +3,9 @@ language: java
 jdk:
   - openjdk7
   - oraclejdk8
+env:
+  global:
+    - secure: "arKo+t0dCh3i3AaF6Lq2OXez90jz5zLjkSj//66VyvHEDuWbnvqQRubGH8JQLl3wjN/PzIlypWRUMApseOGp/mi0Twwlk6NjW13Tu/5fwmwdzQO1RhCPuJSBuGECrLDAWg1hRYxWtCpfbPCYX8TYrrbHtC5hu4FAYK/59HArmFo="  # BINTRAY_API_KEY
 
 # Cache local Maven repository.
 cache:
@@ -11,3 +14,4 @@ cache:
 
 after_success:
   - mvn jacoco:report coveralls:report
+  - script/travis-deploy

@@ -177,9 +177,11 @@ ComparisonNode Comparison():
 
 String Selector(): {}
 {
-    token = <UNRESERVED_STR>
+    token = <UNRESERVED_STR> { return token.image; }
+    |
+    ( token = <DOUBLE_QUOTED_STR> | token = <SINGLE_QUOTED_STR> )
     {
-        return token.image;
+        return unescape(token.image.substring(1, token.image.length() -1));
     }
 }
 

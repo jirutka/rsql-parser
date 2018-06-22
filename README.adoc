@@ -71,7 +71,7 @@ It can be any non empty Unicode string that doesn’t contain reserved character
 The specific syntax of the selector is not enforced by this parser.
 
 ----
-selector       = unreserved-str;
+selector       = unreserved-str | double-quoted | single-quoted;
 ----
 
 Comparison operators are in FIQL notation and some of them has an alternative syntax as well:

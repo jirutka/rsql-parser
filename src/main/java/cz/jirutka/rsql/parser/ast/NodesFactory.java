@@ -38,14 +38,21 @@ import java.util.Set;
 public class NodesFactory {
 
     private final Map<String, ComparisonOperator> comparisonOperators;
+    private final Map<String, UnaryComparisonOperator> unaryComparisonOperators;
 
+    public NodesFactory(Set<ComparisonOperator> comparisonOperators, Set<UnaryComparisonOperator> unaryOperators) {
 
-    public NodesFactory(Set<ComparisonOperator> operators) {
-
-        comparisonOperators = new HashMap<>(operators.size());
-        for (ComparisonOperator op : operators) {
+        this.comparisonOperators = new HashMap<>(comparisonOperators.size());
+        for (ComparisonOperator op : comparisonOperators) {
             for (String sym : op.getSymbols()) {
-                comparisonOperators.put(sym, op);
+                this.comparisonOperators.put(sym, op);
+            }
+        }
+
+        this.unaryComparisonOperators = new HashMap<>(unaryOperators.size());
+        for (UnaryComparisonOperator op : unaryOperators) {
+            for (String sym : op.getSymbols()) {
+                this.unaryComparisonOperators.put(sym, op);
             }
         }
     }
@@ -84,6 +91,26 @@ public class NodesFactory {
         ComparisonOperator op = comparisonOperators.get(operatorToken);
         if (op != null) {
             return new ComparisonNode(op, selector, arguments);
+        } else {
+            throw new UnknownOperatorException(operatorToken);
+        }
+    }
+
+    /**
+     * Creates a {@link UnaryComparisonNode} instance with the given parameters.
+     *
+     * @param operatorToken A textual representation of the comparison operator to be found in the
+     *                      set of supported {@linkplain UnaryComparisonOperator operators}.
+     * @param selector The selector that specifies the left side of the comparison.
+     *
+     * @throws UnknownOperatorException If no operator for the specified operator token exists.
+     */
+    public UnaryComparisonNode createUnaryComparisonNode(
+        String operatorToken, String selector) throws UnknownOperatorException {
+
+        UnaryComparisonOperator op = unaryComparisonOperators.get(operatorToken);
+        if (op != null) {
+            return new UnaryComparisonNode(op, selector);
         } else {
             throw new UnknownOperatorException(operatorToken);
         }

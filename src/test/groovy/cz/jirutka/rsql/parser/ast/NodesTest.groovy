@@ -27,6 +27,7 @@ import cz.jirutka.rsql.parser.RSQLParser
 import spock.lang.Specification
 
 import static cz.jirutka.rsql.parser.ast.RSQLOperators.EQUAL
+import static cz.jirutka.rsql.parser.ast.RSQLOperators.IS_NULL
 
 class NodesTest extends Specification {
 
@@ -41,6 +42,7 @@ class NodesTest extends Specification {
             'name=="Kill Bill";year=gt=2003' | "(name=='Kill Bill';year=gt='2003')"
             'a<=1;b!=2;c>3'                  | "(a=le='1';b!='2';c=gt='3')"
             'a=gt=1,b==2;c!=3,d=lt=4'        | "(a=gt='1',(b=='2';c!='3'),d=lt='4')"
+            'a=isnull=;b==2,c!=4'             | "((a=isnull=;b=='2'),c!='4')"
     }
 
     def 'nodes should accept visitor'() {
@@ -65,6 +67,6 @@ class NodesTest extends Specification {
         and:
             result == expected
         where:
-            node << [new AndNode([]), new OrNode([]), new ComparisonNode(EQUAL, 'x', ['y'])]
+            node << [new AndNode([]), new OrNode([]), new ComparisonNode(EQUAL, 'x', ['y']), new UnaryComparisonNode(IS_NULL,'x')]
     }
 }

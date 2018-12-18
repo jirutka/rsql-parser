@@ -40,9 +40,16 @@ public abstract class RSQLOperators {
             IN = new ComparisonOperator("=in=", true),
             NOT_IN = new ComparisonOperator("=out=", true);
 
+    public static final UnaryComparisonOperator
+        IS_NULL = new UnaryComparisonOperator("=isnull="),
+        NOT_NULL = new UnaryComparisonOperator("=notnull=");
 
-    public static Set<ComparisonOperator> defaultOperators() {
+    public static Set<ComparisonOperator> defaultComparisonOperators() {
         return new HashSet<>(asList(EQUAL, NOT_EQUAL, GREATER_THAN, GREATER_THAN_OR_EQUAL,
                                     LESS_THAN, LESS_THAN_OR_EQUAL, IN, NOT_IN));
+    }
+
+    public static Set<UnaryComparisonOperator> defaultUnaryOperator(){
+        return new HashSet<>(asList(IS_NULL, NOT_NULL));
     }
 }

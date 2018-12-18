@@ -27,12 +27,12 @@ import cz.jirutka.rsql.parser.ast.ComparisonOperator;
 import cz.jirutka.rsql.parser.ast.Node;
 import cz.jirutka.rsql.parser.ast.NodesFactory;
 import cz.jirutka.rsql.parser.ast.RSQLOperators;
-import net.jcip.annotations.Immutable;
-
+import cz.jirutka.rsql.parser.ast.UnaryComparisonOperator;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.Set;
+import net.jcip.annotations.Immutable;
 
 /**
  * Parser of the RSQL (RESTful Service Query Language).
@@ -43,30 +43,33 @@ import java.util.Set;
  *
  * <p><b>Grammar in EBNF notation:</b>
  * <pre>{@code
- * input          = or, EOF;
- * or             = and, { ( "," | " or " ) , and };
- * and            = constraint, { ( ";" | " and " ), constraint };
- * constraint     = ( group | comparison );
- * group          = "(", or, ")";
+ * input           = or, EOF;
+ * or              = and, { ( "," | " or " ) , and };
+ * and             = constraint, { ( ";" | " and " ), constraint };
+ * constraint      = ( group | comparison );
+ * group           = "(", or, ")";
  *
- * comparison     = selector, comparator, arguments;
- * selector       = unreserved-str;
+ * comparison      = selector, comparator-node;
+ * comparator-node = (comparator , arguments) | (comp-cust, arguments-cust);
+ * selector        = unreserved-str;
  *
- * comparator     = comp-fiql | comp-alt;
- * comp-fiql      = ( ( "=", { ALPHA } ) | "!" ), "=";
- * comp-alt       = ( ">" | "<" ), [ "=" ];
+ * comparator      = comp-fiql | comp-alt;
+ * comp-fiql       = ("==", "!=");
+ * comp-alt        = ( ">" | "<" ), [ "=" ];
+ * comp-cust       = "=" ALPHA { ALPHA } "=";
  *
- * arguments      = ( "(", value, { "," , value }, ")" ) | value;
- * value          = unreserved-str | double-quoted | single-quoted;
+ * arguments       = ( "(", value, { "," , value }, ")" ) | value;
+ * arguments-cust  = ( "(", value, { "," , value }, ")" ) | [value];
+ * value           = unreserved-str | double-quoted | single-quoted;
  *
- * unreserved-str = unreserved, { unreserved }
- * single-quoted  = "'", { ( escaped | all-chars - ( "'" | "\" ) ) }, "'";
- * double-quoted  = '"', { ( escaped | all-chars - ( '"' | "\" ) ) }, '"';
+ * unreserved-str  = unreserved, { unreserved }
+ * single-quoted   = "'", { ( escaped | all-chars - ( "'" | "\" ) ) }, "'";
+ * double-quoted   = '"', { ( escaped | all-chars - ( '"' | "\" ) ) }, '"';
  *
- * reserved       = '"' | "'" | "(" | ")" | ";" | "," | "=" | "!" | "~" | "<" | ">" | " ";
- * unreserved     = all-chars - reserved;
- * escaped        = "\", all-chars;
- * all-chars      = ? all unicode characters ?;
+ * reserved        = '"' | "'" | "(" | ")" | ";" | "," | "=" | "!" | "~" | "<" | ">" | " ";
+ * unreserved      = all-chars - reserved;
+ * escaped         = "\", all-chars;
+ * all-chars       = ? all unicode characters ?;
  * }</pre>
  *
  * @version 2.1
@@ -80,23 +83,27 @@ public final class RSQLParser {
 
 
     /**
-     * Creates a new instance of {@code RSQLParser} with the default set of comparison operators.
+     * Creates a new instance of {@code RSQLParser} with the default set of comparison and unary operators.
      */
     public RSQLParser() {
-        this.nodesFactory = new NodesFactory(RSQLOperators.defaultOperators());
+        this.nodesFactory = new NodesFactory(RSQLOperators.defaultComparisonOperators(),
+            RSQLOperators.defaultUnaryOperator());
     }
 
     /**
      * Creates a new instance of {@code RSQLParser} that supports only the specified comparison
      * operators.
      *
-     * @param operators A set of supported comparison operators. Must not be <tt>null</tt> or empty.
+     * @param comparisonOperators A set of supported comparison operators. Must not be <tt>null</tt> or empty.
+     * @param unaryComparisonOperators A set of supported unary operators. Must not be <tt>null</tt> or empty.
      */
-    public RSQLParser(Set<ComparisonOperator> operators) {
-        if (operators == null || operators.isEmpty()) {
+    public RSQLParser(Set<ComparisonOperator> comparisonOperators,
+        Set<UnaryComparisonOperator> unaryComparisonOperators) {
+        if (comparisonOperators == null || comparisonOperators.isEmpty()
+            || unaryComparisonOperators == null || unaryComparisonOperators.isEmpty()) {
             throw new IllegalArgumentException("operators must not be null or empty");
         }
-        this.nodesFactory = new NodesFactory(operators);
+        this.nodesFactory = new NodesFactory(comparisonOperators, unaryComparisonOperators);
     }
 
     /**

@@ -35,7 +35,7 @@ class ComparisonNodeTest extends Specification {
         then:
             thrown IllegalArgumentException
         where:
-            operator << defaultOperators().findAll{ !it.multiValue }
+            operator << defaultComparisonOperators().findAll{ !it.multiValue }
     }
 
     def 'should be immutable'() {

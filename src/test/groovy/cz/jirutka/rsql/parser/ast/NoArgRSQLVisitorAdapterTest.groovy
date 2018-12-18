@@ -31,9 +31,19 @@ class NoArgRSQLVisitorAdapterTest extends Specification {
 
     def 'delegate visit(#className, Void) to visit(#className)'() {
         setup:
-            def node = LogicalNode.isAssignableFrom(nodeClass) ?
-                    nodeClass.newInstance([]) :
-                    nodeClass.newInstance(RSQLOperators.EQUAL, 'sel', ['arg'])
+            def node
+            switch(nodeClass.getSimpleName()){
+                case ComparisonNode.getSimpleName():
+                    node = nodeClass.newInstance(RSQLOperators.EQUAL, 'sel', ['arg'])
+                    break
+                case UnaryComparisonNode.getSimpleName():
+                    node = nodeClass.newInstance(RSQLOperators.IS_NULL,'sel')
+                    break
+                default:
+                    node = nodeClass.newInstance([])
+                    break
+            }
+
         and:
             def adapter = Spy(NoArgRSQLVisitorAdapter) {
                 visit(_) >> null
@@ -43,7 +53,7 @@ class NoArgRSQLVisitorAdapterTest extends Specification {
         then:
             1 * adapter.visit({ nodeClass.isInstance(it) }) >> null
         where:
-            nodeClass << [AndNode, OrNode, ComparisonNode]
+            nodeClass << [AndNode, OrNode, ComparisonNode, UnaryComparisonNode]
             className = nodeClass.simpleName
     }
 }

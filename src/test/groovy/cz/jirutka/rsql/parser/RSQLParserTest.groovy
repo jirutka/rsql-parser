@@ -34,18 +34,26 @@ class RSQLParserTest extends Specification {
 
     static final RESERVED = ['"', "'", '(', ')', ';', ',', '=', '<', '>', '!', '~', ' ']
 
-    def factory = new NodesFactory(defaultOperators())
+    def factory = new NodesFactory(defaultComparisonOperators(), defaultUnaryOperator())
 
 
-    def 'throw exception when created with null or empty set of operators'() {
+    def 'throw exception when created with null or empty set of comparison operators'() {
         when:
-           new RSQLParser(operators as Set)
+           new RSQLParser(operators as Set, defaultUnaryOperator() as Set )
         then:
             thrown IllegalArgumentException
         where:
             operators << [null, []]
     }
 
+    def 'throw exception when created with null or empty set of unary operators'() {
+        when:
+            new RSQLParser(defaultComparisonOperators() as Set, operators as Set )
+        then:
+            thrown IllegalArgumentException
+        where:
+            operators << [null, []]
+    }
 
     def 'throw exception when input is null'() {
         when:
@@ -61,7 +69,16 @@ class RSQLParserTest extends Specification {
         expect:
             parse("sel${op}val") == expected
         where:
-            op << defaultOperators()*.symbols.flatten()
+            op << defaultComparisonOperators()*.symbols.flatten()
+    }
+
+    def 'parse unary operator: #op'(){
+        given:
+            def expected = factory.createUnaryComparisonNode(op, 'sel')
+        expect:
+            parse("sel${op}") == expected
+        where:
+            op << defaultUnaryOperator()*.symbols.flatten()
     }
 
     def 'throw exception for deprecated short equal operator: ='() {
@@ -83,19 +100,28 @@ class RSQLParserTest extends Specification {
     def 'throw exception for selector with reserved char: #input'() {
         when:
             parse("${input}==val")
+            System.out.println("${input}")
         then:
             thrown RSQLParserException
         where:
             input << RESERVED.collect{ ["ill${it}", "ill${it}ness"] }.flatten() - ['ill ']
     }
 
-    def 'throw exception for empty selector'() {
+    def 'throw exception for empty selector with comparison operator'() {
         when:
             parse("==val")
         then:
             thrown RSQLParserException
     }
 
+    def 'throw exception for empty selector with unary comparison operator'() {
+        when:
+            parse(input)
+        then:
+            thrown RSQLParserException
+        where:
+            input << ['=isnull=', '=notnull=']
+    }
 
     def 'parse unquoted argument: #input'() {
         given:
@@ -161,18 +187,18 @@ class RSQLParserTest extends Specification {
 
     def 'parse logical operator: #op'() {
         given:
-            def expected = factory.createLogicalNode(op, [eq('sel1', 'arg1'), eq('sel2', 'arg2')])
+            def expected = factory.createLogicalNode(op, [eq('sel1', 'arg1'), isnull('sel2')])
         expect:
-            parse("sel1==arg1${op.toString()}sel2==arg2") == expected
+            parse("sel1==arg1${op.toString()}sel2=isnull=") == expected
         where:
             op << LogicalOperator.values()
     }
 
     def 'parse alternative logical operator: "#alt"'() {
         given:
-            def expected = factory.createLogicalNode(op, [eq('sel1', 'arg1'), eq('sel2', 'arg2')])
+            def expected = factory.createLogicalNode(op, [eq('sel1', 'arg1'), isnull('sel2')])
         expect:
-            parse("sel1==arg1${alt}sel2==arg2") == expected
+            parse("sel1==arg1${alt}sel2=isnull=") == expected
         where:
             op << LogicalOperator.values()
             alt = op == LogicalOperator.AND ? ' and ' : ' or ';
@@ -186,18 +212,22 @@ class RSQLParserTest extends Specification {
             's0==a0;s1==a1;s2==a2'                   | and(eq('s0','a0'), eq('s1','a1'), eq('s2','a2'))
             's0==a0,s1=out=(a10,a11),s2==a2'         | or(eq('s0','a0'), out('s1','a10', 'a11'), eq('s2','a2'))
             's0==a0,s1==a1;s2==a2,s3==a3'            | or(eq('s0','a0'), and(eq('s1','a1'), eq('s2','a2')), eq('s3','a3'))
+            's0=notnull=,s1=isnull=;s2=notnull='     | or(notnull('s0'), and(isnull('s1'), notnull('s2')))
     }
 
     def 'parse queries with parenthesis: #input'() {
         expect:
             parse(input) == expected
         where:
-            input                                    | expected
-            '(s0==a0,s1==a1);s2==a2'                 | and(or(eq('s0','a0'), eq('s1','a1')), eq('s2','a2'))
-            '(s0==a0,s1=out=(a10,a11));s2==a2,s3==a3'| or(and(or(eq('s0','a0'), out('s1','a10', 'a11')), eq('s2','a2')), eq('s3','a3'))
-            '((s0==a0,s1==a1);s2==a2,s3==a3);s4==a4' | and(or(and(or(eq('s0','a0'), eq('s1','a1')), eq('s2','a2')), eq('s3','a3')), eq('s4','a4'))
-            '(s0==a0)'                               | eq('s0', 'a0')
-            '((s0==a0));s1==a1'                      | and(eq('s0', 'a0'), eq('s1','a1'))
+            input                                            | expected
+            '(s0==a0,s1==a1);s2==a2'                         | and(or(eq('s0','a0'), eq('s1','a1')), eq('s2','a2'))
+            '(s0==a0,s1=out=(a10,a11));s2==a2,s3==a3'        | or(and(or(eq('s0','a0'), out('s1','a10', 'a11')), eq('s2','a2')), eq('s3','a3'))
+            '((s0==a0,s1==a1);s2==a2,s3==a3);s4==a4'         | and(or(and(or(eq('s0','a0'), eq('s1','a1')), eq('s2','a2')), eq('s3','a3')), eq('s4','a4'))
+            '((s0==a0,s1=isnull=);s2==a2,s3=isnull=);s4==a4' | and(or(and(or(eq('s0','a0'), isnull('s1')), eq('s2','a2')), isnull('s3')), eq('s4','a4'))
+            '(s0==a0)'                                       | eq('s0', 'a0')
+            '((s0==a0));s1==a1'                              | and(eq('s0', 'a0'), eq('s1','a1'))
+            '((s0==a0));s1=isnull='                          | and(eq('s0', 'a0'), isnull('s1'))
+            '((s0==a0),s1=notnull=);s2=isnull='              | and(or(eq('s0','a0'), notnull('s1')), isnull('s2'))
     }
 
     def 'throw exception for unclosed parenthesis: #input'() {
@@ -206,14 +236,15 @@ class RSQLParserTest extends Specification {
         then:
             thrown RSQLParserException
         where:
-            input << [ '(s0==a0;s1!=a1', 's0==a0)', 's0==a;(s1=in=(b,c),s2!=d' ]
+            input << [ '(s0==a0;s1!=a1', 's0==a0)', 's0==a;(s1=in=(b,c),s2!=d', "(s0=isnull=;s0==a0", "(s0=notnull=;s0==a0" ]
     }
 
 
     def 'use parser with custom set of operators'() {
         setup:
             def allOperator = new ComparisonOperator('=all=', true)
-            def parser = new RSQLParser([EQUAL, allOperator] as Set)
+            def notOperator = new UnaryComparisonOperator('=not=')
+            def parser = new RSQLParser([EQUAL, allOperator] as Set, [IS_NULL, notOperator] as Set)
             def expected = and(eq('name', 'TRON'), new ComparisonNode(allOperator, 'genres', ['sci-fi', 'thriller']))
 
         expect:
@@ -234,5 +265,7 @@ class RSQLParserTest extends Specification {
     def and(Node... nodes) { new AndNode(nodes as List) }
     def or(Node... nodes) { new OrNode(nodes as List) }
     def eq(sel, arg) { new ComparisonNode(EQUAL, sel, [arg as String]) }
+    def isnull(sel){ new UnaryComparisonNode(IS_NULL,sel) }
+    def notnull(sel){ new UnaryComparisonNode(NOT_NULL, sel) }
     def out(sel, ...args) { new ComparisonNode(NOT_IN, sel, args as List) }
 }

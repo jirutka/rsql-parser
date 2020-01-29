@@ -22,7 +22,7 @@ On the other side, FIQL’s syntax is not very intuitive and URL encoding isn’
 For example, you can query your resource like this: `/movies?query=name=="Kill Bill";year=gt=2003` or `/movies?query=director.lastName==Nolan and year>=2000`.
 See <<Examples, examples>> below.
 
-This is a complete and thoroughly tested parser for RSQL written in http://javacc.java.net[JavaCC] and Java.
+This is a complete and thoroughly tested parser for RSQL written in https://javacc.github.io/javacc/[JavaCC] and Java.
 Since RSQL is a superset of the FIQL, it can be used for parsing FIQL as well.
 
 

@@ -94,7 +94,7 @@ TOKEN : {
   | < OR         : ( "," | " or " ) >
   | < LPAREN     : "(" >
   | < RPAREN     : ")" >
-  | < COMP_FIQL  : ( ( "=" (<ALPHA>)* ) | "!" ) "=" >
+  | < COMP_FIQL  : ( ( [" ","="] (<ALPHA>)* ) | "!" ) [" ","="] >
   | < COMP_ALT   : ( ">" | "<" ) ( "=" )? >
 }
 

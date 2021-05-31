@@ -30,6 +30,7 @@ Since RSQL is a superset of the FIQL, it can be used for parsing FIQL as well.
 
 RSQL-parser can be used with:
 
+* https://manosbatsis.github.io/vaultaire/plugins/rsql-support/[Vaultaire] depends on rsql-parser for URL-friendly queries of https://www.corda.net/[Corda] Vault states,
 * https://github.com/tennaito/rsql-jpa[rsql-jpa] to convert RSQL into JPA2 CriteriaQuery,
 * https://github.com/RutledgePaulV/rsql-mongodb[rsql-mongodb] to convert RSQL into MongoDB query using Spring Data MongoDB,
 * https://github.com/RutledgePaulV/q-builders[q-builders] to build (not only) RSQL query in type-safe manner,

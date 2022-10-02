@@ -29,9 +29,8 @@ import cz.jirutka.rsql.parser.ast.NodesFactory;
 import cz.jirutka.rsql.parser.ast.RSQLOperators;
 import net.jcip.annotations.Immutable;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.nio.charset.Charset;
+import java.io.Reader;
+import java.io.StringReader;
 import java.util.Set;
 
 /**
@@ -74,8 +73,6 @@ import java.util.Set;
 @Immutable
 public final class RSQLParser {
 
-    private static final Charset ENCODING = Charset.forName("UTF-8");
-
     private final NodesFactory nodesFactory;
 
 
@@ -113,10 +110,9 @@ public final class RSQLParser {
         if (query == null) {
             throw new IllegalArgumentException("query must not be null");
         }
-        InputStream is = new ByteArrayInputStream(query.getBytes(ENCODING));
-        Parser parser = new Parser(is, ENCODING.name(), nodesFactory);
 
-        try {
+        try (Reader reader = new StringReader(query)) {
+            Parser parser = new Parser(reader, nodesFactory);
             return parser.Input();
 
         } catch (Exception | TokenMgrError ex) {

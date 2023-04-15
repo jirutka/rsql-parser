@@ -3,12 +3,12 @@ Jakub Jirutka <https://github.com/jirutka[@jirutka]>
 :name: rsql-parser
 :version: 2.1.0
 :mvn-group: cz.jirutka.rsql
-:gh-name: jirutka/{name}
+:gh-name: nstdio/{name}
 :gh-branch: master
 :src-base: link:src/main/java/cz/jirutka/rsql/parser
 
 ifdef::env-github[]
-image:https://travis-ci.org/{gh-name}.svg?branch={gh-branch}["Build Status", link="https://travis-ci.org/{gh-name}"]
+image:https://github.com/{gh-name}/actions/workflows/build.yaml/badge.svg["Build", link="https://github.com/nstdio/rsql-parser/actions/workflows/build.yaml"]
 image:https://coveralls.io/repos/{gh-name}/badge.svg?branch={gh-branch}&service=github["Coverage Status", link="https://coveralls.io/github/{gh-name}?branch={gh-branch}"]
 image:https://api.codacy.com/project/badge/grade/bd2168ab0e424e028ad6df8ff886d81a["Codacy code quality", link="https://www.codacy.com/app/{gh-name}"]
 image:https://maven-badges.herokuapp.com/maven-central/{mvn-group}/{name}/badge.svg["Maven Central", link="https://maven-badges.herokuapp.com/maven-central/{mvn-group}/{name}"]

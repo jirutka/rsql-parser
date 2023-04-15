@@ -1,0 +1,27 @@
+name: Build
+permissions:
+  checks: write
+  pull-requests: write
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types: [ opened, synchronize, reopened ]
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up JDK 8
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: 8
+          cache: 'gradle'
+      - name: Build
+        run: ./gradlew build
+      - uses: codecov/codecov-action@v3
+        with:
+          verbose: true

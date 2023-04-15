@@ -12,5 +12,5 @@ trim_trailing_whitespace = true
 [*.yml]
 indent_size = 2
 
-[script/*]
-indent_style = tab
+[*.gradle.kts]
+indent_size = 2

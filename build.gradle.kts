@@ -32,7 +32,7 @@ java {
 }
 
 publishing {
-  publications.create<MavenPublication>("maven") {
+  publications.create<MavenPublication>("java") {
     from(components["java"])
 
     pom {

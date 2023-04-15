@@ -60,11 +60,14 @@ public class NodesFactory {
      */
     public LogicalNode createLogicalNode(LogicalOperator operator, List<Node> children) {
         switch (operator) {
-            case AND : return new AndNode(children);
-            case OR  : return new OrNode(children);
+            case AND:
+                return new AndNode(children);
+            case OR:
+                return new OrNode(children);
 
             // this normally can't happen
-            default  : throw new IllegalStateException("Unknown operator: " + operator);
+            default:
+                throw new IllegalStateException("Unknown operator: " + operator);
         }
     }
 
@@ -73,13 +76,13 @@ public class NodesFactory {
      *
      * @param operatorToken A textual representation of the comparison operator to be found in the
      *                      set of supported {@linkplain ComparisonOperator operators}.
-     * @param selector The selector that specifies the left side of the comparison.
-     * @param arguments A list of arguments that specifies the right side of the comparison.
-     *
+     * @param selector      The selector that specifies the left side of the comparison.
+     * @param arguments     A list of arguments that specifies the right side of the comparison.
+     * @return a {@link ComparisonNode} instance with the given parameters.
      * @throws UnknownOperatorException If no operator for the specified operator token exists.
      */
     public ComparisonNode createComparisonNode(
-            String operatorToken, String selector, List<String> arguments) throws UnknownOperatorException {
+        String operatorToken, String selector, List<String> arguments) throws UnknownOperatorException {
 
         ComparisonOperator op = comparisonOperators.get(operatorToken);
         if (op != null) {

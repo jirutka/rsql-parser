@@ -56,6 +56,9 @@ public abstract class LogicalNode extends AbstractNode implements Iterable<Node>
 
     /**
      * Returns a copy of this node with the specified children nodes.
+     *
+     * @param children Children nodes, i.e. operands; must not be <tt>null</tt>.
+     * @return a copy of this node with the specified children nodes.
      */
     public abstract LogicalNode withChildren(List<? extends Node> children);
 
@@ -73,6 +76,8 @@ public abstract class LogicalNode extends AbstractNode implements Iterable<Node>
 
     /**
      * Returns a copy of the children nodes.
+     *
+     * @return a copy of the children nodes.
      */
     public List<Node> getChildren() {
         return new ArrayList<>(children);

@@ -40,14 +40,13 @@ public final class ComparisonOperator {
 
 
     /**
-     * @param symbols Textual representation of this operator (e.g. <tt>=gt=</tt>); the first item
-     *          is primary representation, any others are alternatives. Must match
-     *          <tt>=[a-zA-Z]*=|[><]=?|!=</tt>.
+     * @param symbols    Textual representation of this operator (e.g. <tt>=gt=</tt>); the first item
+     *                   is primary representation, any others are alternatives. Must match
+     *                   {@literal =[a-zA-Z]*=|[><]=?|!=}.
      * @param multiValue Whether this operator may be used with multiple arguments. This is then
-     *          validated in {@link NodesFactory}.
-     *
+     *                   validated in {@link NodesFactory}.
      * @throws IllegalArgumentException If the {@code symbols} is either <tt>null</tt>, empty,
-     *          or contain illegal symbols.
+     *                                  or contain illegal symbols.
      */
     public ComparisonOperator(String[] symbols, boolean multiValue) {
         Assert.notEmpty(symbols, "symbols must not be null or empty");
@@ -59,6 +58,10 @@ public final class ComparisonOperator {
     }
 
     /**
+     * @param symbol     Textual representation of this operator (e.g. <tt>=gt=</tt>); Must match
+     *                   {@literal =[a-zA-Z]*=|[><]=?|!=}.
+     * @param multiValue Whether this operator may be used with multiple arguments. This is then
+     *                   validated in {@link NodesFactory}.
      * @see #ComparisonOperator(String[], boolean)
      */
     public ComparisonOperator(String symbol, boolean multiValue) {
@@ -66,6 +69,10 @@ public final class ComparisonOperator {
     }
 
     /**
+     * @param symbol     Textual representation of this operator (e.g. <tt>=gt=</tt>); Must match
+     *                   {@literal =[a-zA-Z]*=|[><]=?|!=}.
+     * @param altSymbol  Alternative representation for {@code symbol}.
+     * @param multiValue Whether this operator may be used with multiple arguments. This is then
      * @see #ComparisonOperator(String[], boolean)
      */
     public ComparisonOperator(String symbol, String altSymbol, boolean multiValue) {
@@ -73,6 +80,8 @@ public final class ComparisonOperator {
     }
 
     /**
+     * @param symbols Textual representation of this operator (e.g. <tt>=gt=</tt>); the first item
+     *                is primary representation, any others are alternatives. Must match {@literal =[a-zA-Z]*=|[><]=?|!=}.
      * @see #ComparisonOperator(String[], boolean)
      */
     public ComparisonOperator(String... symbols) {
@@ -82,6 +91,8 @@ public final class ComparisonOperator {
 
     /**
      * Returns the primary representation of this operator.
+     *
+     * @return the primary representation of this operator.
      */
     public String getSymbol() {
         return symbols[0];
@@ -90,6 +101,8 @@ public final class ComparisonOperator {
     /**
      * Returns all representations of this operator. The first item is always the primary
      * representation.
+     *
+     * @return all representations of this operator. The first item is always the primary representation.
      */
     public String[] getSymbols() {
         return symbols.clone();
@@ -97,6 +110,8 @@ public final class ComparisonOperator {
 
     /**
      * Whether this operator may be used with multiple arguments.
+     *
+     * @return Whether this operator may be used with multiple arguments.
      */
     public boolean isMultiValue() {
         return multiValue;

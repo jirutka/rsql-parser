@@ -18,7 +18,7 @@ jobs:
           distribution: 'temurin'
           java-version: 8
       - name: Build
-        run: ./gradlew build -x test -x spiTest --stacktrace
+        run: ./gradlew build -x test --stacktrace
       - name: Configure Git Author
         run: |
           git config user.name "GitHub Actions"

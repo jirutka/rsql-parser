@@ -118,6 +118,18 @@ tasks {
     useJUnitPlatform()
   }
 
+  withType<JacocoReport> {
+    reports {
+      val isCI = System.getenv("CI").toBoolean()
+      xml.required.set(isCI)
+      html.required.set(!isCI)
+    }
+  }
+
+  withType<Test> {
+    finalizedBy(named("jacocoTestReport"))
+  }
+
   withType<JavaCompile>().configureEach {
     options.encoding = "UTF-8"
   }

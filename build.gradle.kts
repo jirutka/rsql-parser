@@ -24,7 +24,6 @@ dependencies {
 }
 
 group = "io.github.nstdio"
-version = "2.1.1-SNAPSHOT"
 description = "RSQL-parser"
 
 java {

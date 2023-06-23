@@ -108,7 +108,7 @@ nexusPublishing {
 release {
   tagTemplate.set("v\${version}")
   git {
-    requireBranch.set("main")
+    requireBranch.set("master")
     pushToRemote.set("origin")
   }
 }

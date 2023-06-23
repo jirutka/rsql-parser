@@ -143,6 +143,10 @@ tasks {
     isReproducibleFileOrder = true
   }
 
+  compileJavacc {
+    outputDirectory = outputDirectory.resolve("cz/jirutka/rsql/parser")
+  }
+
   named("afterReleaseBuild") {
     dependsOn("publishToSonatype", "closeAndReleaseSonatypeStagingRepository")
   }

@@ -22,7 +22,7 @@ dependencies {
   testRuntimeOnly("net.bytebuddy:byte-buddy:1.14.5")
 }
 
-group = "cz.jirutka.rsql"
+group = "io.github.nstdio"
 version = "2.1.1-SNAPSHOT"
 description = "RSQL-parser"
 

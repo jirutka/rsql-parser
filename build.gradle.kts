@@ -15,7 +15,11 @@ repositories {
 dependencies {
   compileOnly("net.jcip:jcip-annotations:1.0")
 
+  testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.3")
+  testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.3")
+
   testImplementation("org.spockframework:spock-core:2.4-M1-groovy-4.0")
+  testRuntimeOnly("net.bytebuddy:byte-buddy:1.14.5")
 }
 
 group = "cz.jirutka.rsql"
@@ -102,6 +106,10 @@ nexusPublishing {
 }
 
 tasks {
+  test {
+    useJUnitPlatform()
+  }
+
   withType<JavaCompile>().configureEach {
     options.encoding = "UTF-8"
   }

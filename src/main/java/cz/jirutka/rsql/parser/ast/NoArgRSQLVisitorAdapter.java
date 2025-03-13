@@ -35,6 +35,8 @@ public abstract class NoArgRSQLVisitorAdapter<R> implements RSQLVisitor<R, Void>
 
     public abstract R visit(OrNode node);
 
+    public abstract R visit(NotNode node);
+
     public abstract R visit(ComparisonNode node);
 
 
@@ -43,6 +45,10 @@ public abstract class NoArgRSQLVisitorAdapter<R> implements RSQLVisitor<R, Void>
     }
 
     public R visit(OrNode node, Void param) {
+        return visit(node);
+    }
+
+    public R visit(NotNode node, Void param) {
         return visit(node);
     }
 

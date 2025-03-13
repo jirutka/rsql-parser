@@ -35,5 +35,7 @@ public interface RSQLVisitor<R, A> {
 
     R visit(OrNode node, A param);
 
+    R visit(NotNode node, A param);
+
     R visit(ComparisonNode node, A param);
 }

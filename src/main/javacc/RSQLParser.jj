@@ -92,6 +92,7 @@ TOKEN : {
 TOKEN : {
     < AND        : ( ";" | " and ") >
   | < OR         : ( "," | " or " ) >
+  | < NOT        : "!" >
   | < LPAREN     : "(" >
   | < RPAREN     : ")" >
   | < COMP_FIQL  : ( ( "=" (<ALPHA>)* ) | "!" ) "=" >
@@ -145,7 +146,7 @@ Node Constraint():
     final Node node;
 }
 {
-    ( node = Group() | node = Comparison() )
+    ( node = Group() | node = NotExpression() | node = Comparison() )
     {
         return node;
     }
@@ -159,6 +160,19 @@ Node Group():
     <LPAREN> node = Or() <RPAREN>
     {
         return node;
+    }
+}
+
+Node NotExpression():
+{
+    final Node node;
+    final List<Node> nodes = new ArrayList<Node>(1);
+}
+{
+    <NOT> node = Constraint()
+    {
+        nodes.add(node);
+        return factory.createLogicalNode(LogicalOperator.NOT, nodes);
     }
 }
 

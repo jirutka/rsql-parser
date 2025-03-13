@@ -23,13 +23,13 @@
  */
 package cz.jirutka.rsql.parser.ast;
 
-import cz.jirutka.rsql.parser.UnknownOperatorException;
-import net.jcip.annotations.Immutable;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import cz.jirutka.rsql.parser.UnknownOperatorException;
+import net.jcip.annotations.Immutable;
 
 /**
  * Factory that creates {@link Node} instances for the parser.

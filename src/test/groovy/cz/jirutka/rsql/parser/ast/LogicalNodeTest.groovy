@@ -70,3 +70,22 @@ class OrNodeTest extends LogicalNodeTest {
         new OrNode(children)
     }
 }
+
+class NotNodeTest extends LogicalNodeTest {
+    LogicalNode newNode(List children) {
+        if (children.isEmpty()) {
+            // For testing, provide a dummy child
+            children = [new ComparisonNode(EQUAL, 'dummy', ['value'])]
+        }
+        return new NotNode(children[0] as Node)
+    }
+
+    def 'should throw exception when given multiple children'() {
+        when:
+        def child1 = new ComparisonNode(EQUAL, 'foo', ['bar'])
+        def child2 = new ComparisonNode(EQUAL, 'baz', ['qux'])
+        new NotNode([child1, child2] as Node)
+        then:
+        thrown IllegalArgumentException
+    }
+}

@@ -226,6 +226,29 @@ class RSQLParserTest extends Specification {
             ex.cause instanceof UnknownOperatorException
     }
 
+    def 'parse NOT operator'() {
+        expect:
+        parse(input) == expected
+        where:
+        input              | expected
+        '!s0==a0'          | not(eq('s0', 'a0'))
+        '!(s0==a0,s1==a1)' | not(or(eq('s0', 'a0'), eq('s1', 'a1')))
+        '!(s0==a0;s1==a1)' | not(and(eq('s0', 'a0'), eq('s1', 'a1')))
+        's0==a0,!s1==a1'   | or(eq('s0', 'a0'), not(eq('s1', 'a1')))
+        's0==a0;!s1==a1'   | and(eq('s0', 'a0'), not(eq('s1', 'a1')))
+        '!!(s0==a0)'       | not(not(eq('s0', 'a0'))) // Double negation
+    }
+
+    def 'parse complex expressions with NOT'() {
+        expect:
+        parse(input) == expected
+        where:
+        input                              | expected
+        'name==TRON;!(year=gt=2010)'       | and(eq('name', 'TRON'), not(gt('year', '2010')))
+        'name==TRON;!(genres=in=(sci-fi))' | and(eq('name', 'TRON'), not( inlist ('genres', 'sci-fi') ) )
+        'name==TRON;!(year=gt=2010,price<50)' | and(eq('name', 'TRON'), not(or(gt('year', '2010'), lt('price', '50'))))
+    }
+
 
     //////// Helpers ////////
 
@@ -233,6 +256,12 @@ class RSQLParserTest extends Specification {
 
     def and(Node... nodes) { new AndNode(nodes as List) }
     def or(Node... nodes) { new OrNode(nodes as List) }
+    def not(Node node) { new NotNode(node) }
     def eq(sel, arg) { new ComparisonNode(EQUAL, sel, [arg as String]) }
     def out(sel, ...args) { new ComparisonNode(NOT_IN, sel, args as List) }
+    def gt(sel, arg) { new ComparisonNode(GREATER_THAN, sel, [arg as String]) }
+    def lt(sel, arg) { new ComparisonNode(LESS_THAN, sel, [arg as String]) }
+    def inlist (sel, ... args ) {
+        new ComparisonNode(IN, sel, args as List as List<String>)
+    }
 }

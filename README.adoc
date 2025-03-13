@@ -81,7 +81,7 @@ Comparison operators are in FIQL notation and some of them has an alternative sy
 * Equal to : `==`
 * Not equal to : `!=`
 * Less than : `=lt=` or `<`
-* Less than or equal to : `=le=` or `<=`
+* Less than or equal to : `=le=` or `\<=`
 * Greater than operator : `=gt=` or `>`
 * Greater than or equal to : `=ge=` or `>=`
 * In : `=in=`

@@ -94,7 +94,8 @@ TOKEN : {
   | < OR         : ( "," | " or " ) >
   | < LPAREN     : "(" >
   | < RPAREN     : ")" >
-  | < COMP_FIQL  : ( ( "=" (<ALPHA>)* ) | "!" ) "=" >
+  | < COMP_FIQL  :  "==" | "!=" >
+  | < COMP_CUST  : "=" (<ALPHA>)* "=" >
   | < COMP_ALT   : ( ">" | "<" ) ( "=" )? >
 }
 
@@ -145,7 +146,7 @@ Node Constraint():
     final Node node;
 }
 {
-    ( node = Group() | node = Comparison() )
+    ( node = Group() | node = Comparison())
     {
         return node;
     }
@@ -162,15 +163,32 @@ Node Group():
     }
 }
 
-ComparisonNode Comparison():
+Node Comparison():
 {
+    final Node node;
     final String sel;
+}
+{
+    sel = Selector() node = ComparisonNode(sel)
+    {
+
+        return node;
+    }
+}
+
+Node ComparisonNode(String sel):
+{
     final String op;
     final List<String> args;
 }
 {
-    ( sel = Selector() op = Operator() args = Arguments() )
+    ( op = ComparisonOperator() args = Arguments() ) {return factory.createComparisonNode(op, sel, args);}
+    |
+    (op = CustomComparisonOperator() args = ArgumentsCustomOperator())
     {
+        if(args == null){
+            return factory.createUnaryComparisonNode(op, sel);
+        }
         return factory.createComparisonNode(op, sel, args);
     }
 }
@@ -183,9 +201,18 @@ String Selector(): {}
     }
 }
 
-String Operator(): {}
+
+String ComparisonOperator(): {}
 {
-    ( token = <COMP_FIQL> | token = <COMP_ALT> )
+    ( token = <COMP_FIQL> | token = <COMP_ALT>)
+    {
+        return token.image;
+    }
+}
+
+String CustomComparisonOperator():{}
+{
+    (token = <COMP_CUST>)
     {
         return token.image;
     }
@@ -199,6 +226,19 @@ List<String> Arguments():
     ( <LPAREN> value = CommaSepArguments() <RPAREN> ) { return (List) value; }
     |
     value = Argument() { return Arrays.asList((String) value); }
+}
+
+List<String> ArgumentsCustomOperator():
+{
+    final Object value;
+}
+{
+    ( <LPAREN> value = CommaSepArguments() <RPAREN> ) { return (List) value; }
+    |
+    (value = Argument() { return Arrays.asList((String) value); })?
+    {
+        return null;
+    }
 }
 
 List<String> CommaSepArguments():

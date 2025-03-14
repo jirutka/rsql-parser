@@ -31,10 +31,12 @@ import static cz.jirutka.rsql.parser.ast.LogicalOperator.AND
 import static cz.jirutka.rsql.parser.ast.LogicalOperator.OR
 import static cz.jirutka.rsql.parser.ast.RSQLOperators.EQUAL
 import static cz.jirutka.rsql.parser.ast.RSQLOperators.GREATER_THAN
+import static cz.jirutka.rsql.parser.ast.RSQLOperators.IS_NULL
+import static cz.jirutka.rsql.parser.ast.RSQLOperators.NOT_NULL
 
 class NodesFactoryTest extends Specification {
 
-    def factory = new NodesFactory([EQUAL, GREATER_THAN] as Set)
+    def factory = new NodesFactory([EQUAL, GREATER_THAN] as Set, [IS_NULL, NOT_NULL] as Set)
 
 
     @Unroll
@@ -65,9 +67,28 @@ class NodesFactoryTest extends Specification {
             '>'     | GREATER_THAN
     }
 
-    def 'throw UnknownOperatorException when given unsupported operator token'() {
+    def 'throw UnknownOperatorException when given unsupported comparison operator token'() {
         when:
             factory.createComparisonNode('=lt=', 'sel', ['arg'])
+        then:
+            thrown UnknownOperatorException
+    }
+
+    def 'create UnaryNode when given supported operator token'() {
+        when:
+            def node = factory.createUnaryComparisonNode(opToken, 'doctor')
+        then:
+            node.operator  == expected
+            node.selector  == 'doctor'
+        where:
+            opToken       | expected
+            '=isnull='    | IS_NULL
+            '=notnull='   | NOT_NULL
+    }
+
+    def 'throw UnknownOperatorException when given unsupported unary operator token'() {
+        when:
+            factory.createUnaryComparisonNode('=is=', 'sel')
         then:
             thrown UnknownOperatorException
     }
